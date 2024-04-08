@@ -1,0 +1,29 @@
+name: Move Jira issue
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  transition-issue:
+    name: move Jira issue
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          
+      - name: Find Jira Ticket in Commits
+        uses: atlassian/gajira-find-issue-key@master
+        id: jira-ticket
+        with:
+          from: commits
+      
+      - name: Transition Issue
+        if: steps.jira-ticket.outputs.issue != ''
+        uses: atlassian/gajira-transition@master
+        with:
+          issue: ${{ steps.jira-ticket.outputs.issue }}
+          transition: "피드백 요청"
