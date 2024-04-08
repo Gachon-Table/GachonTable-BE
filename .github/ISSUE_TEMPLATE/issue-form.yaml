@@ -1,4 +1,4 @@
-name: 'GachonTable-BE 이슈 생성'
+name: 'GachonTable-BE 이슈 생성'
 description: 'GachonTable-BE 리포지토리에 이슈를 생성하며, 생성된 이슈는 Jira와 연동됩니다.'
 labels: [order]
 title: '이슈 이름을 작성해주세요'
