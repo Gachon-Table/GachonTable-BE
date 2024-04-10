@@ -1,7 +1,7 @@
 name: '이슈 생성'
-description: '새로운 기능을 추가하거나[feat], 오류를 바로잡습니다[fix]'
+description: '새로운 기능을 추가합니다.[feat]'
 labels: [order]
-title: '[feat]/[fix] [이슈 제목]'
+title: '[feat] [이슈 제목]'
 body:
   - type: input
     id: parentKey
