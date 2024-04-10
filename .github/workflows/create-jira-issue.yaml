@@ -29,7 +29,6 @@ jobs:
       - name: Log Issue Parser
         run: |
           echo '${{ steps.issue-parser.outputs.jsonString }}'
-
       - name: Convert markdown to Jira Syntax
         uses: peter-evans/jira2md@v1
         id: md2jira
@@ -37,7 +36,6 @@ jobs:
           input-text: |
             ### Github Issue Link
             - ${{ github.event.issue.html_url }}
-
             ${{ github.event.issue.body }}
           mode: md2jira
 
@@ -55,7 +53,6 @@ jobs:
                 "key": "${{ steps.issue-parser.outputs.issueparser_parentKey }}"
               }
             }
-
       - name: Log created issue
         run: echo "Jira Issue ${{ steps.issue-parser.outputs.parentKey }}/${{ steps.create.outputs.issue }} was created"
 
@@ -66,9 +63,8 @@ jobs:
 
       - name: Create branch with Ticket number
         run: |
-          git checkout -b ${{ steps.create.outputs.issue }}"
-          git push origin ${{ steps.create.outputs.issue }}"
-
+          git checkout -b ${{ steps.create.outputs.issue }}
+          git push origin ${{ steps.create.outputs.issue }}
       - name: Update issue title
         uses: actions-cool/issues-helper@v3
         with:
