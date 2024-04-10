@@ -1,4 +1,0 @@
-branchName: '${{ steps.create.outputs.issue }}-${issue.title[7]}'
-branches:
-  - label: '*'
-    prefix: feat/
