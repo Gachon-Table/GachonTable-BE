@@ -66,12 +66,12 @@ jobs:
 
       - name: Create branch with Ticket number
         run: |
-          git checkout -b feat/${{ steps.create.outputs.issue }}-${{ join('', separator('', subseq(github.event.issue.title, 7))) }}"
-          git push origin feat/${{ steps.create.outputs.issue }}-${{ join('', separator('', subseq(github.event.issue.title, 7))) }}"
+          git checkout -b feat/${{ steps.create.outputs.issue }}-${{ github.event.issue.title[7] }}"
+          git push origin feat/${{ steps.create.outputs.issue }}-${{ github.event.issue.title[7] }}"
 
       - name: Update issue title
         uses: actions-cool/issues-helper@v3
         with:
           actions: "update-issue"
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: "${{ join('', separator('', subseq(github.event.issue.title, 0, 7))) }} ${{ steps.create.outputs.issue }} ${{ join('', separator('', subseq(github.event.issue.title, 7))) }}"
+          title: "feat ${{ steps.create.outputs.issue }} ${{ github.event.issue.title[7] }}"
