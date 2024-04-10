@@ -74,4 +74,4 @@ jobs:
         with:
           actions: "update-issue"
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: "${{ github.event.issue.title[0,7] }} ${{ steps.create.outputs.issue }} ${{ github.event.issue.title[7] }}"
+          title: "[feat] ${{ steps.create.outputs.issue }} ${{ github.event.issue.title[7] }}"
