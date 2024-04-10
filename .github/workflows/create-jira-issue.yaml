@@ -65,6 +65,7 @@ jobs:
           ref: develop
 
       - name: Create branch with Ticket number
+        id: create_branch_with_ticket_number
         uses: robvanderleek/create-issue-branch@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
