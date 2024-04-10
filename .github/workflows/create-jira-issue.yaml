@@ -65,19 +65,13 @@ jobs:
           ref: develop
 
       - name: Create branch with Ticket number
-        id: create_branch_with_ticket_number
-        uses: robvanderleek/create-issue-branch@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Echo branch name
-        run: echo ${{ steps.create_branch_with_ticket_number.outputs.branchName }}
-#        run: |
-#          git checkout -b ${{ steps.create.outputs.issue }}
-#          git push origin ${{ steps.create.outputs.issue }}
+        run: |
+          git checkout -b feat/${{ steps.create.outputs.issue }} ${{ github.event.issue.title[7] }}"
+          git push origin feat/${{ steps.create.outputs.issue }} ${{ github.event.issue.title[7] }}"
 
       - name: Update issue title
         uses: actions-cool/issues-helper@v3
         with:
           actions: "update-issue"
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: "${{ steps.create.outputs.issue }} ${{ github.event.issue.title }}"
+          title: "${{ github.event.issue.title[0,7] }} ${{ steps.create.outputs.issue }} ${{ github.event.issue.title[7] }}"
