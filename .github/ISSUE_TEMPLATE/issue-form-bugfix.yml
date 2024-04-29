@@ -1,6 +1,6 @@
 name: '이슈 생성'
 description: '새로운 기능을 추가합니다.[feat]'
-labels: [enhancement]
+labels: [bug]
 title: '[feat] [이슈 제목]'
 body:
   - type: input
@@ -15,16 +15,16 @@ body:
   - type: input
     id: description
     attributes:
-      label: '이슈 내용(Description)'
-      description: '이슈에 대해서 간략히 설명해주세요'
+      label: '버그 내용(Description)'
+      description: '버그에 대해서 간략히 설명해주세요'
     validations:
       required: true
 
   - type: textarea
     id: details
     attributes:
-      label: '상세 내용(Details)'
-      description: '이슈 상세 내용에 대해서 자세히 설명해주세요'
+      label: '버그 상세 내용(Details)'
+      description: '버그 상세 내용에 대해서 자세히 설명해주세요'
       value: |
         - About Details
     validations:
