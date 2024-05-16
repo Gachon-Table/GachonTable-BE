@@ -46,4 +46,15 @@ public class JwtProvider {
                 .signWith(secretKey)
                 .compact();
     }
+
+    private Claims parseClaims(String token) {
+        try {
+            return Jwts.parser()
+                    .verifyWith(secretKey).build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+    }
 }
