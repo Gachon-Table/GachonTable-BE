@@ -3,6 +3,7 @@ package site.gachontable.gachontablebe.domain.pub.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
+import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 import java.util.List;
 
