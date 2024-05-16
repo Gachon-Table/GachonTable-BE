@@ -9,10 +9,8 @@ import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 @Entity(name = "waiting")
-@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Waiting extends BaseTimeEntity {
 
     @Id
@@ -36,4 +34,23 @@ public class Waiting extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "pub_id", nullable = false)
     private Pub pub;
+
+    public static Waiting create(Position waitingType, Integer headCount, Status waitingStatus, User user, Pub pub) {
+        return Waiting.builder()
+                .waitingType(waitingType)
+                .headCount(headCount)
+                .waitingStatus(waitingStatus)
+                .user(user)
+                .pub(pub)
+                .build();
+    }
+
+    @Builder
+    public Waiting(Position waitingType, Integer headCount, Status waitingStatus, User user, Pub pub) {
+        this.waitingType = waitingType;
+        this.headCount = headCount;
+        this.waitingStatus = waitingStatus;
+        this.user = user;
+        this.pub = pub;
+    }
 }

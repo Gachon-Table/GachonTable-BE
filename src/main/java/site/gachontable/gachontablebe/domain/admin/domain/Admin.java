@@ -6,9 +6,7 @@ import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 
 @Entity(name = "admin")
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Admin {
 
     @Id
@@ -27,4 +25,21 @@ public class Admin {
     @ManyToOne
     @JoinColumn(name = "pub_id", nullable = false)
     private Pub pub;
+
+    public static Admin create(String adminName, String adminPassword, String adminTel, Pub pub) {
+        return Admin.builder()
+                .adminName(adminName)
+                .adminPassword(adminPassword)
+                .adminTel(adminTel)
+                .pub(pub)
+                .build();
+    }
+
+    @Builder
+    public Admin(String adminName, String adminPassword, String adminTel, Pub pub) {
+        this.adminName = adminName;
+        this.adminPassword = adminPassword;
+        this.adminTel = adminTel;
+        this.pub = pub;
+    }
 }

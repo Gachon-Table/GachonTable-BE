@@ -5,10 +5,8 @@ import lombok.*;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 
 @Entity(name = "menu")
-@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Menu {
 
     @Id
@@ -27,4 +25,21 @@ public class Menu {
 
     @Column(nullable = false)
     private String oneLiner;
+
+    public static Menu create(Pub pub, String menuName, Integer price, String oneLiner) {
+        return Menu.builder()
+                .pub(pub)
+                .menuName(menuName)
+                .price(price)
+                .oneLiner(oneLiner)
+                .build();
+    }
+
+    @Builder
+    public Menu(Pub pub, String menuName, Integer price, String oneLiner) {
+        this.pub = pub;
+        this.menuName = menuName;
+        this.price = price;
+        this.oneLiner = oneLiner;
+    }
 }

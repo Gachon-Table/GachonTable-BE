@@ -6,10 +6,8 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity(name = "user")
-@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class User {
 
     @Id
@@ -28,4 +26,21 @@ public class User {
 
     @Column(nullable = false)
     private String refreshToken;
+
+    public static User create(String userName, String userTel, Byte queueingCount, String refreshToken) {
+        return User.builder()
+                .userName(userName)
+                .userTel(userTel)
+                .queueingCount(queueingCount)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    @Builder
+    public User(String userName, String userTel, Byte queueingCount, String refreshToken) {
+        this.userName = userName;
+        this.userTel = userTel;
+        this.queueingCount = queueingCount;
+        this.refreshToken = refreshToken;
+    }
 }

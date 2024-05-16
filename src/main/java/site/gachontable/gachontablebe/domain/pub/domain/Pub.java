@@ -8,10 +8,8 @@ import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import java.util.List;
 
 @Entity(name = "pub")
-@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Pub {
 
     @Id
@@ -49,4 +47,52 @@ public class Pub {
     @OneToMany
     @Column(nullable = false)
     private List<Waiting> waitingQueue;
+
+    public static Pub create(String pubName,
+                             String oneLiner,
+                             String pubTel,
+                             Boolean studentCard,
+                             String representativeMenu,
+                             String pubLoc,
+                             String pubThumbnail,
+                             List<Menu> menus,
+                             Boolean openStatus,
+                             List<Waiting> waitingQueue) {
+        return Pub.builder()
+                .pubName(pubName)
+                .oneLiner(oneLiner)
+                .pubTel(pubTel)
+                .studentCard(studentCard)
+                .representativeMenu(representativeMenu)
+                .pubLoc(pubLoc)
+                .pubThumbnail(pubThumbnail)
+                .menus(menus)
+                .openStatus(openStatus)
+                .waitingQueue(waitingQueue)
+                .build();
+    }
+
+    @Builder
+    public Pub(String pubName,
+               String oneLiner,
+               String pubTel,
+               Boolean studentCard,
+               String representativeMenu,
+               String pubLoc,
+               String pubThumbnail,
+               List<Menu> menus,
+               Boolean openStatus,
+               List<Waiting> waitingQueue) {
+        this.pubName = pubName;
+        this.oneLiner = oneLiner;
+        this.pubTel = pubTel;
+        this.studentCard = studentCard;
+        this.representativeMenu = representativeMenu;
+        this.pubLoc = pubLoc;
+        this.pubThumbnail = pubThumbnail;
+        this.menus = menus;
+        this.openStatus = openStatus;
+        this.waitingQueue = waitingQueue;
+    }
+
 }
