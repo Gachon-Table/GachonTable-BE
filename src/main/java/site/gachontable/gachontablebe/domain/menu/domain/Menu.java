@@ -2,6 +2,7 @@ package site.gachontable.gachontablebe.domain.menu.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 
 @Entity(name = "menu")
 @Builder
@@ -13,6 +14,10 @@ public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer menuID;
+
+    @Id
+    @ManyToOne
+    private Pub pub;
 
     @Column(nullable = false)
     private String menuName;

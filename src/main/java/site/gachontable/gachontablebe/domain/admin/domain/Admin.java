@@ -2,6 +2,7 @@ package site.gachontable.gachontablebe.domain.admin.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 
 @Entity(name = "admin")
 @Getter
@@ -22,4 +23,8 @@ public class Admin {
 
     @Column(columnDefinition = "char(13)", nullable = false)
     private String adminTel;
+
+    @ManyToOne
+    @JoinColumn(name = "pub_id", nullable = false)
+    private Pub pub;
 }
