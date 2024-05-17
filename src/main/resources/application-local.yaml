@@ -15,4 +15,4 @@ spring:
         format_sql: true
 
 jwt:
-  secret_key: ENC(ECPs+yu3cG9TO2i2x1qBmYJjRfLQ7pO5)
+  secret_key: ENC(UHhD0tuwYrSZ7bBCVPUpywGkZqUTO24J)
