@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class JwtProvider {
@@ -34,21 +35,21 @@ public class JwtProvider {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
     }
 
-    public String generateAccessToken(User user, Role role) {
-        return generateToken(user, ACCESS_TOKEN_DURATION, role);
+    public String generateAccessToken(UUID uuid, String tokenSubject, Role role) {
+        return generateToken(uuid, tokenSubject, ACCESS_TOKEN_DURATION, role);
     }
 
-    public String generateRefreshToken(User user, Role role) {
-        return generateToken(user, REFRESH_TOKEN_DURATION, role);
+    public String generateRefreshToken(UUID uuid, String tokenSubject, Role role) {
+        return generateToken(uuid, tokenSubject, REFRESH_TOKEN_DURATION, role);
     }
 
-    public String generateToken(User user, Duration duration, Role role) {
+    public String generateToken(UUID uuid, String tokenSubject, Duration duration, Role role) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + duration.toMillis());
 
         return Jwts.builder()
-                .subject(user.getUserName())
-                .claim("uid", user.getUserId().toString())
+                .subject(tokenSubject)
+                .claim("uid", uuid)
                 .claim("role", role.getRole())
                 .expiration(expiry)
                 .signWith(secretKey)
