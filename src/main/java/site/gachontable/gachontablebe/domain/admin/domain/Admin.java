@@ -26,7 +26,7 @@ public class Admin {
     private String adminTel;
 
     @ManyToOne
-    @JoinColumn(name = "pub_id", nullable = false)
+    @JoinColumn(name = "pub_id", nullable = true)
     private Pub pub;
 
     public static Admin create(String adminName, String adminPassword, String adminTel, Pub pub) {
