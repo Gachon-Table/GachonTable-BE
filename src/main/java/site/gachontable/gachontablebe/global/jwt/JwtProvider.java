@@ -12,7 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import site.gachontable.gachontablebe.domain.shared.Role;
-import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
 import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
 
