@@ -48,4 +48,8 @@ public class Admin {
         this.adminTel = adminTel;
         this.pub = pub;
     }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }
