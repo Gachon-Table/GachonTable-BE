@@ -25,6 +25,9 @@ public class Admin {
     @Column(columnDefinition = "char(13)", nullable = false)
     private String adminTel;
 
+    @Column
+    private String refreshToken;
+
     @ManyToOne
     @JoinColumn(name = "pub_id", nullable = true)
     private Pub pub;
