@@ -7,9 +7,12 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
         format_sql: true
+
+jwt:
+  secret_key: ENC(CJzB4FyuHQrRdJ9V+3J0GhZbhxevmxah4rJItf5dM0GJj6Rmq2AsaVHFfSuSBPNmOsckPdYUjSxhheiOR3kJGm1i2+zpO4JdiN8GAv6i1zc=)
