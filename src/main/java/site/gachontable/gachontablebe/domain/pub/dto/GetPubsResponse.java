@@ -2,6 +2,7 @@ package site.gachontable.gachontablebe.domain.pub.dto;
 
 import lombok.Builder;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
+import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 import static site.gachontable.gachontablebe.domain.waiting.type.Status.WAITING;
 
@@ -25,7 +26,7 @@ public record GetPubsResponse(
                 .oneLiner(pub.getOneLiner())
                 .studentCard(pub.getStudentCard())
                 .menu(pub.getRepresentativeMenu())
-                .queueing(pub.getWaitingQueue().stream().filter((waiting)-> waiting.getWaitingStatus().equals(WAITING)).toList().size())
+                .queueing(pub.getWaitingQueue().stream().filter(Waiting::isWaiting).toList().size())
                 .isOpen(pub.getOpenStatus())
                 .build();
     }

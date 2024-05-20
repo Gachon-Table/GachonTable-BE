@@ -54,4 +54,8 @@ public class Waiting extends BaseTimeEntity {
         this.user = user;
         this.pub = pub;
     }
+
+    public static boolean isWaiting(Waiting waiting) {
+        return waiting.getWaitingStatus().equals(Status.WAITING);
+    }
 }
