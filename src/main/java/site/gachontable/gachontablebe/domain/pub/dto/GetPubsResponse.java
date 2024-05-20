@@ -3,6 +3,8 @@ package site.gachontable.gachontablebe.domain.pub.dto;
 import lombok.Builder;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 
+import static site.gachontable.gachontablebe.domain.waiting.type.Status.WAITING;
+
 @Builder
 public record GetPubsResponse(
         Integer pubId,
@@ -23,7 +25,7 @@ public record GetPubsResponse(
                 .oneLiner(pub.getOneLiner())
                 .studentCard(pub.getStudentCard())
                 .menu(pub.getRepresentativeMenu())
-                .queueing(pub.getWaitingQueue().size())
+                .queueing(pub.getWaitingQueue().stream().filter((waiting)-> waiting.getWaitingStatus().equals(WAITING)).toList().size())
                 .isOpen(pub.getOpenStatus())
                 .build();
     }
