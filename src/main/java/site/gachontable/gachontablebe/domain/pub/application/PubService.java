@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
-import site.gachontable.gachontablebe.domain.pub.dto.GetPubsResponseDto;
+import site.gachontable.gachontablebe.domain.pub.dto.GetPubsResponse;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ import java.util.List;
 public class PubService {
     private final PubRepository pubRepository;
 
-    public List<GetPubsResponseDto> getPubs() {
+    public List<GetPubsResponse> getPubs() {
         List<Pub> pubList = pubRepository.findAll();
 
-        return pubList.stream().map(GetPubsResponseDto::of).toList();
+        return pubList.stream().map(GetPubsResponse::of).toList();
 }
 }

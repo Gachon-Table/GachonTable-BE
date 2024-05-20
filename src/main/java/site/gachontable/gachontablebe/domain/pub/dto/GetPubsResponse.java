@@ -4,7 +4,7 @@ import lombok.Builder;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 
 @Builder
-public record GetPubsResponseDto(
+public record GetPubsResponse(
         Integer pubId,
         String url,
         String pubName,
@@ -14,8 +14,8 @@ public record GetPubsResponseDto(
         Integer queueing
 ) {
     @Builder
-    public static GetPubsResponseDto of(Pub pub) {
-        return GetPubsResponseDto.builder()
+    public static GetPubsResponse of(Pub pub) {
+        return GetPubsResponse.builder()
                 .pubId(pub.getPubId())
                 .url(pub.getPubThumbnail())
                 .pubName(pub.getPubName())
