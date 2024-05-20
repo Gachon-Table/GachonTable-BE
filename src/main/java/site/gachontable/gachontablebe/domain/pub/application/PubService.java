@@ -15,18 +15,18 @@ public class PubService {
     private final PubRepository pubRepository;
 
     public List<GetPubsResponseDto> getPubs() {
-    List<Pub> pubList = pubRepository.findAll();
+        List<Pub> pubList = pubRepository.findAll();
 
-    return pubList.stream().map(pub ->
-            GetPubsResponseDto.builder()
-                    .pubId(pub.getPubId())
-                    .url(pub.getPubThumbnail())
-                    .pubName(pub.getPubName())
-                    .oneLiner(pub.getOneLiner())
-                    .studentCard(pub.getStudentCard())
-                    .menu(pub.getRepresentativeMenu())
-                    .queueing(pub.getWaitingQueue().size())
-                    .build()
-    ).toList();
+        return pubList.stream().map(pub ->
+                GetPubsResponseDto.builder()
+                        .pubId(pub.getPubId())
+                        .url(pub.getPubThumbnail())
+                        .pubName(pub.getPubName())
+                        .oneLiner(pub.getOneLiner())
+                        .studentCard(pub.getStudentCard())
+                        .menu(pub.getRepresentativeMenu())
+                        .queueing(pub.getWaitingQueue().size())
+                        .build()
+        ).toList();
 }
 }

@@ -28,7 +28,7 @@ public class Waiting extends BaseTimeEntity {
     private Status waitingStatus;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
     private User user;
 
     @ManyToOne
