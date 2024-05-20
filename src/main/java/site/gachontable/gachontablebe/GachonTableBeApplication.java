@@ -10,6 +10,7 @@ public class GachonTableBeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GachonTableBeApplication.class, args);
+		System.out.println('ㅁ');
 	}
 
 }
