@@ -30,6 +30,6 @@ public class PubController {
     })
     @GetMapping("/pubs")
     public ResponseEntity<List<GetPubsResponse>> getPubs() {
-        return ResponseEntity.ok(pubService.getPubs());
+        return ResponseEntity.ok(pubService.getAllPubs());
     }
 }
