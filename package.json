@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "postinstall": "husky install"
+  },
   "devDependencies": {
     "husky": "^9.0.11",
     "jira-prepare-commit-msg": "^1.7.2",
