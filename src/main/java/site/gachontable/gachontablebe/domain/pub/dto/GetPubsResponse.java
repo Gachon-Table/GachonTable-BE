@@ -11,7 +11,8 @@ public record GetPubsResponse(
         String oneLiner,
         Boolean studentCard,
         String menu,
-        Integer queueing
+        Integer queueing,
+        Boolean isOpen
 ) {
     @Builder
     public static GetPubsResponse of(Pub pub) {
@@ -23,6 +24,7 @@ public record GetPubsResponse(
                 .studentCard(pub.getStudentCard())
                 .menu(pub.getRepresentativeMenu())
                 .queueing(pub.getWaitingQueue().size())
+                .isOpen(pub.getOpenStatus())
                 .build();
     }
 
