@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "postinstall": "husky install"
+    "postinstall": "npm i husky --save -dev"
   },
   "devDependencies": {
     "husky": "^9.0.11",
