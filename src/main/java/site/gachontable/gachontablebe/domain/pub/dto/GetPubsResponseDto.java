@@ -13,4 +13,17 @@ public record GetPubsResponseDto(
         String menu,
         Integer queueing
 ) {
+    @Builder
+    public static GetPubsResponseDto of(Pub pub) {
+        return GetPubsResponseDto.builder()
+                .pubId(pub.getPubId())
+                .url(pub.getPubThumbnail())
+                .pubName(pub.getPubName())
+                .oneLiner(pub.getOneLiner())
+                .studentCard(pub.getStudentCard())
+                .menu(pub.getRepresentativeMenu())
+                .queueing(pub.getWaitingQueue().size())
+                .build();
+    }
+
 }
