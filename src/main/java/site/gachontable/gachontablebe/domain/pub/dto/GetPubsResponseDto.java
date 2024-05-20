@@ -13,7 +13,4 @@ public record GetPubsResponseDto(
         String menu,
         Integer queueing
 ) {
-    public GetPubsResponseDto(Pub pub) {
-        this(pub.getPubId(), pub.getPubThumbnail(), pub.getPubName(), pub.getOneLiner(), pub.getStudentCard(), pub.getRepresentativeMenu(), pub.getMenus().size());
-    }
 }
