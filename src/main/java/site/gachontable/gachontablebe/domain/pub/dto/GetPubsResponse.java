@@ -17,18 +17,22 @@ public record GetPubsResponse(
         Integer queueing,
         Boolean isOpen
 ) {
-    @Builder
+
     public static GetPubsResponse of(Pub pub) {
-        return GetPubsResponse.builder()
-                .pubId(pub.getPubId())
-                .url(pub.getPubThumbnail())
-                .pubName(pub.getPubName())
-                .oneLiner(pub.getOneLiner())
-                .studentCard(pub.getStudentCard())
-                .menu(pub.getRepresentativeMenu())
-                .queueing(pub.getWaitingQueue().stream().filter(Waiting::isWaiting).toList().size())
-                .isOpen(pub.getOpenStatus())
-                .build();
+        return new GetPubsResponse(
+                pub.getPubId(),
+                pub.getPubThumbnail(),
+                pub.getPubName(),
+                pub.getOneLiner(),
+                pub.getStudentCard(),
+                pub.getRepresentativeMenu(),
+                pub.getWaitingQueue().stream()
+                        .filter(Waiting::isWaiting)
+                        .toList()
+                        .size(),
+                pub.getOpenStatus()
+        );
+
     }
 
 }
