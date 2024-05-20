@@ -13,7 +13,7 @@ import java.util.List;
 public class PubService {
     private final PubRepository pubRepository;
 
-    public List<GetPubsResponse> getAllPubs() {
+    public List<GetPubsResponse> findAllPubs() {
         List<Pub> pubList = pubRepository.findAll();
 
         return pubList.stream().map(GetPubsResponse::of).toList();
