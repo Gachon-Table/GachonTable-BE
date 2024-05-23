@@ -50,6 +50,7 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                                 .requestMatchers("/admin/login").permitAll()
+                                .requestMatchers("/admin/force-cancel").permitAll()
                                 .requestMatchers("/pubs").permitAll()
                                 .anyRequest().authenticated()
                 );
