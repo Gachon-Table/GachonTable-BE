@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import site.gachontable.gachontablebe.domain.admin.dto.AdminLoginRequest;
+import site.gachontable.gachontablebe.domain.admin.dto.ForceCancelRequest;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
+import site.gachontable.gachontablebe.domain.admin.usecase.ForceCancel;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 
@@ -21,6 +23,7 @@ import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminLogin adminLogin;
+    private final ForceCancel forceCancel;
 
     @Operation(summary = "관리자 로그인", description = "관리자 계정으로 로그인합니다.")
     @ApiResponses({
@@ -34,5 +37,11 @@ public class AdminController {
     public ResponseEntity<JwtResponse> login(@RequestBody AdminLoginRequest request) {
         JwtResponse tokens = adminLogin.execute(request.id(), request.password());
         return ResponseEntity.ok(tokens);
+    }
+
+    @PostMapping("/force-cancel")
+    public ResponseEntity<String> forceCancel(@RequestBody ForceCancelRequest request) {
+        forceCancel.cancel(request.userId());
+        return ResponseEntity.ok("예약 강제 취소에 성공하였습니다.");
     }
 }
