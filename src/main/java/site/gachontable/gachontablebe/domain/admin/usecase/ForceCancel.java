@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import site.gachontable.gachontablebe.domain.user.Exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
+import site.gachontable.gachontablebe.domain.waiting.Exception.WaitingNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.global.error.ErrorCode;
-import site.gachontable.gachontablebe.global.error.exception.ServiceException;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,22 +23,10 @@ public class ForceCancel {
 
     @Transactional
     public void cancel(UUID Id) {
-        Optional<User> user = userRepository.findById(Id);
-        Waiting waiting = waitingRepository.findByUser(user.orElse(null));
+        User user = userRepository.findById(Id).orElseThrow(UserNotFoundException::new);
+        Waiting waiting = waitingRepository.findByUser(user).orElseThrow(WaitingNotFoundException::new);
 
-        if (user.isEmpty()) {
-            throw new ServiceException(ErrorCode.USER_NOT_FOUND);
-        }
-
-        if (waiting == null) {
-            throw new ServiceException(ErrorCode.WAITING_NOT_FOUND);
-        }
-
-        if (user.get().getQueueingCount() == 0) {
-            throw new ServiceException(ErrorCode.INVALID_QUEUEING_COUNT);
-        }
-
-        decreaseQueueingCount(user.orElse(null));
+        decreaseQueueingCount(user);
         setWaitingCancel(waiting);
     }
 
