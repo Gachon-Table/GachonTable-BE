@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.pub.application;
+package site.gachontable.gachontablebe.domain.pub.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
