@@ -55,9 +55,8 @@ public class Waiting extends BaseTimeEntity {
         this.pub = pub;
     }
 
-    public Waiting cancel() {
+    public void cancel() {
         this.waitingStatus = Status.CANCELED;
-        return this;
     }
 
     public static boolean isWaiting(Waiting waiting) {

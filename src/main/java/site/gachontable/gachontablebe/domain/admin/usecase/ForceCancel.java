@@ -38,8 +38,8 @@ public class ForceCancel {
         userRepository.save(givenUser);
     }
 
-    private void setWaitingCancel(Waiting waiting) {
-        Waiting updatedWaiting = waiting.cancel();
-        waitingRepository.save(updatedWaiting);
+    private void setWaitingCancel(Waiting givenWaiting) {
+        givenWaiting.cancel();
+        waitingRepository.save(givenWaiting);
     }
 }

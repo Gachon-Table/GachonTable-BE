@@ -36,9 +36,8 @@ public class User {
                 .build();
     }
 
-    public User decreaseQueueingCount() {
+    public void decreaseQueueingCount() {
         this.queueingCount = (byte) (this.queueingCount - 1);
-        return this;
     }
 
     @Builder
