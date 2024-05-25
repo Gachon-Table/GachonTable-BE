@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import site.gachontable.gachontablebe.domain.admin.dto.AdminLoginRequest;
 import site.gachontable.gachontablebe.domain.admin.dto.ForceCancelRequest;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
-import site.gachontable.gachontablebe.domain.admin.usecase.ForceCancel;
+import site.gachontable.gachontablebe.domain.admin.usecase.Entered;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 
@@ -23,7 +23,7 @@ import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminLogin adminLogin;
-    private final ForceCancel forceCancel;
+    private final Entered entered;
 
     @Operation(summary = "관리자 로그인", description = "관리자 계정으로 로그인합니다.")
     @ApiResponses({
@@ -39,7 +39,7 @@ public class AdminController {
         return ResponseEntity.ok(tokens);
     }
 
-    @Operation(summary = "대기열 강제 취소", description = "대기열을 강제로 취소합니다.")
+    @Operation(summary = "입장 완료", description = "사용자를 입장 완료 시킵니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
@@ -47,8 +47,8 @@ public class AdminController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @PostMapping("/force-cancel")
-    public ResponseEntity<String> forceCancel(@RequestBody ForceCancelRequest request) {
-        return ResponseEntity.ok(forceCancel.cancel(request.userId()));
+    @PostMapping("/entered")
+    public ResponseEntity<String> entered(@RequestBody ForceCancelRequest request) {
+        return ResponseEntity.ok(entered.entered(request.userId()));
     }
 }

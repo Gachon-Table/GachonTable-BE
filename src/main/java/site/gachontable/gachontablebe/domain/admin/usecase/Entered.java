@@ -15,19 +15,19 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ForceCancel {
+public class Entered {
 
     private final UserRepository userRepository;
     private final WaitingRepository waitingRepository;
 
-    public String cancel(UUID Id) {
+    public String entered(UUID Id) {
         User user = userRepository.findById(Id).orElseThrow(UserNotFoundException::new);
         Waiting waiting = waitingRepository.findByUser(user).orElseThrow(WaitingNotFoundException::new);
 
         decreaseQueueingCount(user);
-        setWaitingCancel(waiting);
+        setWaitingEntered(waiting);
 
-        return SuccessCode.FORCE_CANCEL_SUCCESS.getMessage();
+        return SuccessCode.ENTERED_SUCCESS.getMessage();
     }
 
     private void decreaseQueueingCount(User givenUser) {
@@ -39,8 +39,8 @@ public class ForceCancel {
         userRepository.save(givenUser);
     }
 
-    private void setWaitingCancel(Waiting givenWaiting) {
-        givenWaiting.cancel();
+    private void setWaitingEntered(Waiting givenWaiting) {
+        givenWaiting.entered();
         waitingRepository.save(givenWaiting);
     }
 }
