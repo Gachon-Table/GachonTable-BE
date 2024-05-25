@@ -41,7 +41,6 @@ public class AdminController {
 
     @PostMapping("/force-cancel")
     public ResponseEntity<String> forceCancel(@RequestBody ForceCancelRequest request) {
-        forceCancel.cancel(request.userId());
-        return ResponseEntity.ok("예약 강제 취소에 성공하였습니다.");
+        return ResponseEntity.ok(forceCancel.cancel(request.userId()));
     }
 }

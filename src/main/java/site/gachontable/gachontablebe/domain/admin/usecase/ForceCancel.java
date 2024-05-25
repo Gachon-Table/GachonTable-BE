@@ -10,6 +10,7 @@ import site.gachontable.gachontablebe.domain.user.domain.repository.UserReposito
 import site.gachontable.gachontablebe.domain.waiting.Exception.WaitingNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
+import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.UUID;
 
@@ -22,17 +23,19 @@ public class ForceCancel {
     private final WaitingRepository waitingRepository;
 
     @Transactional
-    public void cancel(UUID Id) {
+    public String cancel(UUID Id) {
         User user = userRepository.findById(Id).orElseThrow(UserNotFoundException::new);
         Waiting waiting = waitingRepository.findByUser(user).orElseThrow(WaitingNotFoundException::new);
 
         decreaseQueueingCount(user);
         setWaitingCancel(waiting);
+
+        return SuccessCode.FORCE_CANCEL_SUCCESS.getMessage();
     }
 
-    private void decreaseQueueingCount(User user) {
-        User updatedUser = user.decreaseQueueingCount();
-        userRepository.save(updatedUser);
+    private void decreaseQueueingCount(User givenUser) {
+        givenUser.decreaseQueueingCount();
+        userRepository.save(givenUser);
     }
 
     private void setWaitingCancel(Waiting waiting) {
