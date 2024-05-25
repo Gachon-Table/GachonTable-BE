@@ -39,6 +39,14 @@ public class AdminController {
         return ResponseEntity.ok(tokens);
     }
 
+    @Operation(summary = "대기열 강제 취소", description = "대기열을 강제로 취소합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @PostMapping("/force-cancel")
     public ResponseEntity<String> forceCancel(@RequestBody ForceCancelRequest request) {
         return ResponseEntity.ok(forceCancel.cancel(request.userId()));
