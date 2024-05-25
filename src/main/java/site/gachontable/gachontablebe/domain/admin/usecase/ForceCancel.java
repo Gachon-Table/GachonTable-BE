@@ -2,6 +2,7 @@ package site.gachontable.gachontablebe.domain.admin.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import site.gachontable.gachontablebe.domain.user.Exception.EmptyQueingCountException;
 import site.gachontable.gachontablebe.domain.user.Exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
@@ -30,6 +31,10 @@ public class ForceCancel {
     }
 
     private void decreaseQueueingCount(User givenUser) {
+        if (givenUser.getQueueingCount() == 0) {
+            throw new EmptyQueingCountException();
+        }
+
         givenUser.decreaseQueueingCount();
         userRepository.save(givenUser);
     }
