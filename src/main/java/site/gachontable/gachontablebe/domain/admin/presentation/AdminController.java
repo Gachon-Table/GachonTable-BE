@@ -7,12 +7,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.admin.dto.AdminLoginRequest;
-import site.gachontable.gachontablebe.domain.admin.dto.EnteredRequest;
+import site.gachontable.gachontablebe.domain.admin.dto.EnterRequest;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
-import site.gachontable.gachontablebe.domain.admin.usecase.Entered;
+import site.gachontable.gachontablebe.domain.admin.usecase.Enter;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 
@@ -21,7 +20,7 @@ import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminLogin adminLogin;
-    private final Entered entered;
+    private final Enter enter;
 
     @Operation(summary = "관리자 로그인", description = "관리자 계정으로 로그인합니다.")
     @ApiResponses({
@@ -45,8 +44,8 @@ public class AdminController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @PostMapping("/entered")
-    public ResponseEntity<String> entered(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnteredRequest enteredRequest) {
-        return ResponseEntity.ok(entered.entered(authorizationHeader, enteredRequest));
+    @PostMapping("/enter")
+    public ResponseEntity<String> enter(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnterRequest enterRequest) {
+        return ResponseEntity.ok(enter.enter(authorizationHeader, enterRequest));
     }
 }
