@@ -46,7 +46,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/entered")
-    public ResponseEntity<String> entered(Authentication authentication, @RequestBody EnteredRequest enteredRequest) {
-        return ResponseEntity.ok(entered.entered(authentication, enteredRequest));
+    public ResponseEntity<String> entered(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnteredRequest enteredRequest) {
+        return ResponseEntity.ok(entered.entered(authorizationHeader, enteredRequest));
     }
 }

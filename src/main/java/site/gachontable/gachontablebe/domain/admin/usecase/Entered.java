@@ -17,6 +17,7 @@ import site.gachontable.gachontablebe.domain.user.domain.repository.UserReposito
 import site.gachontable.gachontablebe.domain.waiting.Exception.WaitingNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
+import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 @Service
@@ -27,8 +28,11 @@ public class Entered {
     private final WaitingRepository waitingRepository;
     private final PubRepository pubRepository;
     private final AdminRepository adminRepository;
+    private final JwtProvider jwtProvider;
 
-    public String entered(Authentication authentication, EnteredRequest enteredRequest) {
+    public String entered(String authorizationHeader, EnteredRequest enteredRequest) {
+        String token = authorizationHeader.substring(7);
+        Authentication authentication = jwtProvider.getAuthentication(token);
         Admin admin = adminRepository.findByAdminName(authentication.getName()).orElseThrow(AdminNotFoundException::new);
         Pub pub = pubRepository.findByPubId(admin.getPub().getPubId()).orElseThrow(PubNotFoundException::new);
         User user = userRepository.findById(enteredRequest.userId()).orElseThrow(UserNotFoundException::new);
