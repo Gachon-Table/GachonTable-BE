@@ -7,12 +7,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.admin.dto.AdminLoginRequest;
-import site.gachontable.gachontablebe.domain.admin.dto.ForceCancelRequest;
+import site.gachontable.gachontablebe.domain.admin.dto.EnteredRequest;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
 import site.gachontable.gachontablebe.domain.admin.usecase.Entered;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
@@ -48,7 +46,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/entered")
-    public ResponseEntity<String> entered(@RequestBody ForceCancelRequest request) {
-        return ResponseEntity.ok(entered.entered(request.userId()));
+    public ResponseEntity<String> entered(Authentication authentication, @RequestBody EnteredRequest enteredRequest) {
+        return ResponseEntity.ok(entered.entered(authentication, enteredRequest));
     }
 }
