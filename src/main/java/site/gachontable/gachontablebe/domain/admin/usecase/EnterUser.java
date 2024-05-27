@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.admin.domain.Admin;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
-import site.gachontable.gachontablebe.domain.admin.dto.EnterRequest;
+import site.gachontable.gachontablebe.domain.admin.dto.EnterUserRequest;
 import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
@@ -22,7 +22,7 @@ import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 @Service
 @RequiredArgsConstructor
-public class Enter {
+public class EnterUser {
 
     private final UserRepository userRepository;
     private final WaitingRepository waitingRepository;
@@ -30,12 +30,12 @@ public class Enter {
     private final AdminRepository adminRepository;
     private final JwtProvider jwtProvider;
 
-    public String enter(String authorizationHeader, EnterRequest enterRequest) {
+    public String enterUser(String authorizationHeader, EnterUserRequest enterUserRequest) {
         String token = authorizationHeader.substring(7);
         Authentication authentication = jwtProvider.getAuthentication(token);
         Admin admin = adminRepository.findByAdminName(authentication.getName()).orElseThrow(AdminNotFoundException::new);
         Pub pub = pubRepository.findByPubId(admin.getPub().getPubId()).orElseThrow(PubNotFoundException::new);
-        User user = userRepository.findById(enterRequest.userId()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(enterUserRequest.userId()).orElseThrow(UserNotFoundException::new);
         Waiting waiting = waitingRepository.findByUserAndPub(user, pub).orElseThrow(WaitingNotFoundException::new);
 
         decreaseQueueingCount(user);

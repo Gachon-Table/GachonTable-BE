@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.admin.dto.AdminLoginRequest;
-import site.gachontable.gachontablebe.domain.admin.dto.EnterRequest;
+import site.gachontable.gachontablebe.domain.admin.dto.EnterUserRequest;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
-import site.gachontable.gachontablebe.domain.admin.usecase.Enter;
+import site.gachontable.gachontablebe.domain.admin.usecase.EnterUser;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 
@@ -20,7 +20,7 @@ import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminLogin adminLogin;
-    private final Enter enter;
+    private final EnterUser enterUser;
 
     @Operation(summary = "관리자 로그인", description = "관리자 계정으로 로그인합니다.")
     @ApiResponses({
@@ -45,7 +45,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/enter")
-    public ResponseEntity<String> enter(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnterRequest enterRequest) {
-        return ResponseEntity.ok(enter.enter(authorizationHeader, enterRequest));
+    public ResponseEntity<String> enterUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnterUserRequest enterUserRequest) {
+        return ResponseEntity.ok(enterUser.enterUser(authorizationHeader, enterUserRequest));
     }
 }
