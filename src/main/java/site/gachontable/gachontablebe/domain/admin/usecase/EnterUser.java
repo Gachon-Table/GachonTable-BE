@@ -30,7 +30,7 @@ public class EnterUser {
     private final AdminRepository adminRepository;
     private final JwtProvider jwtProvider;
 
-    public String enterUser(String authorizationHeader, EnterUserRequest enterUserRequest) {
+    public String execute(String authorizationHeader, EnterUserRequest enterUserRequest) {
         String token = authorizationHeader.substring(7);
         Authentication authentication = jwtProvider.getAuthentication(token);
         Admin admin = adminRepository.findByAdminName(authentication.getName()).orElseThrow(AdminNotFoundException::new);

@@ -46,6 +46,6 @@ public class AdminController {
     })
     @PostMapping("/enter")
     public ResponseEntity<String> enterUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnterUserRequest enterUserRequest) {
-        return ResponseEntity.ok(enterUser.enterUser(authorizationHeader, enterUserRequest));
+        return ResponseEntity.ok(enterUser.execute(authorizationHeader, enterUserRequest));
     }
 }
