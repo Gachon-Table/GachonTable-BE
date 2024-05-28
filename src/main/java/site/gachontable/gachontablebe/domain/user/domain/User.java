@@ -36,6 +36,10 @@ public class User {
                 .build();
     }
 
+    public void decreaseQueueingCount() {
+        this.queueingCount = (byte) (this.queueingCount - 1);
+    }
+
     @Builder
     public User(String userName, String userTel, Byte queueingCount, String refreshToken) {
         this.userName = userName;
