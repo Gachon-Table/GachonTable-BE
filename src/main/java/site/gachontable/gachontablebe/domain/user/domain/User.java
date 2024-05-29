@@ -27,7 +27,6 @@ public class User {
     @Column(nullable = false)
     private Byte queueingCount;
 
-    @Column(nullable = false)
     private String refreshToken;
 
     public void decreaseQueueingCount() {
