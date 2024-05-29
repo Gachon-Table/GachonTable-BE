@@ -21,11 +21,8 @@ public class AdminRegisterImpl implements AdminRegister {
     @Override
     public TestRegisterResponse execute(String username, String password, String tel) {
         Admin admin = createAdmin(username, password, tel);
+        generateRefreshToken(admin);
 
-        String refreshToken = generateRefreshToken(admin);
-        admin.updateRefreshToken(refreshToken);
-
-        adminRepository.save(admin);
         return new TestRegisterResponse(true, "어드민 가입 성공");
     }
 
@@ -35,13 +32,12 @@ public class AdminRegisterImpl implements AdminRegister {
         return admin;
     }
 
-    public String generateRefreshToken(Admin admin) {
+    public void generateRefreshToken(Admin admin) {
         String refreshToken = admin.getRefreshToken();
         if (refreshToken == null || !isValidToken(refreshToken)) {
             refreshToken = jwtProvider.generateRefreshToken(admin.getAdminId(), admin.getAdminName(), Role.ROLE_ADMIN);
             updateRefreshToken(admin, refreshToken);
         }
-        return refreshToken;
     }
 
     public Boolean isValidToken(String token) {
