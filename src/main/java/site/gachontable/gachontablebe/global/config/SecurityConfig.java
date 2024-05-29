@@ -52,7 +52,7 @@ public class SecurityConfig {
                                 .requestMatchers("/admin/login").permitAll()
                                 .requestMatchers("/admin/enter").permitAll()
                                 .requestMatchers("/pubs").permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 );
 
         http
