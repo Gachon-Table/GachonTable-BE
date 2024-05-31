@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.user.controller;
+package site.gachontable.gachontablebe.domain.user.presentation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import site.gachontable.gachontablebe.domain.shared.dto.request.TestRegisterRequest;
 import site.gachontable.gachontablebe.domain.shared.dto.response.TestRegisterResponse;
-import site.gachontable.gachontablebe.domain.user.dto.request.LoginRequest;
+import site.gachontable.gachontablebe.domain.user.presentation.dto.request.LoginRequest;
 import site.gachontable.gachontablebe.domain.user.usecase.UserLogin;
 import site.gachontable.gachontablebe.domain.user.usecase.UserRegister;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;

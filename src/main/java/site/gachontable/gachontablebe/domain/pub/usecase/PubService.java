@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
-import site.gachontable.gachontablebe.domain.pub.dto.GetPubsResponse;
+import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubsResponse;
 
 import java.util.List;
 
