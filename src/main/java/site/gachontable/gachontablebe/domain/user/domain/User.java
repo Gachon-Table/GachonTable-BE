@@ -18,10 +18,9 @@ public class User {
     @Column(nullable = false)
     private String userName;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(columnDefinition = "char(13)", nullable = false)
+    @Column(columnDefinition = "char(13)")
     private String userTel;
 
     @Column(nullable = false)
@@ -37,10 +36,18 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
-    public static User create(String userName, String password, String userTel, Byte queueingCount) {
+    public static User createForTest(String userName, String password, String userTel, Byte queueingCount) {
         return User.builder()
                 .userName(userName)
                 .password(password)
+                .userTel(userTel)
+                .queueingCount(queueingCount)
+                .build();
+    }
+
+    public static User create(String userName, String userTel, Byte queueingCount) {
+        return User.builder()
+                .userName(userName)
                 .userTel(userTel)
                 .queueingCount(queueingCount)
                 .build();
