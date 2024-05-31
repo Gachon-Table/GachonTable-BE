@@ -8,6 +8,7 @@ import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.domain.shared.exception.PasswordNotMatchException;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
+import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
@@ -23,7 +24,7 @@ public class UserLoginImpl implements UserLogin{
 
     @Override
     public JwtResponse execute(String userName, String password) {
-        User user = userRepository.findByUserName(userName).orElseThrow(AdminNotFoundException::new);
+        User user = userRepository.findByUserName(userName).orElseThrow(UserNotFoundException::new);
         validatePassword(password, user);
 
         String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUserName(), Role.ROLE_USER);
