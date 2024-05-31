@@ -4,9 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import lombok.Getter;
-
-@Getter
 public record KakaoProfile(String email, String nickname) {
 
     public static KakaoProfile from(String jsonResponseBody) {
