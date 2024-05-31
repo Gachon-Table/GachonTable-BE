@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.shared.Role;
-import site.gachontable.gachontablebe.domain.shared.dto.response.TestRegisterResponse;
+import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
@@ -20,15 +20,15 @@ public class UserRegisterImpl implements UserRegister {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public TestRegisterResponse execute(String username, String password, String tel) {
+    public RegisterResponse execute(String username, String password, String tel) {
         User user = createUser(username, password, tel);
         generateRefreshToken(user);
 
-        return new TestRegisterResponse(true, "유저 가입 성공");
+        return new RegisterResponse(true, "유저 가입 성공");
     }
 
     private User createUser(String username, String password, String tel) {
-        User user = User.create(username, passwordEncoder.encode(password), tel, (byte) 0);
+        User user = User.createForTest(username, passwordEncoder.encode(password), tel, (byte) 0);
         userRepository.save(user);
         return user;
     }

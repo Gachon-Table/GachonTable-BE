@@ -14,7 +14,7 @@ import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminRegister;
 import site.gachontable.gachontablebe.domain.admin.usecase.EnterUser;
 import site.gachontable.gachontablebe.domain.shared.dto.request.TestRegisterRequest;
-import site.gachontable.gachontablebe.domain.shared.dto.response.TestRegisterResponse;
+import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 
@@ -35,7 +35,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/test-register")
-    public ResponseEntity<TestRegisterResponse> register(@RequestBody TestRegisterRequest request) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody TestRegisterRequest request) {
         return ResponseEntity.ok(adminRegister.execute(request.username(), request.password(), request.tel()));
     }
 

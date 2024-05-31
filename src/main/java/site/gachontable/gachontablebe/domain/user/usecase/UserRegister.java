@@ -1,7 +1,7 @@
 package site.gachontable.gachontablebe.domain.user.usecase;
 
-import site.gachontable.gachontablebe.domain.shared.dto.response.TestRegisterResponse;
+import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 
 public interface UserRegister {
-    TestRegisterResponse execute(String username, String password, String tel);
+    RegisterResponse execute(String username, String password, String tel);
 }

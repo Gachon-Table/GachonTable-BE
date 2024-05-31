@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import site.gachontable.gachontablebe.domain.shared.dto.request.TestRegisterRequest;
-import site.gachontable.gachontablebe.domain.shared.dto.response.TestRegisterResponse;
+import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 import site.gachontable.gachontablebe.domain.user.presentation.dto.request.LoginRequest;
 import site.gachontable.gachontablebe.domain.user.usecase.UserLogin;
 import site.gachontable.gachontablebe.domain.user.usecase.UserRegister;
@@ -35,7 +35,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/test-register")
-    public ResponseEntity<TestRegisterResponse> register(@RequestBody TestRegisterRequest request) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody TestRegisterRequest request) {
         return ResponseEntity.ok(userRegister.execute(request.username(), request.password(), request.tel()));
     }
 

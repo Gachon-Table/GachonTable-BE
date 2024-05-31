@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import site.gachontable.gachontablebe.domain.admin.domain.Admin;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
 import site.gachontable.gachontablebe.domain.shared.Role;
-import site.gachontable.gachontablebe.domain.shared.dto.response.TestRegisterResponse;
+import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
 import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
@@ -19,11 +19,11 @@ public class AdminRegisterImpl implements AdminRegister {
     private final JwtProvider jwtProvider;
 
     @Override
-    public TestRegisterResponse execute(String username, String password, String tel) {
+    public RegisterResponse execute(String username, String password, String tel) {
         Admin admin = createAdmin(username, password, tel);
         generateRefreshToken(admin);
 
-        return new TestRegisterResponse(true, "어드민 가입 성공");
+        return new RegisterResponse(true, "어드민 가입 성공");
     }
 
     private Admin createAdmin(String username, String password, String tel) {
