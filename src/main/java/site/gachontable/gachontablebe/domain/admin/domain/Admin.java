@@ -29,15 +29,15 @@ public class Admin {
     private String refreshToken;
 
     @ManyToOne
-    @JoinColumn(name = "pub_id", nullable = true)
+    @JoinColumn(name = "pub_id")
     private Pub pub;
 
-    public static Admin create(String adminName, String adminPassword, String adminTel, Pub pub) {
+    public static Admin create(String adminName, String adminPassword, String adminTel) {
         return Admin.builder()
                 .adminName(adminName)
                 .adminPassword(adminPassword)
                 .adminTel(adminTel)
-                .pub(pub)
+//                .pub(pub)
                 .build();
     }
 

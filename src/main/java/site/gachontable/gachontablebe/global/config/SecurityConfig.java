@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.global.filter.ExceptionHandleFilter;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 import site.gachontable.gachontablebe.global.jwt.TokenAuthenticationFilter;
@@ -49,10 +50,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         authorize
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                                .requestMatchers("/admin/login").permitAll()
-                                .requestMatchers("/admin/enter").permitAll()
+
+                                .requestMatchers("/admin/test-register", "/admin/login").permitAll()
+                                .requestMatchers("/user/test-register", "/user/test-login").permitAll()
+
+                                .requestMatchers("/admin/enter").hasAuthority(Role.ROLE_ADMIN.getRole())
+
                                 .requestMatchers("/pubs").permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 );
 
         http

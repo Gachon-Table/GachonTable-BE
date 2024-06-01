@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.admin.dto;
+package site.gachontable.gachontablebe.domain.admin.presentation.dto;
 
 import java.util.UUID;
 

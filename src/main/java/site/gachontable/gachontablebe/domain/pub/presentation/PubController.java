@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import site.gachontable.gachontablebe.domain.pub.application.PubService;
-import site.gachontable.gachontablebe.domain.pub.dto.GetPubsResponse;
+import site.gachontable.gachontablebe.domain.pub.usecase.PubService;
+import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubsResponse;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 
 import java.util.List;

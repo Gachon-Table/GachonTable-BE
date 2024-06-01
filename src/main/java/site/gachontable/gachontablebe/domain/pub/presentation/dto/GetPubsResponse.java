@@ -1,10 +1,8 @@
-package site.gachontable.gachontablebe.domain.pub.dto;
+package site.gachontable.gachontablebe.domain.pub.presentation.dto;
 
 import lombok.Builder;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
-
-import static site.gachontable.gachontablebe.domain.waiting.type.Status.WAITING;
 
 @Builder
 public record GetPubsResponse(

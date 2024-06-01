@@ -18,33 +18,46 @@ public class User {
     @Column(nullable = false)
     private String userName;
 
-    @Column(columnDefinition = "char(13)", nullable = false)
+    private String password;
+
+    @Column(columnDefinition = "char(13)")
     private String userTel;
 
     @Column(nullable = false)
     private Byte queueingCount;
 
-    @Column(nullable = false)
     private String refreshToken;
-
-    public static User create(String userName, String userTel, Byte queueingCount, String refreshToken) {
-        return User.builder()
-                .userName(userName)
-                .userTel(userTel)
-                .queueingCount(queueingCount)
-                .refreshToken(refreshToken)
-                .build();
-    }
 
     public void decreaseQueueingCount() {
         this.queueingCount = (byte) (this.queueingCount - 1);
     }
 
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public static User createForTest(String userName, String password, String userTel, Byte queueingCount) {
+        return User.builder()
+                .userName(userName)
+                .password(password)
+                .userTel(userTel)
+                .queueingCount(queueingCount)
+                .build();
+    }
+
+    public static User create(String userName, String userTel, Byte queueingCount) {
+        return User.builder()
+                .userName(userName)
+                .userTel(userTel)
+                .queueingCount(queueingCount)
+                .build();
+    }
+
     @Builder
-    public User(String userName, String userTel, Byte queueingCount, String refreshToken) {
+    public User(String userName, String password, String userTel, Byte queueingCount) {
         this.userName = userName;
+        this.password = password;
         this.userTel = userTel;
         this.queueingCount = queueingCount;
-        this.refreshToken = refreshToken;
     }
 }
