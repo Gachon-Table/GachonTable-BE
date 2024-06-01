@@ -6,14 +6,14 @@ import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 import java.util.List;
 
-public record GetPubsDetailResponse(
+public record GetPubDetailsResponse(
         PubInfo pub,
         List<MenuInfo> menu
 ) {
 
-    public static GetPubsDetailResponse from(Pub pub, List<Menu> menuList) {
+    public static GetPubDetailsResponse from(Pub pub, List<Menu> menuList) {
 
-        return new GetPubsDetailResponse(
+        return new GetPubDetailsResponse(
                 PubInfo.of(pub),
                 menuList.stream()
                         .map(MenuInfo::of)

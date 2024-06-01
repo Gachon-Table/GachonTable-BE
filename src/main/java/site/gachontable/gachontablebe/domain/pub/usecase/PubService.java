@@ -6,7 +6,7 @@ import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubsDetailResponse;
+import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubDetailsResponse;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubsResponse;
 
 import java.util.List;
@@ -21,9 +21,9 @@ public class PubService {
 
         return pubList.stream().map(GetPubsResponse::of).toList();
 }
-    public GetPubsDetailResponse findPubDetail(Integer pubId) {
+    public GetPubDetailsResponse findPubDetail(Integer pubId) {
         Pub pub = pubRepository.findByPubId(pubId).orElseThrow(PubNotFoundException::new);
         List<Menu> menu = pub.getMenus();
-        return GetPubsDetailResponse.from(pub,menu);
+        return GetPubDetailsResponse.from(pub,menu);
     }
 }

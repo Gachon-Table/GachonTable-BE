@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubsDetailResponse;
+import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubDetailsResponse;
 import site.gachontable.gachontablebe.domain.pub.usecase.PubService;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubsResponse;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
@@ -34,7 +34,7 @@ public class PubController {
     }
 
     @GetMapping("/pub/{pubId}")
-    public ResponseEntity<GetPubsDetailResponse> getPubDetail(@PathVariable Integer pubId) {
+    public ResponseEntity<GetPubDetailsResponse> getPubDetail(@PathVariable Integer pubId) {
         return ResponseEntity.ok(pubService.findPubDetail(pubId));
     }
 }
