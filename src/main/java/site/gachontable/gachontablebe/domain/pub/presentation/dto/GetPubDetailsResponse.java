@@ -11,12 +11,12 @@ public record GetPubDetailsResponse(
         List<MenuInfo> menu
 ) {
 
-    public static GetPubDetailsResponse from(Pub pub, List<Menu> menuList) {
+    public static GetPubDetailsResponse of(Pub pub, List<Menu> menuList) {
 
         return new GetPubDetailsResponse(
-                PubInfo.of(pub),
+                PubInfo.from(pub),
                 menuList.stream()
-                        .map(MenuInfo::of)
+                        .map(MenuInfo::from)
                         .toList());
     }
 
@@ -29,7 +29,7 @@ public record GetPubDetailsResponse(
             String menu,
             Integer queueing
     ) {
-        public static PubInfo of(Pub pub) {
+        public static PubInfo from(Pub pub) {
             return new PubInfo(
                     pub.getPubId(),
                     pub.getPubThumbnail(),
@@ -51,7 +51,7 @@ public record GetPubDetailsResponse(
             Integer price,
             String oneLiner
     ) {
-        public static MenuInfo of(Menu menu) {
+        public static MenuInfo from(Menu menu) {
             return new MenuInfo(
                     menu.getMenuName(),
                     menu.getPrice(),
