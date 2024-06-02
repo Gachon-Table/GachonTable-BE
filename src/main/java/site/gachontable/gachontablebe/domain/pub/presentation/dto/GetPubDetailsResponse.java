@@ -27,7 +27,7 @@ public record GetPubDetailsResponse(
             String onLiner,
             Boolean studentCard,
             String menu,
-            Integer queueing
+            Long queueing
     ) {
         public static PubInfo from(Pub pub) {
             return new PubInfo(
@@ -40,8 +40,7 @@ public record GetPubDetailsResponse(
                     pub.getWaitingQueue()
                             .stream()
                             .filter(Waiting::isWaiting)
-                            .toList()
-                            .size());
+                            .count());
         }
     }
 
