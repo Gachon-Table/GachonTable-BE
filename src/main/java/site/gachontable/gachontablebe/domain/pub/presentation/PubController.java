@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubDetailsResponse;
 import site.gachontable.gachontablebe.domain.pub.usecase.PubService;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubsResponse;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
@@ -31,5 +31,18 @@ public class PubController {
     @GetMapping("/pubs")
     public ResponseEntity<List<GetPubsResponse>> getPubs() {
         return ResponseEntity.ok(pubService.findAllPubs());
+    }
+
+    @Operation(summary = "주점 상세정보", description = "주점의 상세정보를 가져옵니다")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/pub/{pubId}")
+    public ResponseEntity<GetPubDetailsResponse> getPubDetail(@PathVariable Integer pubId) {
+        return ResponseEntity.ok(pubService.findPubDetail(pubId));
     }
 }
