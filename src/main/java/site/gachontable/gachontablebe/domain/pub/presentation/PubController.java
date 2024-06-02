@@ -33,6 +33,14 @@ public class PubController {
         return ResponseEntity.ok(pubService.findAllPubs());
     }
 
+    @Operation(summary = "주점 상세정보", description = "주점의 상세정보를 가져옵니다")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GetMapping("/pub/{pubId}")
     public ResponseEntity<GetPubDetailsResponse> getPubDetail(@PathVariable Integer pubId) {
         return ResponseEntity.ok(pubService.findPubDetail(pubId));
