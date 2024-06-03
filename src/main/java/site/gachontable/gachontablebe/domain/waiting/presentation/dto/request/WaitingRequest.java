@@ -1,4 +1,7 @@
 package site.gachontable.gachontablebe.domain.waiting.presentation.dto.request;
 
-public record WaitingRequest() {
+import site.gachontable.gachontablebe.domain.waiting.type.Position;
+
+public record WaitingRequest(Position position,
+                             Integer headCount) {
 }
