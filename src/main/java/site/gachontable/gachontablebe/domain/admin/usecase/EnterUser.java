@@ -10,7 +10,7 @@ import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundExcept
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
-import site.gachontable.gachontablebe.domain.user.exception.EmptyQueingCountException;
+import site.gachontable.gachontablebe.domain.user.exception.EmptyQueueingCountException;
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
@@ -46,7 +46,7 @@ public class EnterUser {
 
     private void decreaseQueueingCount(User givenUser) {
         if (givenUser.getQueueingCount() == 0) {
-            throw new EmptyQueingCountException();
+            throw new EmptyQueueingCountException();
         }
 
         givenUser.decreaseQueueingCount();
