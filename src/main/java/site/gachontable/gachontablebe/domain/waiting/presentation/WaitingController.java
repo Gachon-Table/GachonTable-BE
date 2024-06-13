@@ -39,7 +39,6 @@ public class WaitingController {
                                                         @RequestBody WaitingRequest request) {
         User user = userRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
                 .orElseThrow(UserNotFoundException::new);
-        createWaitingRemote.execute(user, pubId, request);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(createWaitingRemote.execute(user, pubId, request));
     }
 }
