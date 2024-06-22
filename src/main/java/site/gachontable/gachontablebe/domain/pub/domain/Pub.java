@@ -6,6 +6,7 @@ import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 import java.util.List;
+import java.util.Queue;
 
 @Entity(name = "pub")
 @Getter
@@ -46,7 +47,11 @@ public class Pub {
 
     @OneToMany
     @Column(nullable = false)
-    private List<Waiting> waitingQueue;
+    private Queue<Waiting> waitingQueue;
+
+    public void updateQueue(Waiting waiting) {
+        this.waitingQueue.add(waiting);
+    }
 
     public static Pub create(String pubName,
                              String oneLiner,
@@ -57,7 +62,7 @@ public class Pub {
                              String pubThumbnail,
                              List<Menu> menus,
                              Boolean openStatus,
-                             List<Waiting> waitingQueue) {
+                             Queue<Waiting> waitingQueue) {
         return Pub.builder()
                 .pubName(pubName)
                 .oneLiner(oneLiner)
@@ -82,7 +87,7 @@ public class Pub {
                String pubThumbnail,
                List<Menu> menus,
                Boolean openStatus,
-               List<Waiting> waitingQueue) {
+               Queue<Waiting> waitingQueue) {
         this.pubName = pubName;
         this.oneLiner = oneLiner;
         this.pubTel = pubTel;
