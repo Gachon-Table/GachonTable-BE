@@ -9,7 +9,7 @@ import site.gachontable.gachontablebe.domain.pub.exception.PubNotOpenException;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.WaitingRequest;
+import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
@@ -22,8 +22,8 @@ public class CreateWaitingRemoteImpl implements CreateWaiting {
     private final WaitingRepository waitingRepository;
 
     @Override
-    public WaitingResponse execute(User user, Integer pubId, WaitingRequest request) {
-        Pub pub = pubRepository.findByPubId(pubId).orElseThrow(PubNotFoundException::new);
+    public WaitingResponse execute(User user, RemoteWaitingRequest request) {
+        Pub pub = pubRepository.findByPubId(request.pubId()).orElseThrow(PubNotFoundException::new);
 
         if (!pub.getOpenStatus()) {
             throw new PubNotOpenException();

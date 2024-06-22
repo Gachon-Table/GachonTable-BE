@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.WaitingRequest;
+import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
-import site.gachontable.gachontablebe.domain.waiting.usecase.CreateWaitingRemoteImpl;
+import site.gachontable.gachontablebe.domain.waiting.usecase.CreateWaiting;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 
@@ -21,7 +21,7 @@ import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 @RequestMapping("/waiting")
 @RequiredArgsConstructor
 public class WaitingController {
-    private final CreateWaitingRemoteImpl createWaitingRemote;
+    private final CreateWaiting createWaiting;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
 
@@ -35,10 +35,9 @@ public class WaitingController {
     })
     @PostMapping("/remote/{pubId}")
     public ResponseEntity<WaitingResponse> createRemote(@RequestHeader("Authorization") String authorizationHeader,
-                                                        @PathVariable Integer pubId,
-                                                        @RequestBody WaitingRequest request) {
+                                                        @RequestBody RemoteWaitingRequest request) {
         User user = userRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
                 .orElseThrow(UserNotFoundException::new);
-        return ResponseEntity.ok(createWaitingRemote.execute(user, pubId, request));
+        return ResponseEntity.ok(createWaiting.execute(user, request));
     }
 }
