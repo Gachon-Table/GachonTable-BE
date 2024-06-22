@@ -1,5 +1,6 @@
 package site.gachontable.gachontablebe.domain.waiting.presentation.dto.request;
 
-public record RemoteWaitingRequest(Integer pubId,
+public record OnsiteWaitingRequest(Integer pubId,
+                                   String tel,
                                    Integer headCount) {
 }

@@ -9,6 +9,7 @@ import site.gachontable.gachontablebe.domain.pub.exception.PubNotOpenException;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
+import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
@@ -17,7 +18,7 @@ import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 @Component
 @RequiredArgsConstructor
-public class CreateWaitingRemoteImpl implements CreateWaiting {
+public class CreateWaitingImpl implements CreateWaiting {
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
 
@@ -30,9 +31,30 @@ public class CreateWaitingRemoteImpl implements CreateWaiting {
         }
         Waiting waiting = Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, user, pub);
         waitingRepository.save(waiting);
+        // TODO : 카카오 알림톡 전송
 
         pub.updateQueue(waiting);
 
-        return new WaitingResponse(true, SuccessCode.ENTERED_SUCCESS.getMessage());
+        return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }
+
+    @Override
+    public WaitingResponse execute(OnsiteWaitingRequest request) {
+        Pub pub = pubRepository.findByPubId(request.pubId()).orElseThrow(PubNotFoundException::new);
+
+        if (!pub.getOpenStatus()) {
+            throw new PubNotOpenException();
+        }
+        Waiting waiting = Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, null, pub);
+        // TODO : 현장 웨이팅 로직 가입 여부 논의 필요
+        waitingRepository.save(waiting);
+
+        // TODO : 카카오 알림톡 전송
+
+        pub.updateQueue(waiting);
+
+        return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
+    }
+
+
 }
