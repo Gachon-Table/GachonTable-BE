@@ -34,7 +34,7 @@ public class WaitingController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/remote/{pubId}")
-    public ResponseEntity<WaitingResponse> createOnsite(@RequestHeader("Authorization") String authorizationHeader,
+    public ResponseEntity<WaitingResponse> createRemote(@RequestHeader("Authorization") String authorizationHeader,
                                                         @PathVariable Integer pubId,
                                                         @RequestBody WaitingRequest request) {
         User user = userRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
