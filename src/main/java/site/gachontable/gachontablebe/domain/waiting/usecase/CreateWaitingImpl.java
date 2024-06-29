@@ -34,6 +34,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         // TODO : 카카오 알림톡 전송
 
         pub.updateQueue(waiting);
+        user.increaseQueueingCount();
 
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }

@@ -32,6 +32,10 @@ public class User {
         this.queueingCount = (byte) (this.queueingCount - 1);
     }
 
+    public void increaseQueueingCount() {
+        this.queueingCount = (byte) (this.queueingCount + 1);
+    }
+
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
