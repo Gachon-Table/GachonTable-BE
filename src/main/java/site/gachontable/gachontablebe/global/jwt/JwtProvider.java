@@ -84,8 +84,9 @@ public class JwtProvider {
         }
     }
 
-    public UUID getUserIdFromToken(String token) {
+    public UUID getUserIdFromToken(String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
         Claims claims = parseClaims(token);
-        return claims.get("uid", UUID.class);
+        return UUID.fromString(claims.get("uid", String.class));
     }
 }

@@ -20,10 +20,11 @@ public class PubService {
         List<Pub> pubList = pubRepository.findAll();
 
         return pubList.stream().map(GetPubsResponse::of).toList();
-}
+    }
+
     public GetPubDetailsResponse findPubDetail(Integer pubId) {
         Pub pub = pubRepository.findByPubId(pubId).orElseThrow(PubNotFoundException::new);
         List<Menu> menu = pub.getMenus();
-        return GetPubDetailsResponse.of(pub,menu);
+        return GetPubDetailsResponse.of(pub, menu);
     }
 }

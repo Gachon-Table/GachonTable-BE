@@ -16,6 +16,7 @@ import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import java.util.List;
 
 @RestController
+@RequestMapping("/pub")
 @RequiredArgsConstructor
 public class PubController {
     private final PubService pubService;
@@ -28,8 +29,8 @@ public class PubController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/pubs")
-    public ResponseEntity<List<GetPubsResponse>> getPubs() {
+    @GetMapping("/all")
+    public ResponseEntity<List<GetPubsResponse>> getAll() {
         return ResponseEntity.ok(pubService.findAllPubs());
     }
 
@@ -41,7 +42,7 @@ public class PubController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/pub/{pubId}")
+    @GetMapping("/{pubId}")
     public ResponseEntity<GetPubDetailsResponse> getPubDetail(@PathVariable Integer pubId) {
         return ResponseEntity.ok(pubService.findPubDetail(pubId));
     }
