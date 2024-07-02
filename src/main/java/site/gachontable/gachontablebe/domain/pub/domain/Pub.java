@@ -30,7 +30,7 @@ public class Pub {
     @Column(nullable = false)
     private String representativeMenu;
 
-    @Column(nullable = true)
+    @Column
     private String pubLoc;
 
     @Column(nullable = false)
@@ -46,7 +46,7 @@ public class Pub {
     @Column(nullable = false)
     private Integer waitingCount;
 
-    public void updateQueue(Integer waitingCount) {
+    public void updateWaitingCount(Integer waitingCount) {
         this.waitingCount = waitingCount;
     }
 
@@ -58,7 +58,8 @@ public class Pub {
                              String pubLoc,
                              String pubThumbnail,
                              List<Menu> menus,
-                             Boolean openStatus) {
+                             Boolean openStatus,
+                             Integer waitingCount) {
         return Pub.builder()
                 .pubName(pubName)
                 .oneLiner(oneLiner)
@@ -69,6 +70,7 @@ public class Pub {
                 .pubThumbnail(pubThumbnail)
                 .menus(menus)
                 .openStatus(openStatus)
+                .waitingCount(waitingCount)
                 .build();
     }
 
@@ -81,7 +83,8 @@ public class Pub {
                String pubLoc,
                String pubThumbnail,
                List<Menu> menus,
-               Boolean openStatus) {
+               Boolean openStatus,
+               Integer waitingCount) {
         this.pubName = pubName;
         this.oneLiner = oneLiner;
         this.pubTel = pubTel;
@@ -91,6 +94,7 @@ public class Pub {
         this.pubThumbnail = pubThumbnail;
         this.menus = menus;
         this.openStatus = openStatus;
+        this.waitingCount = waitingCount;
     }
 
 }

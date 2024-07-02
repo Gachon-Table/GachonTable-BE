@@ -28,7 +28,7 @@ public class UserRegisterImpl implements UserRegister {
     }
 
     private User createUser(String username, String password, String tel) {
-        User user = User.createForTest(username, passwordEncoder.encode(password), tel, (byte) 0);
+        User user = User.createForTest(username, passwordEncoder.encode(password), tel);
         userRepository.save(user);
         return user;
     }

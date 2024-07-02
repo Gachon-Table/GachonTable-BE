@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.AdminLoginRequest;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.EnterUserRequest;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminRegister;
 import site.gachontable.gachontablebe.domain.shared.dto.request.TestRegisterRequest;

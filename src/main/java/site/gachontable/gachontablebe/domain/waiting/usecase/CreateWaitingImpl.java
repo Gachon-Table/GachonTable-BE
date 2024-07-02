@@ -23,24 +23,24 @@ public class CreateWaitingImpl implements CreateWaiting {
     private final WaitingRepository waitingRepository;
 
     @Override
-    public WaitingResponse execute(User user, RemoteWaitingRequest request) {
+    public WaitingResponse execute(User user, RemoteWaitingRequest request) { // 원격 웨이팅
         Pub pub = pubRepository.findByPubId(request.pubId()).orElseThrow(PubNotFoundException::new);
 
         if (!pub.getOpenStatus()) {
             throw new PubNotOpenException();
         }
-        Waiting waiting = Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, user, pub);
-        waitingRepository.save(waiting);
+        waitingRepository.save(
+                Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, user, pub));
+        pub.updateWaitingCount(pub.getWaitingCount() + 1);
+
         // TODO : 카카오 알림톡 전송
 
-        // TODO : 웨이팅 로직 변경 적용
-        user.increaseQueueingCount();
 
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }
 
     @Override
-    public WaitingResponse execute(OnsiteWaitingRequest request) {
+    public WaitingResponse execute(OnsiteWaitingRequest request) { // 현장 웨이팅
         Pub pub = pubRepository.findByPubId(request.pubId()).orElseThrow(PubNotFoundException::new);
 
         if (!pub.getOpenStatus()) {

@@ -25,7 +25,7 @@ public class Waiting extends BaseTimeEntity {
     private Integer headCount;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
+    @Column
     private Status waitingStatus;
 
     @ManyToOne

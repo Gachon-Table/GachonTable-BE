@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PubService {
     private final PubRepository pubRepository;
+    private static final Integer INITIAL_WAITING_COUNT = 0;
 
     public List<GetPubsResponse> findAllPubs() {
         List<Pub> pubList = pubRepository.findAll();
@@ -47,7 +48,8 @@ public class PubService {
                 request.pubLoc(),
                 request.pubThumbnail(),
                 menus,
-                request.openStatus());
+                request.openStatus(),
+                INITIAL_WAITING_COUNT);
     }
 
 }
