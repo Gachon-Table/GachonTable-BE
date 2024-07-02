@@ -47,10 +47,10 @@ public class Pub {
 
     @OneToMany
     @Column(nullable = false)
-    private Queue<Waiting> waitingQueue;
+    private Queue<Waiting> waitings;
 
     public void updateQueue(Waiting waiting) {
-        this.waitingQueue.add(waiting);
+        this.waitings.add(waiting);
     }
 
     public static Pub create(String pubName,
@@ -62,7 +62,7 @@ public class Pub {
                              String pubThumbnail,
                              List<Menu> menus,
                              Boolean openStatus,
-                             Queue<Waiting> waitingQueue) {
+                             Queue<Waiting> waitings) {
         return Pub.builder()
                 .pubName(pubName)
                 .oneLiner(oneLiner)
@@ -73,7 +73,7 @@ public class Pub {
                 .pubThumbnail(pubThumbnail)
                 .menus(menus)
                 .openStatus(openStatus)
-                .waitingQueue(waitingQueue)
+                .waitings(waitings)
                 .build();
     }
 
@@ -87,7 +87,7 @@ public class Pub {
                String pubThumbnail,
                List<Menu> menus,
                Boolean openStatus,
-               Queue<Waiting> waitingQueue) {
+               Queue<Waiting> waitings) {
         this.pubName = pubName;
         this.oneLiner = oneLiner;
         this.pubTel = pubTel;
@@ -97,7 +97,7 @@ public class Pub {
         this.pubThumbnail = pubThumbnail;
         this.menus = menus;
         this.openStatus = openStatus;
-        this.waitingQueue = waitingQueue;
+        this.waitings = waitings;
     }
 
 }

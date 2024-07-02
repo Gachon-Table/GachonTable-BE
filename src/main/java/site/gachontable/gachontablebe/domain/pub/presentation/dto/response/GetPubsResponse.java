@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.pub.presentation.dto;
+package site.gachontable.gachontablebe.domain.pub.presentation.dto.response;
 
 import lombok.Builder;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
@@ -24,7 +24,7 @@ public record GetPubsResponse(
                 pub.getOneLiner(),
                 pub.getStudentCard(),
                 pub.getRepresentativeMenu(),
-                pub.getWaitingQueue().stream()
+                pub.getWaitings().stream()
                         .filter(Waiting::isWaiting)
                         .toList()
                         .size(),

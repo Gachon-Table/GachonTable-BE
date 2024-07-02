@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.pub.presentation.dto;
+package site.gachontable.gachontablebe.domain.pub.presentation.dto.response;
 
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
@@ -37,7 +37,7 @@ public record GetPubDetailsResponse(
                     pub.getOneLiner(),
                     pub.getStudentCard(),
                     pub.getRepresentativeMenu(),
-                    (int) pub.getWaitingQueue()
+                    (int) pub.getWaitings()
                             .stream()
                             .filter(Waiting::isWaiting)
                             .count());
