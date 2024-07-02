@@ -33,7 +33,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         waitingRepository.save(waiting);
         // TODO : 카카오 알림톡 전송
 
-        pub.updateQueue(waiting);
+        // TODO : 웨이팅 로직 변경 적용
         user.increaseQueueingCount();
 
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
@@ -52,7 +52,7 @@ public class CreateWaitingImpl implements CreateWaiting {
 
         // TODO : 카카오 알림톡 전송
 
-        pub.updateQueue(waiting);
+        // TODO : 웨이팅 로직 변경 적용
 
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
     }

@@ -3,10 +3,8 @@ package site.gachontable.gachontablebe.domain.pub.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 import java.util.List;
-import java.util.Queue;
 
 @Entity(name = "pub")
 @Getter
@@ -45,12 +43,11 @@ public class Pub {
     @Column(nullable = false)
     private Boolean openStatus;
 
-    @OneToMany
     @Column(nullable = false)
-    private Queue<Waiting> waitings;
+    private Integer waitingCount;
 
-    public void updateQueue(Waiting waiting) {
-        this.waitings.add(waiting);
+    public void updateQueue(Integer waitingCount) {
+        this.waitingCount = waitingCount;
     }
 
     public static Pub create(String pubName,
@@ -61,8 +58,7 @@ public class Pub {
                              String pubLoc,
                              String pubThumbnail,
                              List<Menu> menus,
-                             Boolean openStatus,
-                             Queue<Waiting> waitings) {
+                             Boolean openStatus) {
         return Pub.builder()
                 .pubName(pubName)
                 .oneLiner(oneLiner)
@@ -73,7 +69,6 @@ public class Pub {
                 .pubThumbnail(pubThumbnail)
                 .menus(menus)
                 .openStatus(openStatus)
-                .waitings(waitings)
                 .build();
     }
 
@@ -86,8 +81,7 @@ public class Pub {
                String pubLoc,
                String pubThumbnail,
                List<Menu> menus,
-               Boolean openStatus,
-               Queue<Waiting> waitings) {
+               Boolean openStatus) {
         this.pubName = pubName;
         this.oneLiner = oneLiner;
         this.pubTel = pubTel;
@@ -97,7 +91,6 @@ public class Pub {
         this.pubThumbnail = pubThumbnail;
         this.menus = menus;
         this.openStatus = openStatus;
-        this.waitings = waitings;
     }
 
 }

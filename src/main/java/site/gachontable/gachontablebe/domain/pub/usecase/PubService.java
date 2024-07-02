@@ -10,12 +10,9 @@ import site.gachontable.gachontablebe.domain.pub.presentation.dto.request.Regist
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubDetailsResponse;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubsResponse;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +38,6 @@ public class PubService {
 
     public Pub createPub(RegisterRequest request) {
         List<Menu> menus = new ArrayList<>();
-        Queue<Waiting> waitings = new LinkedList<>();
 
         return Pub.create(request.pubName(),
                 request.oneLiner(),
@@ -51,8 +47,7 @@ public class PubService {
                 request.pubLoc(),
                 request.pubThumbnail(),
                 menus,
-                request.openStatus(),
-                waitings);
+                request.openStatus());
     }
 
 }
