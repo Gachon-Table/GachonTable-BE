@@ -25,7 +25,7 @@ public class Waiting extends BaseTimeEntity {
     private Integer headCount;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
+    @Column
     private Status waitingStatus;
 
     @ManyToOne
@@ -53,13 +53,5 @@ public class Waiting extends BaseTimeEntity {
         this.waitingStatus = waitingStatus;
         this.user = user;
         this.pub = pub;
-    }
-
-    public void enter() {
-        this.waitingStatus = Status.ENTERED;
-    }
-
-    public static boolean isWaiting(Waiting waiting) {
-        return waiting.getWaitingStatus().equals(Status.WAITING);
     }
 }

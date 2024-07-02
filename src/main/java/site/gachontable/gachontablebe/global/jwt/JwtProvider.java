@@ -83,4 +83,10 @@ public class JwtProvider {
             throw new ExpiredTokenException();
         }
     }
+
+    public UUID getUserIdFromToken(String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+        Claims claims = parseClaims(token);
+        return UUID.fromString(claims.get("uid", String.class));
+    }
 }

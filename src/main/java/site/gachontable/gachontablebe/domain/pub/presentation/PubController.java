@@ -8,14 +8,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubDetailsResponse;
+import site.gachontable.gachontablebe.domain.pub.presentation.dto.request.RegisterRequest;
+import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubDetailsResponse;
 import site.gachontable.gachontablebe.domain.pub.usecase.PubService;
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.GetPubsResponse;
+import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubsResponse;
+import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/pub")
 @RequiredArgsConstructor
 public class PubController {
     private final PubService pubService;
@@ -28,8 +31,8 @@ public class PubController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/pubs")
-    public ResponseEntity<List<GetPubsResponse>> getPubs() {
+    @GetMapping("/all")
+    public ResponseEntity<List<GetPubsResponse>> getAll() {
         return ResponseEntity.ok(pubService.findAllPubs());
     }
 
@@ -41,8 +44,21 @@ public class PubController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/pub/{pubId}")
+    @GetMapping("/{pubId}")
     public ResponseEntity<GetPubDetailsResponse> getPubDetail(@PathVariable Integer pubId) {
         return ResponseEntity.ok(pubService.findPubDetail(pubId));
+    }
+
+    @Operation(summary = "주점 등록", description = "주점을 새로 등록합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PostMapping("/register")
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(pubService.register(request));
     }
 }

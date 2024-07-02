@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
-    Optional<User> findById(UUID Id);
+    Optional<User> findByUserId(UUID userId);
 
     Optional<User> findByUserName(String userName);
 }

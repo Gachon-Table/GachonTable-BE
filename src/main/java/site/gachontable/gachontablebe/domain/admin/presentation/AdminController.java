@@ -9,10 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.AdminLoginRequest;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.EnterUserRequest;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminRegister;
-import site.gachontable.gachontablebe.domain.admin.usecase.EnterUser;
 import site.gachontable.gachontablebe.domain.shared.dto.request.TestRegisterRequest;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
@@ -24,7 +22,6 @@ import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 public class AdminController {
     private final AdminRegister adminRegister;
     private final AdminLogin adminLogin;
-    private final EnterUser enterUser;
 
     @Operation(summary = "관리자 테스트 회원가입", description = "테스트를 위한 관리자 회원가입 기능입니다.")
     @ApiResponses({
@@ -53,16 +50,16 @@ public class AdminController {
         return ResponseEntity.ok(tokens);
     }
 
-    @Operation(summary = "입장 완료", description = "사용자를 입장 완료 시킵니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201"),
-            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    @PostMapping("/enter")
-    public ResponseEntity<String> enterUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnterUserRequest enterUserRequest) {
-        return ResponseEntity.ok(enterUser.execute(authorizationHeader, enterUserRequest));
-    }
+//    @Operation(summary = "입장 완료", description = "사용자를 입장 완료 시킵니다.")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "201"),
+//            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+//            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+//            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+//            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+//    })
+//    @PostMapping("/enter")
+//    public ResponseEntity<String> enterUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnterUserRequest enterUserRequest) {
+//        return ResponseEntity.ok(enterUser.execute(authorizationHeader, enterUserRequest));
+//    }
 }

@@ -3,7 +3,6 @@ package site.gachontable.gachontablebe.domain.pub.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class Pub {
     @Column(nullable = false)
     private String representativeMenu;
 
-    @Column(nullable = true)
+    @Column
     private String pubLoc;
 
     @Column(nullable = false)
@@ -44,9 +43,12 @@ public class Pub {
     @Column(nullable = false)
     private Boolean openStatus;
 
-    @OneToMany
     @Column(nullable = false)
-    private List<Waiting> waitingQueue;
+    private Integer waitingCount;
+
+    public void updateWaitingCount(Integer waitingCount) {
+        this.waitingCount = waitingCount;
+    }
 
     public static Pub create(String pubName,
                              String oneLiner,
@@ -57,7 +59,7 @@ public class Pub {
                              String pubThumbnail,
                              List<Menu> menus,
                              Boolean openStatus,
-                             List<Waiting> waitingQueue) {
+                             Integer waitingCount) {
         return Pub.builder()
                 .pubName(pubName)
                 .oneLiner(oneLiner)
@@ -68,7 +70,7 @@ public class Pub {
                 .pubThumbnail(pubThumbnail)
                 .menus(menus)
                 .openStatus(openStatus)
-                .waitingQueue(waitingQueue)
+                .waitingCount(waitingCount)
                 .build();
     }
 
@@ -82,7 +84,7 @@ public class Pub {
                String pubThumbnail,
                List<Menu> menus,
                Boolean openStatus,
-               List<Waiting> waitingQueue) {
+               Integer waitingCount) {
         this.pubName = pubName;
         this.oneLiner = oneLiner;
         this.pubTel = pubTel;
@@ -92,7 +94,7 @@ public class Pub {
         this.pubThumbnail = pubThumbnail;
         this.menus = menus;
         this.openStatus = openStatus;
-        this.waitingQueue = waitingQueue;
+        this.waitingCount = waitingCount;
     }
 
 }

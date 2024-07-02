@@ -1,8 +1,7 @@
-package site.gachontable.gachontablebe.domain.pub.presentation.dto;
+package site.gachontable.gachontablebe.domain.pub.presentation.dto.response;
 
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 import java.util.List;
 
@@ -37,10 +36,7 @@ public record GetPubDetailsResponse(
                     pub.getOneLiner(),
                     pub.getStudentCard(),
                     pub.getRepresentativeMenu(),
-                    (int) pub.getWaitingQueue()
-                            .stream()
-                            .filter(Waiting::isWaiting)
-                            .count());
+                    pub.getWaitingCount());
         }
     }
 

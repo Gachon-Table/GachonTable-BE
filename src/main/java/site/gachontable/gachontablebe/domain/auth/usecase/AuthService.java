@@ -46,7 +46,7 @@ public class AuthService {
             return byUserName.get();
         }
 
-        User user = User.create(userName, tel, (byte) 0);
+        User user = User.create(userName, tel);
 
         return userRepository.save(user);
     }
