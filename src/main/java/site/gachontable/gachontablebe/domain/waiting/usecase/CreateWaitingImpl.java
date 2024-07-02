@@ -31,10 +31,10 @@ public class CreateWaitingImpl implements CreateWaiting {
         }
         waitingRepository.save(
                 Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, user, pub));
+
         pub.updateWaitingCount(pub.getWaitingCount() + 1);
-
+        pubRepository.save(pub);
         // TODO : 카카오 알림톡 전송
-
 
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }
@@ -46,13 +46,8 @@ public class CreateWaitingImpl implements CreateWaiting {
         if (!pub.getOpenStatus()) {
             throw new PubNotOpenException();
         }
-        Waiting waiting = Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, null, pub);
-        // TODO : 현장 웨이팅 로직 가입 여부 논의 필요
-        waitingRepository.save(waiting);
 
         // TODO : 카카오 알림톡 전송
-
-        // TODO : 웨이팅 로직 변경 적용
 
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
     }
