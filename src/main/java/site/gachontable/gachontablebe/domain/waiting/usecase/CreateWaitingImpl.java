@@ -46,7 +46,11 @@ public class CreateWaitingImpl implements CreateWaiting {
         if (!pub.getOpenStatus()) {
             throw new PubNotOpenException();
         }
+        waitingRepository.save(
+                Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, null, pub));
 
+        pub.updateWaitingCount(pub.getWaitingCount() + 1);
+        pubRepository.save(pub);
         // TODO : 카카오 알림톡 전송
 
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
