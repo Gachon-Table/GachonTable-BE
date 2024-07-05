@@ -8,9 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.gachontable.gachontablebe.domain.admin.domain.Admin;
-import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
-import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
@@ -28,7 +25,6 @@ public class WaitingController {
     private final CreateWaiting createWaiting;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
-    private final AdminRepository adminRepository;
 
     @Operation(summary = "원격 웨이팅", description = "원격 웨이팅을 신규로 생성합니다.")
     @ApiResponses({
@@ -55,10 +51,7 @@ public class WaitingController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/onsite/{pubId}")
-    public ResponseEntity<WaitingResponse> createOnsite(@RequestHeader("Authorization") String authorizationHeader,
-                                                        @RequestBody OnsiteWaitingRequest request) {
-        Admin admin = adminRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
-                .orElseThrow(AdminNotFoundException::new);
+    public ResponseEntity<WaitingResponse> createOnsite(@RequestBody OnsiteWaitingRequest request) {
         return ResponseEntity.ok(createWaiting.execute(request));
     }
 }
