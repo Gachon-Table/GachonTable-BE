@@ -11,5 +11,5 @@ import java.util.List;
 public interface WaitingRepository extends JpaRepository<Waiting, Long> {
     List<Waiting> findAllByUser(User user);
 
-    List<Waiting> findAllByPubAndWaitingStatusOrWaitingStatus(Pub pub, Status waiting, Status available);
+    List<Waiting> findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(Pub pub, Status waiting, Status available);
 }

@@ -21,7 +21,7 @@ public class GetOrderImpl implements GetOrder {
     public List<OrderResponse> execute(User user) {
         return getPubsFromWaitings(user).stream()
                 .flatMap(pub -> {
-                    List<Waiting> waitings = waitingRepository.findAllByPubAndWaitingStatusOrWaitingStatus(pub, Status.WAITING, Status.AVAILABLE);
+                    List<Waiting> waitings = waitingRepository.findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
 
                     return getOrderResponse(user, pub, waitings);
                 })
