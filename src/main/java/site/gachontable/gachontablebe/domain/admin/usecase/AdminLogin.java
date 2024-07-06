@@ -1,7 +1,7 @@
 package site.gachontable.gachontablebe.domain.admin.usecase;
 
-import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.LoginResponse;
 
 public interface AdminLogin {
-    JwtResponse execute(String id, String password);
+    LoginResponse execute(String id, String password);
 }

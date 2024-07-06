@@ -32,12 +32,12 @@ public class Admin {
     @JoinColumn(name = "pub_id")
     private Pub pub;
 
-    public static Admin create(String adminName, String adminPassword, String adminTel) {
+    public static Admin create(String adminName, String adminPassword, String adminTel, Pub pub) {
         return Admin.builder()
                 .adminName(adminName)
                 .adminPassword(adminPassword)
                 .adminTel(adminTel)
-//                .pub(pub)
+                .pub(pub)
                 .build();
     }
 
