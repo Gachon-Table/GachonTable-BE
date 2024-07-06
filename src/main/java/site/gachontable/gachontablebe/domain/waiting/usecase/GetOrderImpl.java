@@ -10,7 +10,6 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.O
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -31,9 +30,7 @@ public class GetOrderImpl implements GetOrder {
 
     private static Stream<OrderResponse> getOrderResponse(User user, Pub pub, List<Waiting> waitings) {
         return waitings.stream()
-                .filter(waiting -> Optional.ofNullable(waiting.getUser())
-                        .map(waitingUser -> !waitingUser.equals(user))
-                        .isPresent())
+                .filter(waiting -> waiting.matchesUser(user))
                 .map(waiting -> OrderResponse.of(pub.getPubName(),
                         waiting.getWaitingStatus().getStatusKo(),
                         waitings.indexOf(waiting) + 1));

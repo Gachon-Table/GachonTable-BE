@@ -8,6 +8,9 @@ import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Entity(name = "waiting")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,6 +41,10 @@ public class Waiting extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "pub_id", nullable = false)
     private Pub pub;
+
+    public boolean matchesUser(User user) {
+        return Objects.equals(this.user, user);
+    }
 
     public static Waiting create(Position waitingType, Integer headCount, Status waitingStatus, String tel, User user, Pub pub) {
         return Waiting.builder()
