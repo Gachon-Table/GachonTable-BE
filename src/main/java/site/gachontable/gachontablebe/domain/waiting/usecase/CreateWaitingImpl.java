@@ -30,7 +30,7 @@ public class CreateWaitingImpl implements CreateWaiting {
             throw new PubNotOpenException();
         }
         waitingRepository.save(
-                Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, user, pub));
+                Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, null, user, pub));
 
         pub.updateWaitingCount(pub.getWaitingCount() + 1);
         pubRepository.save(pub);
@@ -47,7 +47,7 @@ public class CreateWaitingImpl implements CreateWaiting {
             throw new PubNotOpenException();
         }
         waitingRepository.save(
-                Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, null, pub));
+                Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, request.tel(), null, pub));
 
         pub.updateWaitingCount(pub.getWaitingCount() + 1);
         pubRepository.save(pub);
