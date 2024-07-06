@@ -60,7 +60,7 @@ public class WaitingController {
         return ResponseEntity.ok(createWaiting.execute(request));
     }
 
-    @Operation(summary = "순번 조회", description = "사용자가 자신의 웨이팅 순번을 조회합니다.")
+    @Operation(summary = "순번 조회", description = "사용자(회원)가 자신의 신청한 웨이팅 순번 목록을 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),

@@ -10,6 +10,8 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.O
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +24,19 @@ public class GetOrderImpl implements GetOrder {
                 .flatMap(pub -> {
                     List<Waiting> waitings = waitingRepository.findAllByPubAndWaitingStatusOrWaitingStatus(pub, Status.WAITING, Status.AVAILABLE);
 
-                    return waitings.stream()
-                            .filter(waiting -> waiting.getUser().equals(user))
-                            .map(waiting -> OrderResponse.of(pub.getPubName(),
-                                    waiting.getWaitingStatus().getStatusKo(),
-                                    waitings.indexOf(waiting) + 1));
+                    return getOrderResponse(user, pub, waitings);
                 })
                 .toList();
+    }
+
+    private static Stream<OrderResponse> getOrderResponse(User user, Pub pub, List<Waiting> waitings) {
+        return waitings.stream()
+                .filter(waiting -> Optional.ofNullable(waiting.getUser())
+                        .map(waitingUser -> !waitingUser.equals(user))
+                        .isPresent())
+                .map(waiting -> OrderResponse.of(pub.getPubName(),
+                        waiting.getWaitingStatus().getStatusKo(),
+                        waitings.indexOf(waiting) + 1));
     }
 
     private List<Pub> getPubsFromWaitings(User user) {
