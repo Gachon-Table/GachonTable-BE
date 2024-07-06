@@ -13,16 +13,21 @@ import site.gachontable.gachontablebe.domain.user.domain.repository.UserReposito
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
+import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.OrderResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.domain.waiting.usecase.CreateWaiting;
+import site.gachontable.gachontablebe.domain.waiting.usecase.GetOrder;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/waiting")
 @RequiredArgsConstructor
 public class WaitingController {
     private final CreateWaiting createWaiting;
+    private final GetOrder getOrder;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
 
@@ -53,5 +58,20 @@ public class WaitingController {
     @PostMapping("/onsite/{pubId}")
     public ResponseEntity<WaitingResponse> createOnsite(@RequestBody OnsiteWaitingRequest request) {
         return ResponseEntity.ok(createWaiting.execute(request));
+    }
+
+    @Operation(summary = "순번 조회", description = "사용자가 자신의 웨이팅 순번을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/order")
+    public ResponseEntity<List<OrderResponse>> getOrder(@RequestHeader("Authorization") String authorizationHeader) {
+        User user = userRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
+                .orElseThrow(UserNotFoundException::new);
+        return ResponseEntity.ok(getOrder.execute(user));
     }
 }
