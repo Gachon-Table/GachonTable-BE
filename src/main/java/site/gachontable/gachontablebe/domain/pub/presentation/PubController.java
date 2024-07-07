@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.request.RegisterRequest;
+import site.gachontable.gachontablebe.domain.pub.presentation.dto.request.PubRegisterRequest;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubDetailsResponse;
 import site.gachontable.gachontablebe.domain.pub.usecase.PubService;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubsResponse;
@@ -58,7 +58,7 @@ public class PubController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody PubRegisterRequest request) {
         return ResponseEntity.ok(pubService.register(request));
     }
 }

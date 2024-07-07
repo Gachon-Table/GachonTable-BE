@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.admin.domain.Admin;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
 import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.LoginResponse;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.AdminLoginResponse;
 import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.domain.shared.exception.PasswordNotMatchException;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
@@ -21,7 +21,7 @@ public class AdminLoginImpl implements AdminLogin {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public LoginResponse execute(String adminName, String password) {
+    public AdminLoginResponse execute(String adminName, String password) {
         Admin admin = adminRepository.findByAdminName(adminName).orElseThrow(AdminNotFoundException::new);
         validatePassword(password, admin);
 
@@ -29,7 +29,7 @@ public class AdminLoginImpl implements AdminLogin {
         String refreshToken = generateRefreshToken(admin);
         Integer pubId = admin.getPub().getPubId();
 
-        return new LoginResponse(accessToken, refreshToken, pubId);
+        return new AdminLoginResponse(accessToken, refreshToken, pubId);
     }
 
     private void validatePassword(String password, Admin admin) {

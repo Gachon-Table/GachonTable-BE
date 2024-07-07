@@ -6,7 +6,7 @@ import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.request.RegisterRequest;
+import site.gachontable.gachontablebe.domain.pub.presentation.dto.request.PubRegisterRequest;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubDetailsResponse;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubsResponse;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
@@ -32,12 +32,12 @@ public class PubService {
         return GetPubDetailsResponse.of(pub, menu);
     }
 
-    public RegisterResponse register(RegisterRequest request) {
+    public RegisterResponse register(PubRegisterRequest request) {
         pubRepository.save(createPub(request));
         return new RegisterResponse(true, "주점 등록 성공");
     }
 
-    public Pub createPub(RegisterRequest request) {
+    public Pub createPub(PubRegisterRequest request) {
         List<Menu> menus = new ArrayList<>();
 
         return Pub.create(request.pubName(),

@@ -8,12 +8,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.gachontable.gachontablebe.domain.admin.domain.Admin;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
 import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.LoginRequest;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.RegisterRequest;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.LoginResponse;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminLoginRequest;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminRegisterRequest;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.AdminLoginResponse;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminRegister;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
@@ -45,7 +44,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/test-register")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody AdminRegisterRequest request) {
         Pub pub = pubRepository.findByPubId(request.pubId()).orElseThrow(PubNotFoundException::new);
         return ResponseEntity.ok(adminRegister.execute(request.username(), request.password(), request.tel(), pub));
     }
@@ -59,8 +58,8 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        LoginResponse response = adminLogin.execute(request.id(), request.password());
+    public ResponseEntity<AdminLoginResponse> login(@RequestBody AdminLoginRequest request) {
+        AdminLoginResponse response = adminLogin.execute(request.id(), request.password());
         return ResponseEntity.ok(response);
     }
 
