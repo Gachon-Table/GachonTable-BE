@@ -14,7 +14,7 @@ public record WaitingHistoryResponse(String pubName, Status status, LocalDateTim
         return WaitingHistoryResponse.builder()
                 .pubName(waiting.getPub().getPubName())
                 .status(waiting.getWaitingStatus())
-                .enteredTime(waiting.getWaitingStatus().equals(ENTERED) ? waiting.getUpdatedAt() : null)
+                .enteredTime(waiting.getUpdatedAt())
                 .build();
     }
 }
