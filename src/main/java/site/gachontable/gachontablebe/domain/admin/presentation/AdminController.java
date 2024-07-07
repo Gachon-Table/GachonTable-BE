@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.gachontable.gachontablebe.domain.admin.domain.Admin;
+import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.LoginRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.RegisterRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.LoginResponse;
@@ -17,7 +19,12 @@ import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
+import site.gachontable.gachontablebe.domain.user.domain.User;
+import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
+import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.PubWaitingListResponse;
+import site.gachontable.gachontablebe.domain.waiting.usecase.GetWaitingList;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
+import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 
 @RestController
 @RequestMapping("/admin")
@@ -26,6 +33,9 @@ public class AdminController {
     private final AdminRegister adminRegister;
     private final AdminLogin adminLogin;
     private final PubRepository pubRepository;
+    private final AdminRepository adminRepository;
+    private final JwtProvider jwtProvider;
+    private final GetWaitingList getWaitingList;
 
     @Operation(summary = "관리자 테스트 회원가입", description = "테스트를 위한 관리자 회원가입 기능입니다.")
     @ApiResponses({
@@ -55,4 +65,10 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/waiting")
+    public ResponseEntity<PubWaitingListResponse> getWaiting(@RequestHeader("Authorization") String authorizationHeader) {
+        Admin admin = adminRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
+                .orElseThrow(UserNotFoundException::new);
+        return ResponseEntity.ok(getWaitingList.excute(admin));
+    }
 }
