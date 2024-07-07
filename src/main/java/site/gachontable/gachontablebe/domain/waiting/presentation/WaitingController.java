@@ -14,9 +14,11 @@ import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundExceptio
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.OrderResponse;
+import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingHistoryResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.domain.waiting.usecase.CreateWaiting;
 import site.gachontable.gachontablebe.domain.waiting.usecase.GetOrder;
+import site.gachontable.gachontablebe.domain.waiting.usecase.GetWaitingHistory;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 
@@ -30,6 +32,7 @@ public class WaitingController {
     private final GetOrder getOrder;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
+    private final GetWaitingHistory getWaitingHistory;
 
     @Operation(summary = "원격 웨이팅", description = "원격 웨이팅을 신규로 생성합니다.")
     @ApiResponses({
@@ -73,5 +76,20 @@ public class WaitingController {
         User user = userRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
                 .orElseThrow(UserNotFoundException::new);
         return ResponseEntity.ok(getOrder.execute(user));
+    }
+
+    @Operation(summary = "웨이팅 내역 조회", description = "회원이 지금까지 신청한 웨이팅 내역을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/history")
+    public ResponseEntity<List<WaitingHistoryResponse>> getWaitingHistroy(@RequestHeader("Authorization") String authorizationHeader) {
+        User user = userRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
+                .orElseThrow(UserNotFoundException::new);
+        return ResponseEntity.ok(getWaitingHistory.excute(user));
     }
 }
