@@ -68,6 +68,7 @@ public class AdminController {
     public ResponseEntity<PubWaitingListResponse> getWaiting(@RequestHeader("Authorization") String authorizationHeader) {
         Admin admin = adminRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
                 .orElseThrow(AdminNotFoundException::new);
-        return ResponseEntity.ok(getWaitings.excute(admin));
+        Pub pub = pubRepository.findByPubId(admin.getPub().getPubId()).orElseThrow(PubNotFoundException::new);
+        return ResponseEntity.ok(getWaitings.excute(pub));
     }
 }

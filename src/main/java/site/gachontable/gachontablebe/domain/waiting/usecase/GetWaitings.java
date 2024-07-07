@@ -19,8 +19,7 @@ public class GetWaitings {
     private final WaitingRepository waitingRepository;
     private final PubRepository pubRepository;
 
-    public PubWaitingListResponse excute(Admin admin) {
-        Pub pub = pubRepository.findByPubId(admin.getPub().getPubId()).orElseThrow(PubNotFoundException::new);
+    public PubWaitingListResponse excute(Pub pub) {
         List<Waiting> waitings = waitingRepository.findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
         return new PubWaitingListResponse(
                 waitings.size(),
