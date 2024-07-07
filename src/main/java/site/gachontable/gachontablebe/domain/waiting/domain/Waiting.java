@@ -8,6 +8,9 @@ import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Entity(name = "waiting")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,6 +31,9 @@ public class Waiting extends BaseTimeEntity {
     @Column
     private Status waitingStatus;
 
+    @Column
+    private String tel; // 비회원 식별을 위한 휴대폰 번호
+
     @ManyToOne
     @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)")
     private User user;
@@ -36,21 +42,27 @@ public class Waiting extends BaseTimeEntity {
     @JoinColumn(name = "pub_id", nullable = false)
     private Pub pub;
 
-    public static Waiting create(Position waitingType, Integer headCount, Status waitingStatus, User user, Pub pub) {
+    public boolean matchesUser(User user) {
+        return Objects.equals(this.user, user);
+    }
+
+    public static Waiting create(Position waitingType, Integer headCount, Status waitingStatus, String tel, User user, Pub pub) {
         return Waiting.builder()
                 .waitingType(waitingType)
                 .headCount(headCount)
                 .waitingStatus(waitingStatus)
+                .tel(tel)
                 .user(user)
                 .pub(pub)
                 .build();
     }
 
     @Builder
-    public Waiting(Position waitingType, Integer headCount, Status waitingStatus, User user, Pub pub) {
+    public Waiting(Position waitingType, Integer headCount, Status waitingStatus, String tel, User user, Pub pub) {
         this.waitingType = waitingType;
         this.headCount = headCount;
         this.waitingStatus = waitingStatus;
+        this.tel = tel;
         this.user = user;
         this.pub = pub;
     }

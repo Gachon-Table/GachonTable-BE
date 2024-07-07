@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import site.gachontable.gachontablebe.domain.admin.domain.Admin;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
+import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
@@ -19,17 +20,12 @@ public class AdminRegisterImpl implements AdminRegister {
     private final JwtProvider jwtProvider;
 
     @Override
-    public RegisterResponse execute(String username, String password, String tel) {
-        Admin admin = createAdmin(username, password, tel);
+    public RegisterResponse execute(String username, String password, String tel, Pub pub) {
+        Admin admin = Admin.create(username, passwordEncoder.encode(password), tel, pub);
+        adminRepository.save(admin);
         generateRefreshToken(admin);
 
         return new RegisterResponse(true, "어드민 가입 성공");
-    }
-
-    private Admin createAdmin(String username, String password, String tel) {
-        Admin admin = Admin.create(username, passwordEncoder.encode(password), tel);
-        adminRepository.save(admin);
-        return admin;
     }
 
     public void generateRefreshToken(Admin admin) {
