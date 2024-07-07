@@ -5,6 +5,7 @@ import lombok.*;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.shared.BaseTimeEntity;
 import site.gachontable.gachontablebe.domain.user.domain.User;
+import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.PubWaitingListResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
@@ -65,5 +66,9 @@ public class Waiting extends BaseTimeEntity {
         this.tel = tel;
         this.user = user;
         this.pub = pub;
+    }
+
+    public static PubWaitingListResponse.WaitingInfo toWaitingInfo(Waiting waiting) {
+        return new PubWaitingListResponse.WaitingInfo(waiting.getUser().getUserName(),waiting.getCreatedAt(),waiting.getHeadCount(),waiting.getUser().getUserTel());
     }
 }
