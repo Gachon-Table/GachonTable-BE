@@ -16,7 +16,7 @@ public class GetWaitingHistory {
     public List<WaitingHistoryResponse> excute(User user) {
         List<Waiting> waitings = waitingRepository.findAllByUser(user);
         return waitings.stream()
-                .map(WaitingHistoryResponse::of)
+                .map(WaitingHistoryResponse::from)
                 .toList();
     }
 }

@@ -6,7 +6,7 @@ import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import java.time.LocalDateTime;
 
 public record WaitingHistoryResponse(String pubName, Status status, LocalDateTime enteredTime) {
-    public static WaitingHistoryResponse of(Waiting waiting) {
+    public static WaitingHistoryResponse from(Waiting waiting) {
         return new WaitingHistoryResponse(
                 waiting.getPub().getPubName(),
                 waiting.getWaitingStatus(),
