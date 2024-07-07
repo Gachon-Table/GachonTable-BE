@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.admin.domain.Admin;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
+import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.LoginRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.RegisterRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.LoginResponse;
@@ -68,7 +69,7 @@ public class AdminController {
     @GetMapping("/waiting")
     public ResponseEntity<PubWaitingListResponse> getWaiting(@RequestHeader("Authorization") String authorizationHeader) {
         Admin admin = adminRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(AdminNotFoundException::new);
         return ResponseEntity.ok(getWaitingList.excute(admin));
     }
 }
