@@ -13,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GetWaitingHistory {
     private final WaitingRepository waitingRepository;
+
     public List<WaitingHistoryResponse> excute(User user) {
         List<Waiting> waitings = waitingRepository.findAllByUser(user);
         return waitings.stream()
