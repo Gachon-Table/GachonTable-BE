@@ -86,7 +86,7 @@ public class WaitingController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/waitng-history")
+    @GetMapping("/history")
     public ResponseEntity<List<WaitingHistoryResponse>> getWaitingHistroy(@RequestHeader("Authorization") String authorizationHeader) {
         User user = userRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
                 .orElseThrow(UserNotFoundException::new);
