@@ -78,6 +78,14 @@ public class WaitingController {
         return ResponseEntity.ok(getOrder.execute(user));
     }
 
+    @Operation(summary = "웨이팅 내역 조회", description = "회원이 지금까지 신청한 웨이팅 내역을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GetMapping("/waitng-history")
     public ResponseEntity<List<WaitingHistoryResponse>> getWaitingHistroy(@RequestHeader("Authorization") String authorizationHeader) {
         User user = userRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
