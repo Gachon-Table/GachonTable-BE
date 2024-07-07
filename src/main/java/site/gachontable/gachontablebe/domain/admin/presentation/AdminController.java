@@ -64,6 +64,14 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "웨이팅 대기열 조회", description = "관리자가 담당하는 주점의 대기열을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GetMapping("/waitings")
     public ResponseEntity<PubWaitingListResponse> getWaiting(@RequestHeader("Authorization") String authorizationHeader) {
         Admin admin = adminRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
