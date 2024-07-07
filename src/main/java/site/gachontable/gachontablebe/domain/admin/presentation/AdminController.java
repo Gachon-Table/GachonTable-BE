@@ -20,10 +20,8 @@ import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
-import site.gachontable.gachontablebe.domain.user.domain.User;
-import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.PubWaitingListResponse;
-import site.gachontable.gachontablebe.domain.waiting.usecase.GetWaitingList;
+import site.gachontable.gachontablebe.domain.waiting.usecase.GetWaitings;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 
@@ -36,7 +34,7 @@ public class AdminController {
     private final PubRepository pubRepository;
     private final AdminRepository adminRepository;
     private final JwtProvider jwtProvider;
-    private final GetWaitingList getWaitingList;
+    private final GetWaitings getWaitings;
 
     @Operation(summary = "관리자 테스트 회원가입", description = "테스트를 위한 관리자 회원가입 기능입니다.")
     @ApiResponses({
@@ -70,6 +68,6 @@ public class AdminController {
     public ResponseEntity<PubWaitingListResponse> getWaiting(@RequestHeader("Authorization") String authorizationHeader) {
         Admin admin = adminRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
                 .orElseThrow(AdminNotFoundException::new);
-        return ResponseEntity.ok(getWaitingList.excute(admin));
+        return ResponseEntity.ok(getWaitings.excute(admin));
     }
 }
