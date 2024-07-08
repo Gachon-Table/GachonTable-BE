@@ -95,6 +95,6 @@ public class AdminController {
     public ResponseEntity<String> enterUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnterUserRequest request) {
         Admin admin = adminRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
                 .orElseThrow(AdminNotFoundException::new);
-        return ResponseEntity.ok(enterUser.execute(admin, request.waitingId()));
+        return ResponseEntity.ok(enterUser.execute(admin, request));
     }
 }
