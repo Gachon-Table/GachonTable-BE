@@ -9,7 +9,6 @@ import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.Ente
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
-import site.gachontable.gachontablebe.domain.pub.exception.EmptyWaitingCountException;
 import site.gachontable.gachontablebe.domain.pub.exception.PubMismatchException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
