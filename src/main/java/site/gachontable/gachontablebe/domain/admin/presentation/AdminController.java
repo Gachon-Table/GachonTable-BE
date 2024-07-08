@@ -12,6 +12,7 @@ import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminReposi
 import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminLoginRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminRegisterRequest;
+import site.gachontable.gachontablebe.domain.shared.dto.request.RefreshRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.AdminLoginResponse;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminRegister;
@@ -23,6 +24,7 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.P
 import site.gachontable.gachontablebe.domain.waiting.usecase.GetWaitings;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
+import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 
 @RestController
 @RequestMapping("/admin")
@@ -61,6 +63,19 @@ public class AdminController {
     public ResponseEntity<AdminLoginResponse> login(@RequestBody AdminLoginRequest request) {
         AdminLoginResponse response = adminLogin.execute(request.id(), request.password());
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "(관리자) 관리자 토큰 갱신", description = "관리자 계정의 액세스토큰을 갱신합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "401", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PostMapping("/refresh")
+    public ResponseEntity<JwtResponse> refresh(@RequestBody RefreshRequest request) {
+        return ResponseEntity.ok(jwtProvider.refreshAccessToken(request.refreshToken()));
     }
 
     @Operation(summary = "웨이팅 대기열 조회", description = "관리자가 담당하는 주점의 대기열을 조회합니다.")

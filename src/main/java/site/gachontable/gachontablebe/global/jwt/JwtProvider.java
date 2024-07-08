@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import site.gachontable.gachontablebe.domain.shared.Role;
+import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
 import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
 
@@ -32,6 +33,17 @@ public class JwtProvider {
     @Autowired
     public JwtProvider(@Value("${jwt.secret_key}") String secretKey) {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
+    }
+
+    public JwtResponse refreshAccessToken(String refreshToken) {
+        validateToken(refreshToken);
+
+        Claims claims = parseClaims(refreshToken);
+        UUID uuid = UUID.fromString(claims.get("uid", String.class));
+        String role = claims.get("role", String.class);
+
+        String newAccessToken = generateAccessToken(uuid, claims.getSubject(), Role.valueOf(role));
+        return new JwtResponse(newAccessToken, null);
     }
 
     public String generateAccessToken(UUID uuid, String tokenSubject, Role role) {
@@ -63,7 +75,7 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(claims.getSubject(), "", authorities);
     }
 
-    private Claims parseClaims(String token) {
+    public Claims parseClaims(String token) {
         try {
             return Jwts.parser()
                     .verifyWith(secretKey).build()
