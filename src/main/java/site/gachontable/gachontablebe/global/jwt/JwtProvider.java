@@ -10,7 +10,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
+import site.gachontable.gachontablebe.domain.auth.usecase.AdminAuthDetailsService;
+import site.gachontable.gachontablebe.domain.auth.usecase.UserAuthDetailsService;
 import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
@@ -23,16 +26,22 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
-@Component
+@Service
 public class JwtProvider {
     public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14);
     public static final Duration ACCESS_TOKEN_DURATION = Duration.ofHours(6);
 
     private final SecretKey secretKey;
+    private final AdminAuthDetailsService adminAuthDetailsService;
+    private final UserAuthDetailsService userAuthDetailsService;
 
     @Autowired
-    public JwtProvider(@Value("${jwt.secret_key}") String secretKey) {
+    public JwtProvider(@Value("${jwt.secret_key}") String secretKey,
+                       UserAuthDetailsService userAuthDetailsService,
+                       AdminAuthDetailsService adminAuthDetailsService) {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
+        this.adminAuthDetailsService = adminAuthDetailsService;
+        this.userAuthDetailsService = userAuthDetailsService;
     }
 
     public JwtResponse refreshAccessToken(String refreshToken) {
@@ -72,7 +81,14 @@ public class JwtProvider {
         Collection<? extends GrantedAuthority> authorities = Collections.singletonList(
                 new SimpleGrantedAuthority(claims.get("role").toString()));
 
-        return new UsernamePasswordAuthenticationToken(claims.getSubject(), "", authorities);
+        return new UsernamePasswordAuthenticationToken(getDetails(claims), "", authorities);
+    }
+
+    private AuthDetails getDetails(Claims claims) {
+        if (claims.get("role").equals(Role.ROLE_ADMIN.getRole())) {
+            return this.adminAuthDetailsService.loadUserByUsername(claims.getSubject());
+        }
+        return this.userAuthDetailsService.loadUserByUsername(claims.getSubject());
     }
 
     public Claims parseClaims(String token) {
