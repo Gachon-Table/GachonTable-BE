@@ -69,11 +69,7 @@ public class Waiting extends BaseTimeEntity {
     }
 
     public static PubWaitingListResponse.WaitingInfo toWaitingInfo(Waiting waiting) {
-        if (waiting.getTel() == null) {
-            return new PubWaitingListResponse.WaitingInfo(waiting.getUser().getUserName(), waiting.getCreatedAt(), waiting.getHeadCount(), waiting.getUser().getUserTel());
-        } else {
-            return new PubWaitingListResponse.WaitingInfo(waiting.getTel().substring(9), waiting.getCreatedAt(), waiting.getHeadCount(), waiting.getTel());
-        }
-
+        String username = (waiting.getUser() == null) ? waiting.getTel().substring(9) : waiting.getUser().getUserName();
+        return PubWaitingListResponse.WaitingInfo.of(username, waiting);
     }
 }
