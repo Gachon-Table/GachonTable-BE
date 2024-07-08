@@ -8,13 +8,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.gachontable.gachontablebe.domain.admin.domain.Admin;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
 import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminLoginRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminRegisterRequest;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.EnterUserRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.AdminLoginResponse;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminRegister;
+import site.gachontable.gachontablebe.domain.admin.usecase.EnterUser;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
@@ -34,6 +37,7 @@ public class AdminController {
     private final AdminRepository adminRepository;
     private final JwtProvider jwtProvider;
     private final GetWaitings getWaitings;
+    private final EnterUser enterUser;
 
     @Operation(summary = "관리자 테스트 회원가입", description = "테스트를 위한 관리자 회원가입 기능입니다.")
     @ApiResponses({
@@ -77,5 +81,20 @@ public class AdminController {
                 .orElseThrow(AdminNotFoundException::new)
                 .getPub();
         return ResponseEntity.ok(getWaitings.excute(pub));
+    }
+
+    @Operation(summary = "사용자 입장완료", description = "관리자가 담당하는 주점의 사용자를 입장완료 처리합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PostMapping("/enter")
+    public ResponseEntity<String> enterUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnterUserRequest request) {
+        Admin admin = adminRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
+                .orElseThrow(AdminNotFoundException::new);
+        return ResponseEntity.ok(enterUser.execute(admin, request));
     }
 }

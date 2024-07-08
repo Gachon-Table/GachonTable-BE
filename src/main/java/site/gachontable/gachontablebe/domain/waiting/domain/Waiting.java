@@ -72,4 +72,8 @@ public class Waiting extends BaseTimeEntity {
         String username = (waiting.getUser() == null) ? waiting.getTel().substring(9) : waiting.getUser().getUserName();
         return PubWaitingListResponse.WaitingInfo.of(username, waiting);
     }
-}
+
+    public void enter() {
+        this.waitingStatus = Status.ENTERED;
+    }
+ }
