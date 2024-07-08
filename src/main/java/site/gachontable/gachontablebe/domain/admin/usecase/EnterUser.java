@@ -21,10 +21,7 @@ public class EnterUser {
     private final WaitingRepository waitingRepository;
 
     public EnterUserResponse execute(Admin admin, Long waitingId) {
-        /*todo
-    Waitung status: AVAILABLE -> ENTERED
-    Pub waitingCount decount
-     */
+
         Waiting waiting = waitingRepository.findById(waitingId).orElseThrow(WaitingNotFoundException::new);
         Pub pub = waiting.getPub();
 
@@ -33,17 +30,18 @@ public class EnterUser {
         }
 
         setWaitingEntered(waiting);
+        decreaseWaitingCount(pub);
 
         return new EnterUserResponse(SuccessCode.ENTERED_SUCCESS.getMessage());
     }
 
-    private void decreaseQueueingCount(Pub givenPub) {
-        if (givenPub.getWaitingCount() == 0) {
+    private void decreaseWaitingCount(Pub Pub) {
+        if (Pub.getWaitingCount() == 0) {
             throw new EmptyWaitingCountException();
         }
 
-        givenPub.decreaseWaitingCount();
-        pubRepository.save(givenPub);
+        Pub.decreaseWaitingCount();
+        pubRepository.save(Pub);
     }
 
     private void setWaitingEntered(Waiting givenWaiting) {
