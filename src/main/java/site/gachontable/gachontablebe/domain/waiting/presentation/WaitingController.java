@@ -95,8 +95,7 @@ public class WaitingController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/cancel")
-    public ResponseEntity<WaitingResponse> cancel(@AuthenticationPrincipal AuthDetails authDetails,
-                                                  @RequestBody CancelRequest request) {
-        return ResponseEntity.ok(cancelWaiting.execute(authDetails, request));
+    public ResponseEntity<WaitingResponse> cancel(@RequestBody CancelRequest request) {
+        return ResponseEntity.ok(cancelWaiting.execute(request));
     }
 }
