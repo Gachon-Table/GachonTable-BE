@@ -91,7 +91,7 @@ public class AdminController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @PostMapping("/entered")
+    @PostMapping("/enter")
     public ResponseEntity<String> enterUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnterUserRequest request) {
         Admin admin = adminRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
                 .orElseThrow(AdminNotFoundException::new);
