@@ -3,7 +3,6 @@ package site.gachontable.gachontablebe.domain.user.usecase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.domain.shared.exception.PasswordNotMatchException;
 import site.gachontable.gachontablebe.domain.user.domain.User;
@@ -23,11 +22,11 @@ public class UserLoginImpl implements UserLogin{
     private final JwtProvider jwtProvider;
 
     @Override
-    public JwtResponse execute(String userName, String password) {
-        User user = userRepository.findByUserName(userName).orElseThrow(UserNotFoundException::new);
+    public JwtResponse execute(String username, String password) {
+        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         validatePassword(password, user);
 
-        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUserName(), Role.ROLE_USER);
+        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
         String refreshToken = generateRefreshToken(user);
 
         return new JwtResponse(accessToken, refreshToken);
@@ -42,7 +41,7 @@ public class UserLoginImpl implements UserLogin{
     private String generateRefreshToken(User user) {
         String refreshToken = user.getRefreshToken();
         if (refreshToken == null || !isValidToken(refreshToken)) {
-            refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUserName(), Role.ROLE_USER);
+            refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
             updateRefreshToken(user, refreshToken);
         }
         return refreshToken;

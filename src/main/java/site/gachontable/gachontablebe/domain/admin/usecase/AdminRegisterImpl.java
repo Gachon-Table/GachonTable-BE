@@ -31,7 +31,7 @@ public class AdminRegisterImpl implements AdminRegister {
     public void generateRefreshToken(Admin admin) {
         String refreshToken = admin.getRefreshToken();
         if (refreshToken == null || !isValidToken(refreshToken)) {
-            refreshToken = jwtProvider.generateRefreshToken(admin.getAdminId(), admin.getAdminName(), Role.ROLE_ADMIN);
+            refreshToken = jwtProvider.generateRefreshToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
             updateRefreshToken(admin, refreshToken);
         }
     }

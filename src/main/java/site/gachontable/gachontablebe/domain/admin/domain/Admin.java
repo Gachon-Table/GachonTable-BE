@@ -17,7 +17,7 @@ public class Admin {
     private UUID adminId;
 
     @Column(nullable = false)
-    private String adminName;
+    private String username;
 
     @Column(nullable = false)
     private String adminPassword;
@@ -32,9 +32,9 @@ public class Admin {
     @JoinColumn(name = "pub_id")
     private Pub pub;
 
-    public static Admin create(String adminName, String adminPassword, String adminTel, Pub pub) {
+    public static Admin create(String username, String adminPassword, String adminTel, Pub pub) {
         return Admin.builder()
-                .adminName(adminName)
+                .username(username)
                 .adminPassword(adminPassword)
                 .adminTel(adminTel)
                 .pub(pub)
@@ -42,8 +42,8 @@ public class Admin {
     }
 
     @Builder
-    public Admin(String adminName, String adminPassword, String adminTel, Pub pub) {
-        this.adminName = adminName;
+    public Admin(String username, String adminPassword, String adminTel, Pub pub) {
+        this.username = username;
         this.adminPassword = adminPassword;
         this.adminTel = adminTel;
         this.pub = pub;

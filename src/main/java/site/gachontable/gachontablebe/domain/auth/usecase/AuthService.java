@@ -40,7 +40,7 @@ public class AuthService {
         String userName = kakaoProfile.email();
         String tel = kakaoProfile.nickname();
 
-        Optional<User> byUserName = userRepository.findByUserName(userName);
+        Optional<User> byUserName = userRepository.findByUsername(userName);
 
         if (byUserName.isPresent()) {
             return byUserName.get();

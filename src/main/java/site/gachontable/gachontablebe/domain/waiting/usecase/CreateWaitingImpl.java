@@ -2,11 +2,14 @@ package site.gachontable.gachontablebe.domain.waiting.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotOpenException;
 import site.gachontable.gachontablebe.domain.user.domain.User;
+import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
+import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
@@ -21,10 +24,14 @@ import site.gachontable.gachontablebe.global.success.SuccessCode;
 public class CreateWaitingImpl implements CreateWaiting {
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
+    private final UserRepository userRepository;
 
     @Override
-    public WaitingResponse execute(User user, RemoteWaitingRequest request) { // 원격 웨이팅
-        Pub pub = pubRepository.findByPubId(request.pubId()).orElseThrow(PubNotFoundException::new);
+    public WaitingResponse execute(AuthDetails authDetails, RemoteWaitingRequest request) { // 원격 웨이팅
+        User user = userRepository.findById(authDetails.getUuid())
+                .orElseThrow(UserNotFoundException::new);
+        Pub pub = pubRepository.findByPubId(request.pubId())
+                .orElseThrow(PubNotFoundException::new);
 
         if (!pub.getOpenStatus()) {
             throw new PubNotOpenException();

@@ -37,7 +37,7 @@ public class UserRegisterImpl implements UserRegister {
         String refreshToken = user.getRefreshToken();
 
         if (refreshToken == null || !isValidToken(refreshToken)) {
-            refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUserName(), Role.ROLE_USER);
+            refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
             updateUserRefreshToken(user, refreshToken);
         }
     }

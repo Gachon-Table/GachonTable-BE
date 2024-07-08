@@ -16,7 +16,7 @@ public class User {
     private UUID userId;
 
     @Column(nullable = false)
-    private String userName;
+    private String username;
 
     private String password;
 
@@ -29,24 +29,24 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
-    public static User createForTest(String userName, String password, String userTel) {
+    public static User createForTest(String username, String password, String userTel) {
         return User.builder()
-                .userName(userName)
+                .username(username)
                 .password(password)
                 .userTel(userTel)
                 .build();
     }
 
-    public static User create(String userName, String userTel) {
+    public static User create(String username, String userTel) {
         return User.builder()
-                .userName(userName)
+                .username(username)
                 .userTel(userTel)
                 .build();
     }
 
     @Builder
-    public User(String userName, String password, String userTel) {
-        this.userName = userName;
+    public User(String username, String password, String userTel) {
+        this.username = username;
         this.password = password;
         this.userTel = userTel;
     }

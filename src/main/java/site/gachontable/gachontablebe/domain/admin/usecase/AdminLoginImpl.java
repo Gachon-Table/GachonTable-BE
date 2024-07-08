@@ -21,11 +21,11 @@ public class AdminLoginImpl implements AdminLogin {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public AdminLoginResponse execute(String adminName, String password) {
-        Admin admin = adminRepository.findByAdminName(adminName).orElseThrow(AdminNotFoundException::new);
+    public AdminLoginResponse execute(String username, String password) {
+        Admin admin = adminRepository.findByUsername(username).orElseThrow(AdminNotFoundException::new);
         validatePassword(password, admin);
 
-        String accessToken = tokenProvider.generateAccessToken(admin.getAdminId(), admin.getAdminName(), Role.ROLE_ADMIN);
+        String accessToken = tokenProvider.generateAccessToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
         String refreshToken = generateRefreshToken(admin);
         Integer pubId = admin.getPub().getPubId();
 
@@ -41,7 +41,7 @@ public class AdminLoginImpl implements AdminLogin {
     private String generateRefreshToken(Admin admin) {
         String refreshToken = admin.getRefreshToken();
         if (refreshToken == null || !isValidToken(refreshToken)) {
-            refreshToken = tokenProvider.generateRefreshToken(admin.getAdminId(), admin.getAdminName(), Role.ROLE_ADMIN);
+            refreshToken = tokenProvider.generateRefreshToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
             updateAdminRefreshToken(admin, refreshToken);
         }
         return refreshToken;
