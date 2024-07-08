@@ -7,11 +7,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
-import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminLoginRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminRegisterRequest;
+import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.shared.dto.request.RefreshRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.AdminLoginResponse;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
@@ -33,7 +33,6 @@ public class AdminController {
     private final AdminRegister adminRegister;
     private final AdminLogin adminLogin;
     private final PubRepository pubRepository;
-    private final AdminRepository adminRepository;
     private final JwtProvider jwtProvider;
     private final GetWaitings getWaitings;
 
@@ -87,10 +86,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/waitings")
-    public ResponseEntity<PubWaitingListResponse> getWaiting(@RequestHeader("Authorization") String authorizationHeader) {
-        Pub pub = adminRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
-                .orElseThrow(AdminNotFoundException::new)
-                .getPub();
-        return ResponseEntity.ok(getWaitings.excute(pub));
+    public ResponseEntity<PubWaitingListResponse> getWaiting(@AuthenticationPrincipal AuthDetails authDetails) {
+        return ResponseEntity.ok(getWaitings.excute(authDetails));
     }
 }
