@@ -29,7 +29,7 @@ public class EnterUser {
             throw new PubMismatchException();
         }
 
-        setWaitingEntered(waiting);
+        updateWaitingStatusToEntered(waiting);
         decreaseWaitingCount(pub);
 
         return new EnterUserResponse(SuccessCode.ENTERED_SUCCESS.getMessage());
@@ -44,8 +44,8 @@ public class EnterUser {
         pubRepository.save(Pub);
     }
 
-    private void setWaitingEntered(Waiting givenWaiting) {
-        givenWaiting.enter();
-        waitingRepository.save(givenWaiting);
+    private void updateWaitingStatusToEntered(Waiting waiting) {
+        waiting.enter();
+        waitingRepository.save(waiting);
     }
 }
