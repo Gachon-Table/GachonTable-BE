@@ -19,7 +19,7 @@ public class GetWaitingHistory {
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
 
-    public List<WaitingHistoryResponse> excute(AuthDetails authDetails) {
+    public List<WaitingHistoryResponse> execute(AuthDetails authDetails) {
         User user = userRepository.findById(authDetails.getUuid()).orElseThrow(UserNotFoundException::new);
 
         List<Waiting> waitings = waitingRepository.findAllByUserAndWaitingStatusOrWaitingStatus(user, Status.ENTERED,Status.CANCELED);
