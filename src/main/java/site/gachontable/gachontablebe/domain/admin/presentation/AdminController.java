@@ -103,7 +103,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/entered")
-    public ResponseEntity<EnterUserResponse> enterUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody EnterUserRequest request) {
+    public ResponseEntity<String> enterUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody EnterUserRequest request) {
         return ResponseEntity.ok(enterUser.execute(authDetails, request.waitingId()));
     }
 }
