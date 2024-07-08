@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
-import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
+import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.CancelRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
@@ -20,7 +20,7 @@ public class CancelWaitingImpl implements CancelWaiting {
     @Override
     public WaitingResponse execute(CancelRequest request) {
         Waiting waiting = waitingRepository.findById(request.waitingId()).
-                orElseThrow(PubNotFoundException::new);
+                orElseThrow(WaitingNotFoundException::new);
 
         waiting.cancel();
         waitingRepository.save(waiting);
