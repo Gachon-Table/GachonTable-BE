@@ -103,6 +103,6 @@ public class AdminController {
     })
     @PostMapping("/enter")
     public ResponseEntity<String> enterUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody EnterUserRequest request) {
-        return ResponseEntity.ok(enterUser.execute(authDetails, request.waitingId()));
+        return ResponseEntity.ok(enterUser.execute(authDetails, request));
     }
 }
