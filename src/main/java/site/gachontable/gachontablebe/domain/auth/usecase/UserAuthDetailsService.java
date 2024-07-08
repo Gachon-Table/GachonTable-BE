@@ -8,7 +8,7 @@ import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
-import site.gachontable.gachontablebe.global.error.ErrorCode;
+import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ public class UserAuthDetailsService implements UserDetailsService {
     @Override
     public AuthDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage()));
+                .orElseThrow(UserNotFoundException::new);
         return new AuthDetails(user.getUserId(), user.getUsername(), Role.ROLE_USER);
     }
 }
