@@ -15,7 +15,6 @@ import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.Admi
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminRegisterRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.EnterUserRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.AdminLoginResponse;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.EnterUserResponse;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminRegister;
 import site.gachontable.gachontablebe.domain.admin.usecase.EnterUser;
@@ -93,7 +92,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/entered")
-    public ResponseEntity<EnterUserResponse> enterUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnterUserRequest request) {
+    public ResponseEntity<String> enterUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody EnterUserRequest request) {
         Admin admin = adminRepository.findById(jwtProvider.getUserIdFromToken(authorizationHeader))
                 .orElseThrow(AdminNotFoundException::new);
         return ResponseEntity.ok(enterUser.execute(admin, request.waitingId()));
