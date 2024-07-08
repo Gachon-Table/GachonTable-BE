@@ -88,13 +88,13 @@ public class WaitingController {
 
     @Operation(summary = "웨이팅 취소", description = "회원이 개별 웨이팅을 취소합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "201"),
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @PostMapping("/cancel")
+    @PatchMapping("/cancel")
     public ResponseEntity<WaitingResponse> cancel(@RequestBody CancelRequest request) {
         return ResponseEntity.ok(cancelWaiting.execute(request));
     }
