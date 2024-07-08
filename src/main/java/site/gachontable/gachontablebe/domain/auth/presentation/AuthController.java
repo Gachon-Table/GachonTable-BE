@@ -35,8 +35,8 @@ public class AuthController {
     public ResponseEntity<JwtResponse> login(@RequestParam(value = "token") String token) {
         User user = authService.getUserInfo(token);
 
-        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUserName(), Role.ROLE_USER);
-        String refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUserName(), Role.ROLE_USER);
+        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
+        String refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
 
         return ResponseEntity.ok(new JwtResponse(accessToken, refreshToken));
     }

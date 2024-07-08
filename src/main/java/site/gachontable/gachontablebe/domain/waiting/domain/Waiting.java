@@ -10,7 +10,6 @@ import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Entity(name = "waiting")
 @Getter
@@ -69,7 +68,7 @@ public class Waiting extends BaseTimeEntity {
     }
 
     public static PubWaitingListResponse.WaitingInfo toWaitingInfo(Waiting waiting) {
-        String username = (waiting.getUser() == null) ? waiting.getTel().substring(9) : waiting.getUser().getUserName();
+        String username = (waiting.getUser() == null) ? waiting.getTel().substring(9) : waiting.getUser().getUsername();
         return PubWaitingListResponse.WaitingInfo.of(username, waiting);
     }
 }
