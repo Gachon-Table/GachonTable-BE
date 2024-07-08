@@ -97,4 +97,7 @@ public class Pub {
         this.waitingCount = waitingCount;
     }
 
+    public void decreaseWaitingCount() {
+        this.waitingCount--;
+    }
 }
