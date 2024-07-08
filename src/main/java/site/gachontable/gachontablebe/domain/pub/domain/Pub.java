@@ -3,6 +3,7 @@ package site.gachontable.gachontablebe.domain.pub.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
+import site.gachontable.gachontablebe.domain.pub.exception.EmptyWaitingCountException;
 
 import java.util.List;
 
@@ -98,6 +99,10 @@ public class Pub {
     }
 
     public void decreaseWaitingCount() {
+        if (this.getWaitingCount() == 0) {
+            throw new EmptyWaitingCountException();
+        }
+
         this.waitingCount -= this.waitingCount;
     }
 }

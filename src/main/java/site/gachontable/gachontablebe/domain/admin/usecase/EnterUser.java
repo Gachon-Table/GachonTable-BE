@@ -41,10 +41,6 @@ public class EnterUser {
     }
 
     private void decreaseWaitingCount(Pub Pub) {
-        if (Pub.getWaitingCount() == 0) {
-            throw new EmptyWaitingCountException();
-        }
-
         Pub.decreaseWaitingCount();
         pubRepository.save(Pub);
     }
