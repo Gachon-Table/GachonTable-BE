@@ -98,6 +98,6 @@ public class Pub {
     }
 
     public void decreaseWaitingCount() {
-        this.waitingCount--;
+        this.waitingCount -= this.waitingCount;
     }
 }
