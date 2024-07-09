@@ -10,19 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
-import site.gachontable.gachontablebe.domain.user.domain.User;
-import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
-import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
+import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.CancelRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.OrderResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingHistoryResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
+import site.gachontable.gachontablebe.domain.waiting.usecase.CancelWaiting;
 import site.gachontable.gachontablebe.domain.waiting.usecase.CreateWaiting;
 import site.gachontable.gachontablebe.domain.waiting.usecase.GetOrder;
 import site.gachontable.gachontablebe.domain.waiting.usecase.GetWaitingHistory;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
-import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 
 import java.util.List;
 
@@ -32,9 +30,8 @@ import java.util.List;
 public class WaitingController {
     private final CreateWaiting createWaiting;
     private final GetOrder getOrder;
-    private final UserRepository userRepository;
-    private final JwtProvider jwtProvider;
     private final GetWaitingHistory getWaitingHistory;
+    private final CancelWaiting cancelWaiting;
 
     @Operation(summary = "원격 웨이팅", description = "원격 웨이팅을 신규로 생성합니다.")
     @ApiResponses({
@@ -44,7 +41,7 @@ public class WaitingController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @PostMapping("/remote/{pubId}")
+    @PostMapping("/remote")
     public ResponseEntity<WaitingResponse> createRemote(@AuthenticationPrincipal AuthDetails authDetails,
                                                         @RequestBody RemoteWaitingRequest request) {
         return ResponseEntity.ok(createWaiting.execute(authDetails, request));
@@ -58,7 +55,7 @@ public class WaitingController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @PostMapping("/onsite/{pubId}")
+    @PostMapping("/onsite")
     public ResponseEntity<WaitingResponse> createOnsite(@RequestBody OnsiteWaitingRequest request) {
         return ResponseEntity.ok(createWaiting.execute(request));
     }
@@ -86,6 +83,19 @@ public class WaitingController {
     })
     @GetMapping("/history")
     public ResponseEntity<List<WaitingHistoryResponse>> getWaitingHistory(@AuthenticationPrincipal AuthDetails authDetails) {
-        return ResponseEntity.ok(getWaitingHistory.excute(authDetails));
+        return ResponseEntity.ok(getWaitingHistory.execute(authDetails));
+    }
+
+    @Operation(summary = "웨이팅 취소", description = "회원이 개별 웨이팅을 취소합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PatchMapping("/cancel")
+    public ResponseEntity<WaitingResponse> cancel(@RequestBody CancelRequest request) {
+        return ResponseEntity.ok(cancelWaiting.execute(request));
     }
 }

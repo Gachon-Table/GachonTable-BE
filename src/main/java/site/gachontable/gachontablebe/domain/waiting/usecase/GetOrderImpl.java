@@ -37,7 +37,9 @@ public class GetOrderImpl implements GetOrder {
     private static Stream<OrderResponse> getOrderResponse(User user, Pub pub, List<Waiting> waitings) {
         return waitings.stream()
                 .filter(waiting -> waiting.matchesUser(user))
-                .map(waiting -> OrderResponse.of(pub.getPubName(),
+                .map(waiting -> OrderResponse.of(
+                        waiting.getWaitingId(),
+                        pub.getPubName(),
                         waiting.getWaitingStatus().getStatusKo(),
                         waitings.indexOf(waiting) + 1));
     }
