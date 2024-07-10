@@ -64,6 +64,10 @@ public class CreateWaitingImpl implements CreateWaiting {
         if (!pub.getOpenStatus()) {
             throw new PubNotOpenException();
         }
+
+        if (waitingRepository.findByTel(request.tel()).isPresent() || userRepository.findByUserTel(request.tel()).isPresent()) {
+            throw new WaitingAlreadyExistException();
+        }
         waitingRepository.save(
                 Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, request.tel(), null, pub));
 
