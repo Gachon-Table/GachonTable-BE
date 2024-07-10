@@ -12,6 +12,7 @@ import site.gachontable.gachontablebe.domain.user.domain.repository.UserReposito
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
+import site.gachontable.gachontablebe.domain.waiting.exception.OverCountException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
@@ -36,6 +37,11 @@ public class CreateWaitingImpl implements CreateWaiting {
         if (!pub.getOpenStatus()) {
             throw new PubNotOpenException();
         }
+
+        if (waitingRepository.findAllByUser(user).size() >= 3) {
+            throw new OverCountException();
+        }
+
         waitingRepository.save(
                 Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, null, user, pub));
 
