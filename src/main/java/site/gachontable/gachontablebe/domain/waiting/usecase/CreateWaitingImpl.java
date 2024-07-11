@@ -13,7 +13,7 @@ import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundExceptio
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.exception.UserWaitingLimitExcessException;
-import site.gachontable.gachontablebe.domain.waiting.exception.WaitingAlreadyExistException;
+import site.gachontable.gachontablebe.domain.waiting.exception.WaitingAlreadyExistsException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
@@ -45,7 +45,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         }
 
         if (waitingRepository.findByUser(user).isPresent() || waitingRepository.findByTel(user.getUserTel()).isPresent()) {
-            throw  new WaitingAlreadyExistException();
+            throw  new WaitingAlreadyExistsException();
         }
 
         waitingRepository.save(
@@ -67,7 +67,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         }
 
         if (waitingRepository.findByTel(request.tel()).isPresent() || userRepository.findByUserTel(request.tel()).isPresent()) {
-            throw new WaitingAlreadyExistException();
+            throw new WaitingAlreadyExistsException();
         }
         waitingRepository.save(
                 Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, request.tel(), null, pub));
