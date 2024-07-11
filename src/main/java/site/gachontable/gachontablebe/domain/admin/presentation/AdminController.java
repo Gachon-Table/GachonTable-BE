@@ -118,7 +118,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PatchMapping("/call")
-    public ResponseEntity<String> forceCancel(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody CallUserRequest request){
+    public ResponseEntity<String> callUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody CallUserRequest request){
         return ResponseEntity.ok(callUser.execute(authDetails, request));
     }
 }
