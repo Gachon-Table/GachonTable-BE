@@ -12,6 +12,8 @@ import site.gachontable.gachontablebe.domain.user.domain.repository.UserReposito
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
+import site.gachontable.gachontablebe.domain.waiting.exception.UserWaitingLimitExcessException;
+import site.gachontable.gachontablebe.domain.waiting.exception.WaitingAlreadyExistsException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
@@ -25,6 +27,7 @@ public class CreateWaitingImpl implements CreateWaiting {
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
+    private final int WAITING_MAX_COUNT = 3;
 
     @Override
     public WaitingResponse execute(AuthDetails authDetails, RemoteWaitingRequest request) { // 원격 웨이팅
@@ -36,6 +39,15 @@ public class CreateWaitingImpl implements CreateWaiting {
         if (!pub.getOpenStatus()) {
             throw new PubNotOpenException();
         }
+
+        if (waitingRepository.findAllByUser(user).size() >= WAITING_MAX_COUNT) {
+            throw new UserWaitingLimitExcessException();
+        }
+
+        if (waitingRepository.findByUser(user).isPresent() || waitingRepository.findByTel(user.getUserTel()).isPresent()) {
+            throw  new WaitingAlreadyExistsException();
+        }
+
         waitingRepository.save(
                 Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, null, user, pub));
 
@@ -52,6 +64,10 @@ public class CreateWaitingImpl implements CreateWaiting {
 
         if (!pub.getOpenStatus()) {
             throw new PubNotOpenException();
+        }
+
+        if (waitingRepository.findByTel(request.tel()).isPresent() || userRepository.findByUserTel(request.tel()).isPresent()) {
+            throw new WaitingAlreadyExistsException();
         }
         waitingRepository.save(
                 Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, request.tel(), null, pub));
