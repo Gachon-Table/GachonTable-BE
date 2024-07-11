@@ -11,10 +11,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminLoginRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminRegisterRequest;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.CallUserRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.EnterUserRequest;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.AdminLoginResponse;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminLogin;
 import site.gachontable.gachontablebe.domain.admin.usecase.AdminRegister;
+import site.gachontable.gachontablebe.domain.admin.usecase.CallUser;
 import site.gachontable.gachontablebe.domain.admin.usecase.EnterUser;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
@@ -38,6 +40,7 @@ public class AdminController {
     private final JwtProvider jwtProvider;
     private final GetWaitings getWaitings;
     private final EnterUser enterUser;
+    private final CallUser callUser;
 
     @Operation(summary = "관리자 테스트 회원가입", description = "테스트를 위한 관리자 회원가입 기능입니다.")
     @ApiResponses({
@@ -104,5 +107,18 @@ public class AdminController {
     @PatchMapping("/enter")
     public ResponseEntity<String> enterUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody EnterUserRequest request) {
         return ResponseEntity.ok(enterUser.execute(authDetails, request));
+    }
+
+    @Operation(summary = "사용자 호출", description = "관리자가 담당하는 주점의 사용자를 호출합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PatchMapping("/call")
+    public ResponseEntity<String> forceCancel(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody CallUserRequest request){
+        return ResponseEntity.ok(callUser.execute(authDetails, request));
     }
 }
