@@ -11,8 +11,11 @@ public record KakaoProfile(String email, String nickname) {
         JsonObject properties = object.getAsJsonObject("properties");
         String nickname = properties.get("nickname").getAsString();
 
-        JsonObject kakaoAccount = object.getAsJsonObject("kakao_account");
-        String email = kakaoAccount.get("email").getAsString();
+        JsonObject kakaoAccount = object.
+                getAsJsonObject("kakao_account").
+                getAsJsonObject("profile");
+        String email = kakaoAccount.get("nickname").getAsString();
+        // TODO : nickname -> email and add userTel
 
         return new KakaoProfile(email, nickname);
     }
