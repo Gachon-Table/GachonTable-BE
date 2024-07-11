@@ -12,7 +12,7 @@ import site.gachontable.gachontablebe.domain.user.domain.repository.UserReposito
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.domain.waiting.exception.OverCountException;
+import site.gachontable.gachontablebe.domain.waiting.exception.UserWaitingLimitExcessException;
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingAlreadyExistException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
@@ -40,7 +40,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         }
 
         if (waitingRepository.findAllByUser(user).size() >= 3) {
-            throw new OverCountException();
+            throw new UserWaitingLimitExcessException();
         }
 
         if (waitingRepository.findByUser(user).isPresent() || waitingRepository.findByTel(user.getUserTel()).isPresent()) {
