@@ -27,6 +27,7 @@ public class CreateWaitingImpl implements CreateWaiting {
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
+    private final int WAITING_MAX_COUNT = 3;
 
     @Override
     public WaitingResponse execute(AuthDetails authDetails, RemoteWaitingRequest request) { // 원격 웨이팅
@@ -39,7 +40,7 @@ public class CreateWaitingImpl implements CreateWaiting {
             throw new PubNotOpenException();
         }
 
-        if (waitingRepository.findAllByUser(user).size() >= 3) {
+        if (waitingRepository.findAllByUser(user).size() >= WAITING_MAX_COUNT) {
             throw new UserWaitingLimitExcessException();
         }
 
