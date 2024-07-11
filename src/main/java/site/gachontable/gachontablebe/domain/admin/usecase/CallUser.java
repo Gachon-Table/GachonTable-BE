@@ -56,7 +56,7 @@ public class CallUser {
     }
 
     private void updateWaitingStatusToAvailable(Waiting waiting) {
-        waiting.available();
+        waiting.toAvailable();
         waitingRepository.save(waiting);
     }
 

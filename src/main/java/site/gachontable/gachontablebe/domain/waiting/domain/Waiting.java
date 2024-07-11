@@ -80,7 +80,7 @@ public class Waiting extends BaseTimeEntity {
         this.waitingStatus = Status.CANCELED;
     }
 
-    public void available() {
+    public void toAvailable() {
         this.waitingStatus = Status.AVAILABLE;
     }
  }
