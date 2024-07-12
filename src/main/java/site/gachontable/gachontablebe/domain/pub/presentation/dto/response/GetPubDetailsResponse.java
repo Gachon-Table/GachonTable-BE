@@ -43,7 +43,7 @@ public record GetPubDetailsResponse(
 
     public record MenuInfo(
             String menuName,
-            Integer price,
+            String price,
             String oneLiner
     ) {
         public static MenuInfo from(Menu menu) {

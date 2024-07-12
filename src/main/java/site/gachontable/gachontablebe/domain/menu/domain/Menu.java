@@ -13,7 +13,6 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer menuID;
 
-    @Id
     @ManyToOne
     private Pub pub;
 
@@ -21,12 +20,12 @@ public class Menu {
     private String menuName;
 
     @Column(nullable = false)
-    private Integer price;
+    private String price;
 
-    @Column(nullable = false)
+    @Column
     private String oneLiner;
 
-    public static Menu create(Pub pub, String menuName, Integer price, String oneLiner) {
+    public static Menu create(Pub pub, String menuName, String price, String oneLiner) {
         return Menu.builder()
                 .pub(pub)
                 .menuName(menuName)
@@ -36,7 +35,7 @@ public class Menu {
     }
 
     @Builder
-    public Menu(Pub pub, String menuName, Integer price, String oneLiner) {
+    public Menu(Pub pub, String menuName, String price, String oneLiner) {
         this.pub = pub;
         this.menuName = menuName;
         this.price = price;

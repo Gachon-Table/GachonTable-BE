@@ -45,16 +45,16 @@ public class AuthService {
     }
 
     private User getUser(KakaoProfile kakaoProfile) {
-        String userName = kakaoProfile.email();
-        String tel = kakaoProfile.nickname();
+        String tel = kakaoProfile.email();
+        String username = kakaoProfile.nickname();
 
-        Optional<User> byUserName = userRepository.findByUsername(userName);
+        Optional<User> byUserName = userRepository.findByUsername(username);
 
         if (byUserName.isPresent()) {
             return byUserName.get();
         }
 
-        User user = User.create(userName, tel);
+        User user = User.create(username, tel);
 
         return userRepository.save(user);
     }
