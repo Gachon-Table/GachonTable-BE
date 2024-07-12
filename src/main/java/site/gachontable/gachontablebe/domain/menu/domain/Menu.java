@@ -13,7 +13,6 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer menuID;
 
-    @Id
     @ManyToOne
     private Pub pub;
 
