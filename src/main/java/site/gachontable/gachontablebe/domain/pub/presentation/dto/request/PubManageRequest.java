@@ -5,10 +5,8 @@ import java.util.List;
 public record PubManageRequest(String thumbnail,
                                Boolean studentCard,
                                List<MenuRequest> menuRequests) {
-    record MenuRequest(String menuName,
-                       String price,
-                       String oneLiner) {
+    public record MenuRequest(String menuName,
+                              String price,
+                              String oneLiner) {
     }
 }
-
-
