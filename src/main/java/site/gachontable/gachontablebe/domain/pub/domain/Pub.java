@@ -22,7 +22,7 @@ public class Pub {
     @Column(nullable = false)
     private String oneLiner;
 
-    @Column(columnDefinition = "char(13)", nullable = false)
+    @Column(columnDefinition = "char(16)", nullable = false)
     private String pubTel;
 
     @Column(nullable = false)

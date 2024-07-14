@@ -22,7 +22,7 @@ public class Admin {
     @Column(nullable = false)
     private String adminPassword;
 
-    @Column(columnDefinition = "char(13)", nullable = false)
+    @Column(columnDefinition = "char(16)", nullable = false)
     private String adminTel;
 
     @Column

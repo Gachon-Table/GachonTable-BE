@@ -31,7 +31,7 @@ public class Waiting extends BaseTimeEntity {
     @Column
     private Status waitingStatus;
 
-    @Column
+    @Column(columnDefinition = "char(16)")
     private String tel; // 비회원 식별을 위한 휴대폰 번호
 
     @ManyToOne
@@ -68,7 +68,7 @@ public class Waiting extends BaseTimeEntity {
     }
 
     public static PubWaitingListResponse.WaitingInfo toWaitingInfo(Waiting waiting) {
-        String username = (waiting.getUser() == null) ? waiting.getTel().substring(9) : waiting.getUser().getUsername();
+        String username = (waiting.getUser() == null) ? waiting.getTel().substring(12) : waiting.getUser().getUsername();
         return PubWaitingListResponse.WaitingInfo.of(username, waiting);
     }
 

@@ -20,7 +20,7 @@ public class User {
 
     private String password;
 
-    @Column(columnDefinition = "char(13)")
+    @Column(columnDefinition = "char(16)")
     private String userTel;
 
     private String refreshToken;
