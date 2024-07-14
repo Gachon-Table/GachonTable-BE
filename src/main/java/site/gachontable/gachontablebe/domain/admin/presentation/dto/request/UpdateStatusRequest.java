@@ -1,4 +1,4 @@
 package site.gachontable.gachontablebe.domain.admin.presentation.dto.request;
 
-public record UpdateStatusRequest() {
+public record UpdateStatusRequest(Boolean openStatus) {
 }
