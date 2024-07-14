@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +32,10 @@ public class AuthController {
     @PostMapping(value = "/login")
     public ResponseEntity<JwtResponse> login(@RequestParam(value = "token") String token) {
         return ResponseEntity.ok(authService.getUserInfo(token));
+    }
+
+    @GetMapping("/health-check")
+    public ResponseEntity<Void> checkHealthStatus() {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
