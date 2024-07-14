@@ -9,7 +9,7 @@ import site.gachontable.gachontablebe.domain.user.domain.repository.UserReposito
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.OrderResponse;
+import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.StatusResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.util.List;
@@ -17,27 +17,27 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class GetOrderImpl implements GetOrder {
+public class GetStatusImpl implements GetStatus {
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
 
     @Override
-    public List<OrderResponse> execute(AuthDetails authDetails) {
+    public List<StatusResponse> execute(AuthDetails authDetails) {
         User user = userRepository.findById(authDetails.getUuid()).orElseThrow(UserNotFoundException::new);
 
         return getPubsFromWaitings(user).stream()
                 .flatMap(pub -> {
                     List<Waiting> waitings = waitingRepository.findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
 
-                    return getOrderResponse(user, pub, waitings);
+                    return getStatusResponse(user, pub, waitings);
                 })
                 .toList();
     }
 
-    private static Stream<OrderResponse> getOrderResponse(User user, Pub pub, List<Waiting> waitings) {
+    private static Stream<StatusResponse> getStatusResponse(User user, Pub pub, List<Waiting> waitings) {
         return waitings.stream()
                 .filter(waiting -> waiting.matchesUser(user))
-                .map(waiting -> OrderResponse.of(
+                .map(waiting -> StatusResponse.of(
                         waiting.getWaitingId(),
                         pub.getPubName(),
                         waiting.getWaitingStatus().getStatusKo(),

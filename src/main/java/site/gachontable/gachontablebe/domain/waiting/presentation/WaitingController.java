@@ -13,12 +13,12 @@ import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.CancelRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.OrderResponse;
+import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.StatusResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingHistoryResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.domain.waiting.usecase.CancelWaiting;
 import site.gachontable.gachontablebe.domain.waiting.usecase.CreateWaiting;
-import site.gachontable.gachontablebe.domain.waiting.usecase.GetOrder;
+import site.gachontable.gachontablebe.domain.waiting.usecase.GetStatus;
 import site.gachontable.gachontablebe.domain.waiting.usecase.GetWaitingHistory;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 
@@ -29,7 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WaitingController {
     private final CreateWaiting createWaiting;
-    private final GetOrder getOrder;
+    private final GetStatus getStatus;
     private final GetWaitingHistory getWaitingHistory;
     private final CancelWaiting cancelWaiting;
 
@@ -68,9 +68,9 @@ public class WaitingController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/order")
-    public ResponseEntity<List<OrderResponse>> getOrder(@AuthenticationPrincipal AuthDetails authDetails) {
-        return ResponseEntity.ok(getOrder.execute(authDetails));
+    @GetMapping("/status")
+    public ResponseEntity<List<StatusResponse>> getStatus(@AuthenticationPrincipal AuthDetails authDetails) {
+        return ResponseEntity.ok(getStatus.execute(authDetails));
     }
 
     @Operation(summary = "웨이팅 내역 조회", description = "회원이 지금까지 신청한 웨이팅 내역을 조회합니다.")
