@@ -12,5 +12,5 @@ public interface PubRepository extends JpaRepository<Pub, Integer> {
     Optional<Pub> findByPubId(Integer pubId);
 
     @Query("SELECT DISTINCT p FROM pub p WHERE p.pubName LIKE %:keyword% OR p.oneLiner LIKE %:keyword%")
-    List<Pub> findAllByTitleOrTextDataContaining(@Param("keyword") String keyword);
+    List<Pub> findAllByPubNameOrOneLinerContaining(@Param("keyword") String keyword);
 }
