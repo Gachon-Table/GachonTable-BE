@@ -112,4 +112,8 @@ public class Pub {
         this.studentCard = studentCard;
         this.menus = menus;
     }
+
+    public void updateOpenStatus(Boolean openStatus) {
+        this.openStatus = openStatus;
+    }
 }
