@@ -1,7 +1,9 @@
 package site.gachontable.gachontablebe.domain.pub.usecase;
 
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.PubSearchResponse;
+import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubsResponse;
+
+import java.util.List;
 
 public interface SearchPub {
-    PubSearchResponse execute(String keyword);
+    List<GetPubsResponse> execute(String keyword);
 }
