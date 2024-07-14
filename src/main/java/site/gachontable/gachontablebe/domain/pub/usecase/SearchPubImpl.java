@@ -15,7 +15,7 @@ public class SearchPubImpl implements SearchPub {
 
     @Override
     public List<GetPubsResponse> execute(String keyword) {
-        List<Pub> pubs = pubRepository.findAllByTitleOrTextDataContaining(keyword);
+        List<Pub> pubs = pubRepository.findAllByPubNameOrOneLinerContaining(keyword);
 
         return pubs.stream().map(GetPubsResponse::of).toList();
     }
