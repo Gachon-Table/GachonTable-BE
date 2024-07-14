@@ -10,9 +10,11 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @OpenAPIDefinition(info = @Info(
-        title = "GachonTable API",
-        description = "가천테이블 API 문서",
+        title = "라인업지 API",
+        description = "라인업지 API 문서",
         version = "v1.0.0"))
 @Configuration
 public class SwaggerConfig {
@@ -27,8 +29,14 @@ public class SwaggerConfig {
                 .bearerFormat("JWT")
         );
 
+        Server apiServer = new Server();
+        apiServer.setUrl("https://api.lupg.me");
+
+        Server server = new Server();
+        server.setUrl("/");
+
         return new OpenAPI()
-                .addServersItem(new Server().url("/"))
+                .servers(List.of(apiServer, server))
                 .addSecurityItem(securityRequirement)
                 .components(components);
     }
