@@ -27,7 +27,7 @@ public class CreateWaitingImpl implements CreateWaiting {
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
-    private final int WAITING_MAX_COUNT = 3;
+    private static final Integer WAITING_MAX_COUNT = 3;
 
     @Override
     public WaitingResponse execute(AuthDetails authDetails, RemoteWaitingRequest request) { // 원격 웨이팅
@@ -45,7 +45,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         }
 
         if (waitingRepository.findByUser(user).isPresent() || waitingRepository.findByTel(user.getUserTel()).isPresent()) {
-            throw  new WaitingAlreadyExistsException();
+            throw new WaitingAlreadyExistsException();
         }
 
         waitingRepository.save(

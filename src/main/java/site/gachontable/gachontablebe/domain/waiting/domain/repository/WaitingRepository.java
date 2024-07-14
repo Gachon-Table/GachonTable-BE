@@ -8,8 +8,9 @@ import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface WaitingRepository extends JpaRepository<Waiting, Long> {
+public interface WaitingRepository extends JpaRepository<Waiting, UUID> {
     Optional<Waiting> findByUser(User user);
     List<Waiting> findAllByUser(User user);
     Optional<Waiting> findByTel(String tel);
