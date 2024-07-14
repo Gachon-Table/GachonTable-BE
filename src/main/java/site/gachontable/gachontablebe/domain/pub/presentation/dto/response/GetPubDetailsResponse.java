@@ -21,7 +21,7 @@ public record GetPubDetailsResponse(
 
     public record PubInfo(
             Integer pubId,
-            String imageUrl,
+            List<String> thumbnails,
             String pubName,
             String onLiner,
             Boolean studentCard,
@@ -32,7 +32,7 @@ public record GetPubDetailsResponse(
         public static PubInfo from(Pub pub) {
             return new PubInfo(
                     pub.getPubId(),
-                    pub.getPubThumbnail(),
+                    pub.getThumbnails(),
                     pub.getPubName(),
                     pub.getOneLiner(),
                     pub.getStudentCard(),

@@ -49,7 +49,7 @@ public class PubService {
                 request.studentCard(),
                 request.representativeMenu(),
                 request.pubLoc(),
-                request.pubThumbnail(),
+                request.thumbnails(),
                 menus,
                 request.openStatus(),
                 INITIAL_WAITING_COUNT);
