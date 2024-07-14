@@ -14,7 +14,6 @@ import site.gachontable.gachontablebe.domain.pub.presentation.dto.request.PubMan
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.request.PubRegisterRequest;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubDetailsResponse;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubsResponse;
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.PubSearchResponse;
 import site.gachontable.gachontablebe.domain.pub.usecase.ManagePub;
 import site.gachontable.gachontablebe.domain.pub.usecase.PubService;
 import site.gachontable.gachontablebe.domain.pub.usecase.SearchPub;
@@ -92,7 +91,7 @@ public class PubController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/search")
-    public ResponseEntity<PubSearchResponse> searchPub(@RequestParam(value = "keyword") String keyword) {
+    public ResponseEntity<List<GetPubsResponse>> searchPub(@RequestParam(value = "keyword") String keyword) {
         return ResponseEntity.ok(searchPub.execute(keyword));
     }
 }
