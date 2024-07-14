@@ -23,7 +23,7 @@ public class Pub {
     private String oneLiner;
 
     @Column(columnDefinition = "char(16)", nullable = false)
-    private String pubTel;
+    private String instagramUrl;
 
     @Column(nullable = false)
     private Boolean studentCard;
@@ -53,7 +53,7 @@ public class Pub {
 
     public static Pub create(String pubName,
                              String oneLiner,
-                             String pubTel,
+                             String instagramUrl,
                              Boolean studentCard,
                              String representativeMenu,
                              String pubLoc,
@@ -64,7 +64,7 @@ public class Pub {
         return Pub.builder()
                 .pubName(pubName)
                 .oneLiner(oneLiner)
-                .pubTel(pubTel)
+                .instagramUrl(instagramUrl)
                 .studentCard(studentCard)
                 .representativeMenu(representativeMenu)
                 .pubLoc(pubLoc)
@@ -78,7 +78,7 @@ public class Pub {
     @Builder
     public Pub(String pubName,
                String oneLiner,
-               String pubTel,
+               String instagramUrl,
                Boolean studentCard,
                String representativeMenu,
                String pubLoc,
@@ -88,7 +88,7 @@ public class Pub {
                Integer waitingCount) {
         this.pubName = pubName;
         this.oneLiner = oneLiner;
-        this.pubTel = pubTel;
+        this.instagramUrl = instagramUrl;
         this.studentCard = studentCard;
         this.representativeMenu = representativeMenu;
         this.pubLoc = pubLoc;

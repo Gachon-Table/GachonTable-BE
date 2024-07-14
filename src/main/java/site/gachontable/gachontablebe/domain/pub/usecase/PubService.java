@@ -17,8 +17,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PubService {
-    private final PubRepository pubRepository;
     private static final Integer INITIAL_WAITING_COUNT = 0;
+
+    private final PubRepository pubRepository;
 
     public List<GetPubsResponse> findAllPubs() {
         List<Pub> pubList = pubRepository.findAll();
@@ -29,11 +30,13 @@ public class PubService {
     public GetPubDetailsResponse findPubDetail(Integer pubId) {
         Pub pub = pubRepository.findByPubId(pubId).orElseThrow(PubNotFoundException::new);
         List<Menu> menu = pub.getMenus();
+
         return GetPubDetailsResponse.of(pub, menu);
     }
 
     public RegisterResponse register(PubRegisterRequest request) {
         pubRepository.save(createPub(request));
+
         return new RegisterResponse(true, "주점 등록 성공");
     }
 
@@ -42,7 +45,7 @@ public class PubService {
 
         return Pub.create(request.pubName(),
                 request.oneLiner(),
-                request.pubTel(),
+                request.instagramUrl(),
                 request.studentCard(),
                 request.representativeMenu(),
                 request.pubLoc(),

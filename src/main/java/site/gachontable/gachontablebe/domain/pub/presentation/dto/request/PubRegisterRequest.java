@@ -2,7 +2,7 @@ package site.gachontable.gachontablebe.domain.pub.presentation.dto.request;
 
 public record PubRegisterRequest(String pubName,
                                  String oneLiner,
-                                 String pubTel,
+                                 String instagramUrl,
                                  Boolean studentCard,
                                  String representativeMenu,
                                  String pubLoc,
