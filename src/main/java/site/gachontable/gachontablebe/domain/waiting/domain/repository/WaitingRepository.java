@@ -11,8 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface WaitingRepository extends JpaRepository<Waiting, UUID> {
-    Optional<Waiting> findByUser(User user);
-    List<Waiting> findAllByUser(User user);
+    List<Waiting> findAllByTel(String tel);
     Optional<Waiting> findByTel(String tel);
 
     List<Waiting> findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(Pub pub, Status waiting, Status available);

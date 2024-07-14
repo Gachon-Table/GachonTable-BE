@@ -45,7 +45,7 @@ public class GetOrderImpl implements GetOrder {
     }
 
     private List<Pub> getPubsFromWaitings(User user) {
-        return waitingRepository.findAllByUser(user).stream()
+        return waitingRepository.findAllByTel(user.getUserTel()).stream()
                 .map(Waiting::getPub)
                 .distinct()
                 .toList();
