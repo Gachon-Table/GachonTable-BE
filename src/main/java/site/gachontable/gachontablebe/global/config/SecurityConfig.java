@@ -3,6 +3,7 @@ package site.gachontable.gachontablebe.global.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -74,6 +75,11 @@ public class SecurityConfig {
 
                                 .anyRequest().authenticated()
                 );
+
+        http
+                .oauth2Login(Customizer.withDefaults())
+                .oauth2Client(Customizer.withDefaults());
+
 
         http
                 .addFilterBefore(new TokenAuthenticationFilter(tokenProvider),
