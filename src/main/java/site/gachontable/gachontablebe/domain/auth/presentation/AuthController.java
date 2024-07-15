@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import site.gachontable.gachontablebe.domain.auth.presentation.dto.response.AuthResponse;
 import site.gachontable.gachontablebe.domain.auth.usecase.AuthService;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
-import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,8 +30,8 @@ public class AuthController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping(value = "/login")
-    public ResponseEntity<JwtResponse> login(@RequestParam(value = "token") String token) {
-        return ResponseEntity.ok(authService.getUserInfo(token));
+    public ResponseEntity<AuthResponse> login(@RequestParam(value = "code") String code) {
+        return ResponseEntity.ok(authService.getUserInfo(code));
     }
 
     @GetMapping("/health-check")
