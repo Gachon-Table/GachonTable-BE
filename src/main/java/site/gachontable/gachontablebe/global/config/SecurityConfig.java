@@ -49,15 +49,30 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll() // API 명세서
 
-                                .requestMatchers("/admin/test-register", "/admin/login").permitAll()
-                                .requestMatchers("/user/test-register", "/user/test-login").permitAll()
+                                .requestMatchers("health-check").permitAll() // 로드 밸런서 상태 확인
 
-                                .requestMatchers("/admin/enter").hasAuthority(Role.ROLE_ADMIN.getRole())
+                                .requestMatchers("/login").permitAll() // 카카오 로그인
+                                .requestMatchers("/admin/test-register", "/admin/login").permitAll() //관리자 로그인
+                                .requestMatchers("/user/test-register", "/user/test-login").permitAll() // 개발 테스트 로그인
+                                .requestMatchers("user/refresh", "admin/refresh").permitAll() // 토큰 재발급
+                                .requestMatchers("pub/register").permitAll() // 주점 등록
 
-                                .requestMatchers("/pubs").permitAll()
-                                .anyRequest().permitAll()
+                                .requestMatchers("/pub/all", "pub/search").permitAll() //랜딩 페이지
+
+                                .requestMatchers("waiting/cancel").permitAll() // 예약 취소
+
+                                .requestMatchers("/admin/waitings", "/admin/enter", "/admin/call").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 웨이팅 관리
+                                .requestMatchers("/admin/status").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 상태 변경
+                                .requestMatchers("pub/manage").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 관리(주점 상세정보 변경)
+                                .requestMatchers("waiting/onsite").hasAuthority(Role.ROLE_ADMIN.getRole()) // 현장 웨이팅
+
+                                .requestMatchers("waiting/remote").hasAuthority(Role.ROLE_USER.getRole()) // 원격 웨이팅
+                                .requestMatchers("waiting/status", "waiting/history").hasAuthority(Role.ROLE_USER.getRole()) // 마이페이지 웨이팅 현황 및 기록 조회
+                                .requestMatchers("pub/{pubId}").hasAuthority(Role.ROLE_USER.getRole()) // 주점 상세 조회
+
+                                .anyRequest().authenticated()
                 );
 
         http

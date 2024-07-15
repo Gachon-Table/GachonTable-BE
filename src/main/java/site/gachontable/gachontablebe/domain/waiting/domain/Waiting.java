@@ -10,6 +10,7 @@ import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity(name = "waiting")
 @Getter
@@ -17,8 +18,9 @@ import java.util.Objects;
 public class Waiting extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long waitingId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID waitingId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

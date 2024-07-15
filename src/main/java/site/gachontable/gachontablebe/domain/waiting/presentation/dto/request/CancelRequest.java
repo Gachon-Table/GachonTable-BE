@@ -1,4 +1,6 @@
 package site.gachontable.gachontablebe.domain.waiting.presentation.dto.request;
 
-public record CancelRequest(Long waitingId) {
+import java.util.UUID;
+
+public record CancelRequest(UUID waitingId) {
 }

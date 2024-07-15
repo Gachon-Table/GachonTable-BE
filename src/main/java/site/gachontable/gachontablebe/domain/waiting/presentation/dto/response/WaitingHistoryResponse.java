@@ -5,13 +5,13 @@ import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.time.LocalDateTime;
-
-import static site.gachontable.gachontablebe.domain.waiting.type.Status.ENTERED;
+import java.util.UUID;
 
 @Builder
-public record WaitingHistoryResponse(String pubName, Status status, LocalDateTime enteredTime) {
+public record WaitingHistoryResponse(UUID waitingId, String pubName, Status status, LocalDateTime enteredTime) {
     public static WaitingHistoryResponse from(Waiting waiting) {
         return WaitingHistoryResponse.builder()
+                .waitingId(waiting.getWaitingId())
                 .pubName(waiting.getPub().getPubName())
                 .status(waiting.getWaitingStatus())
                 .enteredTime(waiting.getUpdatedAt())

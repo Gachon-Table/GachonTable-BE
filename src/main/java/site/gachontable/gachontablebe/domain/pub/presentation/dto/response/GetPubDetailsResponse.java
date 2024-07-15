@@ -21,22 +21,24 @@ public record GetPubDetailsResponse(
 
     public record PubInfo(
             Integer pubId,
-            String imageUrl,
+            List<String> thumbnails,
             String pubName,
             String onLiner,
             Boolean studentCard,
             String menu,
-            Integer queueing
+            Integer waitingCount,
+            Boolean openStatus
     ) {
         public static PubInfo from(Pub pub) {
             return new PubInfo(
                     pub.getPubId(),
-                    pub.getPubThumbnail(),
+                    pub.getThumbnails(),
                     pub.getPubName(),
                     pub.getOneLiner(),
                     pub.getStudentCard(),
                     pub.getRepresentativeMenu(),
-                    pub.getWaitingCount());
+                    pub.getWaitingCount(),
+                    pub.getOpenStatus());
         }
     }
 

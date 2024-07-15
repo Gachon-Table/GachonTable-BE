@@ -3,10 +3,12 @@ package site.gachontable.gachontablebe.domain.pub.presentation.dto.response;
 import lombok.Builder;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 
+import java.util.List;
+
 @Builder
 public record GetPubsResponse(
         Integer pubId,
-        String url,
+        List<String> thumbnails,
         String pubName,
         String oneLiner,
         Boolean studentCard,
@@ -18,7 +20,7 @@ public record GetPubsResponse(
     public static GetPubsResponse of(Pub pub) {
         return new GetPubsResponse(
                 pub.getPubId(),
-                pub.getPubThumbnail(),
+                pub.getThumbnails(),
                 pub.getPubName(),
                 pub.getOneLiner(),
                 pub.getStudentCard(),

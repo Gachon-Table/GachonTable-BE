@@ -23,7 +23,7 @@ public class Pub {
     private String oneLiner;
 
     @Column(columnDefinition = "char(16)", nullable = false)
-    private String pubTel;
+    private String instagramUrl;
 
     @Column(nullable = false)
     private Boolean studentCard;
@@ -34,8 +34,9 @@ public class Pub {
     @Column
     private String pubLoc;
 
+    @ElementCollection
     @Column(nullable = false)
-    private String pubThumbnail;
+    private List<String> thumbnails;
 
     @OneToMany
     @Column(nullable = false)
@@ -53,22 +54,22 @@ public class Pub {
 
     public static Pub create(String pubName,
                              String oneLiner,
-                             String pubTel,
+                             String instagramUrl,
                              Boolean studentCard,
                              String representativeMenu,
                              String pubLoc,
-                             String pubThumbnail,
+                             List<String> thumbnails,
                              List<Menu> menus,
                              Boolean openStatus,
                              Integer waitingCount) {
         return Pub.builder()
                 .pubName(pubName)
                 .oneLiner(oneLiner)
-                .pubTel(pubTel)
+                .instagramUrl(instagramUrl)
                 .studentCard(studentCard)
                 .representativeMenu(representativeMenu)
                 .pubLoc(pubLoc)
-                .pubThumbnail(pubThumbnail)
+                .thumbnails(thumbnails)
                 .menus(menus)
                 .openStatus(openStatus)
                 .waitingCount(waitingCount)
@@ -78,21 +79,21 @@ public class Pub {
     @Builder
     public Pub(String pubName,
                String oneLiner,
-               String pubTel,
+               String instagramUrl,
                Boolean studentCard,
                String representativeMenu,
                String pubLoc,
-               String pubThumbnail,
+               List<String> thumbnails,
                List<Menu> menus,
                Boolean openStatus,
                Integer waitingCount) {
         this.pubName = pubName;
         this.oneLiner = oneLiner;
-        this.pubTel = pubTel;
+        this.instagramUrl = instagramUrl;
         this.studentCard = studentCard;
         this.representativeMenu = representativeMenu;
         this.pubLoc = pubLoc;
-        this.pubThumbnail = pubThumbnail;
+        this.thumbnails = thumbnails;
         this.menus = menus;
         this.openStatus = openStatus;
         this.waitingCount = waitingCount;
@@ -106,8 +107,8 @@ public class Pub {
         this.waitingCount -= this.waitingCount;
     }
 
-    public void updatePubInfo(String thumbnail, String oneLiner, Boolean studentCard, List<Menu> menus) {
-        this.pubThumbnail = thumbnail;
+    public void updatePubInfo(List<String> thumbnails, String oneLiner, Boolean studentCard, List<Menu> menus) {
+        this.thumbnails = thumbnails;
         this.oneLiner = oneLiner;
         this.studentCard = studentCard;
         this.menus = menus;

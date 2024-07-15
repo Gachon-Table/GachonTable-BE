@@ -27,7 +27,7 @@ public class CreateWaitingImpl implements CreateWaiting {
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
-    private final int WAITING_MAX_COUNT = 3;
+    private static final Integer WAITING_MAX_COUNT = 3;
 
     @Override
     public WaitingResponse execute(AuthDetails authDetails, RemoteWaitingRequest request) { // 원격 웨이팅
@@ -36,20 +36,10 @@ public class CreateWaitingImpl implements CreateWaiting {
         Pub pub = pubRepository.findByPubId(request.pubId())
                 .orElseThrow(PubNotFoundException::new);
 
-        if (!pub.getOpenStatus()) {
-            throw new PubNotOpenException();
-        }
-
-        if (waitingRepository.findAllByUser(user).size() >= WAITING_MAX_COUNT) {
-            throw new UserWaitingLimitExcessException();
-        }
-
-        if (waitingRepository.findByUser(user).isPresent() || waitingRepository.findByTel(user.getUserTel()).isPresent()) {
-            throw  new WaitingAlreadyExistsException();
-        }
+        checkPreConditions(pub, user.getUserTel());
 
         waitingRepository.save(
-                Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, null, user, pub));
+                Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, user.getUserTel(), user, pub));
 
         pub.updateWaitingCount(pub.getWaitingCount() + 1);
         pubRepository.save(pub);
@@ -60,15 +50,11 @@ public class CreateWaitingImpl implements CreateWaiting {
 
     @Override
     public WaitingResponse execute(OnsiteWaitingRequest request) { // 현장 웨이팅
-        Pub pub = pubRepository.findByPubId(request.pubId()).orElseThrow(PubNotFoundException::new);
+        Pub pub = pubRepository.findByPubId(request.pubId())
+                .orElseThrow(PubNotFoundException::new);
 
-        if (!pub.getOpenStatus()) {
-            throw new PubNotOpenException();
-        }
+        checkPreConditions(pub, request.tel());
 
-        if (waitingRepository.findByTel(request.tel()).isPresent() || userRepository.findByUserTel(request.tel()).isPresent()) {
-            throw new WaitingAlreadyExistsException();
-        }
         waitingRepository.save(
                 Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, request.tel(), null, pub));
 
@@ -79,5 +65,18 @@ public class CreateWaitingImpl implements CreateWaiting {
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
     }
 
+    private void checkPreConditions(Pub pub, String tel) {
+        if (!pub.getOpenStatus()) {
+            throw new PubNotOpenException();
+        }
+
+        if (waitingRepository.findAllByTel(tel).size() >= WAITING_MAX_COUNT) {
+            throw new UserWaitingLimitExcessException();
+        }
+
+        if (waitingRepository.findByTel(tel).isPresent()) {
+            throw new WaitingAlreadyExistsException();
+        }
+    }
 
 }
