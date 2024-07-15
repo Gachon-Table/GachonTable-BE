@@ -22,7 +22,7 @@ public class Pub {
     @Column(nullable = false)
     private String oneLiner;
 
-    @Column(columnDefinition = "char(16)", nullable = false)
+    @Column(nullable = false)
     private String instagramUrl;
 
     @Column(nullable = false)
