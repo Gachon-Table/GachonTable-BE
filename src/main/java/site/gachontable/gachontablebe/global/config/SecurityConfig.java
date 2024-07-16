@@ -77,9 +77,7 @@ public class SecurityConfig {
                 );
 
         http
-                .oauth2Login(Customizer.withDefaults())
-                .oauth2Client(Customizer.withDefaults());
-
+                .oauth2Login(Customizer.withDefaults());
 
         http
                 .addFilterBefore(new TokenAuthenticationFilter(tokenProvider),
