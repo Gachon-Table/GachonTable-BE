@@ -23,7 +23,7 @@ public record GetPubDetailsResponse(
             Integer pubId,
             List<String> thumbnails,
             String pubName,
-            String onLiner,
+            String oneLiner,
             Boolean studentCard,
             String menu,
             Integer waitingCount,
