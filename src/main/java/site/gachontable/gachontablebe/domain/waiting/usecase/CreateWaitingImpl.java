@@ -14,6 +14,7 @@ import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.exception.UserWaitingLimitExcessException;
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingAlreadyExistsException;
+import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
@@ -74,7 +75,7 @@ public class CreateWaitingImpl implements CreateWaiting {
             throw new UserWaitingLimitExcessException();
         }
 
-        if (waitingRepository.findByTel(tel).isPresent()) {
+        if (waitingRepository.findByTelAndPub(tel, pub).isPresent()) {
             throw new WaitingAlreadyExistsException();
         }
     }
