@@ -31,7 +31,7 @@ public class ManagePubImpl implements ManagePub {
 
         List<Menu> menus = createMenus(request, pub);
 
-        pub.updatePubInfo(request.thumbnails(), request.oneLiner(), request.studentCard(), menus);
+        pub.updatePubInfo(request.thumbnails(), request.studentCard(), menus);
         pubRepository.save(pub);
 
         return SuccessCode.MANAGE_PUB_SUCCESS.getMessage();

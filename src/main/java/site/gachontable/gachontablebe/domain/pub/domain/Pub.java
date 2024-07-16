@@ -107,9 +107,8 @@ public class Pub {
         this.waitingCount -= this.waitingCount;
     }
 
-    public void updatePubInfo(List<String> thumbnails, String oneLiner, Boolean studentCard, List<Menu> menus) {
+    public void updatePubInfo(List<String> thumbnails, Boolean studentCard, List<Menu> menus) {
         this.thumbnails = thumbnails;
-        this.oneLiner = oneLiner;
         this.studentCard = studentCard;
         this.menus = menus;
     }

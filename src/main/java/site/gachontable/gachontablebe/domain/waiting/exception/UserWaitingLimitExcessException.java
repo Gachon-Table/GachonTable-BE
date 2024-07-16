@@ -5,6 +5,6 @@ import site.gachontable.gachontablebe.global.error.exception.ServiceException;
 
 public class UserWaitingLimitExcessException extends ServiceException {
     public UserWaitingLimitExcessException() {
-        super(ErrorCode.WAITING_NOT_FOUND);
+        super(ErrorCode.WAITING_OVER_COUNT);
     }
 }
