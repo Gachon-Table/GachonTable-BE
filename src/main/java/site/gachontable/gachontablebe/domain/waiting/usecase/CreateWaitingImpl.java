@@ -70,11 +70,15 @@ public class CreateWaitingImpl implements CreateWaiting {
             throw new PubNotOpenException();
         }
 
-        if (waitingRepository.findAllByTel(tel).size() >= WAITING_MAX_COUNT) {
+        // 같은 번호로 3개 이상의 웨이팅이 대기중이면 예외 처리
+        if (waitingRepository.findAllByTelAndWaitingStatusOrWaitingStatus(
+                tel, Status.WAITING, Status.AVAILABLE).size() >= WAITING_MAX_COUNT) {
             throw new UserWaitingLimitExcessException();
         }
 
-        if (waitingRepository.findByTelAndPub(tel, pub).isPresent()) {
+        // 해당 주점에 웨이팅 대기중이면 예외 처리
+        if (waitingRepository.findByTelAndPubAndWaitingStatusOrWaitingStatus(
+                tel, pub, Status.WAITING, Status.AVAILABLE).isPresent()) {
             throw new WaitingAlreadyExistsException();
         }
     }

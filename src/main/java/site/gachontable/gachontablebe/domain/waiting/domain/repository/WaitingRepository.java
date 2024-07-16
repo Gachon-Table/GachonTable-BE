@@ -8,13 +8,11 @@ import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
 import java.util.UUID;
 
 public interface WaitingRepository extends JpaRepository<Waiting, UUID> {
-    List<Waiting> findAllByTel(String tel);
-    Optional<Waiting> findByTel(String tel);
-    Optional<Waiting> findByTelAndPub(String tel, Pub pub);
+    List<Waiting> findAllByTelAndWaitingStatusOrWaitingStatus(String tel, Status waiting, Status available);
+    Optional<Waiting> findByTelAndPubAndWaitingStatusOrWaitingStatus(String tel, Pub pub, Status waiting, Status available);
 
     List<Waiting> findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(Pub pub, Status waiting, Status available);
     List<Waiting> findAllByUserAndWaitingStatusOrWaitingStatus(User user, Status entered, Status canceled);
