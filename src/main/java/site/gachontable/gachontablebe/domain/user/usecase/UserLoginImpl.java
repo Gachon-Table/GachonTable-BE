@@ -2,7 +2,7 @@ package site.gachontable.gachontablebe.domain.user.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.domain.shared.exception.PasswordNotMatchException;
 import site.gachontable.gachontablebe.domain.user.domain.User;
@@ -13,7 +13,7 @@ import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
 import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class UserLoginImpl implements UserLogin{
 

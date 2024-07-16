@@ -2,7 +2,7 @@ package site.gachontable.gachontablebe.domain.user.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
@@ -12,7 +12,7 @@ import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
 import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class UserRegisterImpl implements UserRegister {
     private final JwtProvider jwtProvider;

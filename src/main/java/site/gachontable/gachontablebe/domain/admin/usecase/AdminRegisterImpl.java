@@ -2,7 +2,7 @@ package site.gachontable.gachontablebe.domain.admin.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.admin.domain.Admin;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
@@ -12,7 +12,7 @@ import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
 import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class AdminRegisterImpl implements AdminRegister {
     private final PasswordEncoder passwordEncoder;

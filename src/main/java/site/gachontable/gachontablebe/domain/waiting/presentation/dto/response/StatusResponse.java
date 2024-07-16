@@ -8,17 +8,20 @@ import java.util.UUID;
 public record StatusResponse(UUID waitingId,
                              String pubName,
                              String orderStatus,
-                             Integer order) {
+                             Integer order,
+                             String createdAt) {
 
     public static StatusResponse of(UUID waitingId,
                                     String pubName,
                                     String orderStatus,
-                                    Integer order) {
+                                    Integer order,
+                                    String createdAt) {
         return new StatusResponse(
                 waitingId,
                 pubName,
                 orderStatus,
-                order
+                order,
+                createdAt
         );
     }
 
