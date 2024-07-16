@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Getter
 @EntityListeners(AuditingEntityListener.class)
@@ -22,4 +23,12 @@ public class BaseTimeEntity {
     @LastModifiedDate
     @Column
     private LocalDateTime updatedAt;
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+    }
 }

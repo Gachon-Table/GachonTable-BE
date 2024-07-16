@@ -65,21 +65,22 @@ public class CreateWaitingImpl implements CreateWaiting {
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
     }
 
-    private void checkPreConditions(Pub pub, String tel) {
+    public void checkPreConditions(Pub pub, String tel) throws
+            PubNotOpenException, UserWaitingLimitExcessException, WaitingAlreadyExistsException {
         if (!pub.getOpenStatus()) {
             throw new PubNotOpenException();
-        }
-
-        // 같은 번호로 3개 이상의 웨이팅이 대기중이면 예외 처리
-        if (waitingRepository.findAllByTelAndWaitingStatusOrWaitingStatus(
-                tel, Status.WAITING, Status.AVAILABLE).size() >= WAITING_MAX_COUNT) {
-            throw new UserWaitingLimitExcessException();
         }
 
         // 해당 주점에 웨이팅 대기중이면 예외 처리
         if (waitingRepository.findByTelAndPubAndWaitingStatusOrWaitingStatus(
                 tel, pub, Status.WAITING, Status.AVAILABLE).isPresent()) {
             throw new WaitingAlreadyExistsException();
+        }
+
+        // 같은 번호로 3개 이상의 웨이팅이 대기중이면 예외 처리
+        if (waitingRepository.findAllByTelAndWaitingStatusOrWaitingStatus(
+                tel, Status.WAITING, Status.AVAILABLE).size() >= WAITING_MAX_COUNT) {
+            throw new UserWaitingLimitExcessException();
         }
     }
 
