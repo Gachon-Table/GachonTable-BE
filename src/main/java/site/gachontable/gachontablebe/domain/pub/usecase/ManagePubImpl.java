@@ -31,7 +31,7 @@ public class ManagePubImpl implements ManagePub {
                 .orElseThrow(AdminNotFoundException::new);
         Pub pub = admin.getPub();
 
-        List<Menu> menus = createMenus(request, pub);
+        List<Menu> menus = manageMenus(request, pub);
 
         pub.updatePubInfo(request.thumbnails(), request.studentCard(), menus);
         pubRepository.save(pub);
@@ -39,7 +39,7 @@ public class ManagePubImpl implements ManagePub {
         return SuccessCode.MANAGE_PUB_SUCCESS.getMessage();
     }
 
-    private List<Menu> createMenus(PubManageRequest request, Pub pub) {
+    private List<Menu> manageMenus(PubManageRequest request, Pub pub) {
         Map<String, Menu> existingMenus = menuRepository.findByPub(pub).stream()
                 .collect(Collectors.toMap(Menu::getMenuName, menu -> menu));
 
@@ -49,10 +49,10 @@ public class ManagePubImpl implements ManagePub {
                             Menu menu = existingMenus.get(menuRequest.menuName());
                             if (menu != null) {
                                 menu.update(menuRequest.price(), menuRequest.oneLiner());
-                                menuRepository.save(menu);
-                                return menu;
+                                return menuRepository.save(menu);
                             }
-                            return menuRepository.save(Menu.create(pub, menuRequest.menuName(), menuRequest.price(), menuRequest.oneLiner()));
+                            return menuRepository.save(
+                                    Menu.create(pub, menuRequest.menuName(), menuRequest.price(), menuRequest.oneLiner()));
                         })
                         .toList());
     }
