@@ -56,8 +56,9 @@ public class WaitingController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/onsite")
-    public ResponseEntity<WaitingResponse> createOnsite(@RequestBody OnsiteWaitingRequest request) {
-        return ResponseEntity.ok(createWaiting.execute(request));
+    public ResponseEntity<WaitingResponse> createOnsite(@AuthenticationPrincipal AuthDetails authDetails,
+                                                        @RequestBody OnsiteWaitingRequest request) {
+        return ResponseEntity.ok(createWaiting.execute(authDetails, request));
     }
 
     @Operation(summary = "웨이팅 현황 조회", description = "사용자(회원)가 자신의 신청한 웨이팅 현황을 조회합니다.")
