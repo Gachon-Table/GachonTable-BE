@@ -11,14 +11,15 @@ import site.gachontable.gachontablebe.global.error.ErrorResponse;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ServiceException.class)
-    public ErrorResponse handleException(ServiceException e){
-        return new ErrorResponse(e.getErrorCode());
+    public ResponseEntity<ErrorResponse> handleServiceException(ServiceException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getErrorCode());
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(e.getErrorCode().getHttpStatus()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+    public ResponseEntity<ErrorResponse> handleGeneralException(Exception e) {
         e.printStackTrace();
-        ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
