@@ -9,13 +9,19 @@ import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
+import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
+import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
+import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UpdateStatusImpl implements UpdateStatus{
     private final AdminRepository adminRepository;
     private final PubRepository pubRepository;
+    private final WaitingRepository waitingRepository;
 
     @Override
     public RegisterResponse execute(AuthDetails authDetails, UpdateStatusRequest request) {
@@ -26,6 +32,15 @@ public class UpdateStatusImpl implements UpdateStatus{
         pub.updateOpenStatus(request.openStatus());
         pubRepository.save(pub);
 
+        changeWaitingToCanceled(waitingRepository.
+                findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE));
+
         return new RegisterResponse(true, SuccessCode.MANAGE_PUB_SUCCESS.getMessage());
+    }
+
+    private void changeWaitingToCanceled(List<Waiting> waitings) {
+        waitings.stream()
+                .peek(Waiting::cancel)
+                .forEach(waitingRepository::save);
     }
 }
