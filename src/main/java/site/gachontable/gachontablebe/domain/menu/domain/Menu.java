@@ -41,4 +41,9 @@ public class Menu {
         this.price = price;
         this.oneLiner = oneLiner;
     }
+
+    public void update(String price, String oneLiner) {
+        this.price = price;
+        this.oneLiner = oneLiner;
+    }
 }

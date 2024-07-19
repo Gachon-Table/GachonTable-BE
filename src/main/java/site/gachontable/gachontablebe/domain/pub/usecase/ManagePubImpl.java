@@ -15,6 +15,8 @@ import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,11 +40,20 @@ public class ManagePubImpl implements ManagePub {
     }
 
     private List<Menu> createMenus(PubManageRequest request, Pub pub) {
+        Map<String, Menu> existingMenus = menuRepository.findByPub(pub).stream()
+                .collect(Collectors.toMap(Menu::getMenuName, menu -> menu));
+
         return new ArrayList<>(
                 request.menuRequests().stream()
-                .map(menuRequest ->
-                        Menu.create(pub, menuRequest.menuName(), menuRequest.price(), menuRequest.oneLiner()))
-                .map(menuRepository::save)
-                .toList());
+                        .map(menuRequest -> {
+                            Menu menu = existingMenus.get(menuRequest.menuName());
+                            if (menu != null) {
+                                menu.update(menuRequest.price(), menuRequest.oneLiner());
+                                menuRepository.save(menu);
+                                return menu;
+                            }
+                            return menuRepository.save(Menu.create(pub, menuRequest.menuName(), menuRequest.price(), menuRequest.oneLiner()));
+                        })
+                        .toList());
     }
 }
