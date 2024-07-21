@@ -11,6 +11,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -22,6 +24,8 @@ import site.gachontable.gachontablebe.global.jwt.TokenAuthenticationFilter;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Configuration
 @EnableWebSecurity
@@ -74,6 +78,13 @@ public class SecurityConfig {
 //                                .requestMatchers("pub/{pubId}").hasAuthority(Role.ROLE_USER.getRole()) // 주점 상세 조회
 
                                 .anyRequest().authenticated()
+                );
+
+        http
+                .exceptionHandling(exceptionHandlingCustomizer ->
+                        exceptionHandlingCustomizer
+                                .authenticationEntryPoint(new HttpStatusEntryPoint(FORBIDDEN))
+                                .accessDeniedHandler(new AccessDeniedHandlerImpl())
                 );
 
         http

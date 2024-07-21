@@ -8,5 +8,5 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.W
 public interface CreateWaiting {
     WaitingResponse execute(AuthDetails authDetails, RemoteWaitingRequest request);
 
-    WaitingResponse execute(OnsiteWaitingRequest request);
+    WaitingResponse execute(AuthDetails authDetails, OnsiteWaitingRequest request);
 }

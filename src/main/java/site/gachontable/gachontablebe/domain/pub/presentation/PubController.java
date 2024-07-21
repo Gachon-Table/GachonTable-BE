@@ -52,7 +52,7 @@ public class PubController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/{pubId}")
-    public ResponseEntity<GetPubDetailsResponse> getPubDetail(@PathVariable Integer pubId) {
+    public ResponseEntity<GetPubDetailsResponse> getPubDetail(@PathVariable(value = "pubId") Integer pubId) {
         return ResponseEntity.ok(pubService.findPubDetail(pubId));
     }
 

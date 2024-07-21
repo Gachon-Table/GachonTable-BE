@@ -2,6 +2,8 @@ package site.gachontable.gachontablebe.domain.waiting.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
+import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
@@ -27,6 +29,8 @@ public class CreateWaitingImpl implements CreateWaiting {
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
+
     private static final Integer WAITING_MAX_COUNT = 3;
 
     @Override
@@ -49,9 +53,9 @@ public class CreateWaitingImpl implements CreateWaiting {
     }
 
     @Override
-    public WaitingResponse execute(OnsiteWaitingRequest request) { // 현장 웨이팅
-        Pub pub = pubRepository.findByPubId(request.pubId())
-                .orElseThrow(PubNotFoundException::new);
+    public WaitingResponse execute(AuthDetails authDetails, OnsiteWaitingRequest request) { // 현장 웨이팅
+        Pub pub = adminRepository.findByUsername(authDetails.getUsername()).orElseThrow(AdminNotFoundException::new)
+                .getPub();
 
         checkPreConditions(pub, request.tel());
 
