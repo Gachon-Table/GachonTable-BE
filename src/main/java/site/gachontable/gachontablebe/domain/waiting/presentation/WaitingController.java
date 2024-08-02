@@ -16,13 +16,11 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.Re
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.StatusResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingHistoryResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
-import site.gachontable.gachontablebe.domain.waiting.usecase.CancelWaiting;
-import site.gachontable.gachontablebe.domain.waiting.usecase.CreateWaiting;
-import site.gachontable.gachontablebe.domain.waiting.usecase.GetStatus;
-import site.gachontable.gachontablebe.domain.waiting.usecase.GetWaitingHistory;
+import site.gachontable.gachontablebe.domain.waiting.usecase.*;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/waiting")
@@ -32,6 +30,7 @@ public class WaitingController {
     private final GetStatus getStatus;
     private final GetWaitingHistory getWaitingHistory;
     private final CancelWaiting cancelWaiting;
+    private final GetStatusByBiztalk getStatusByBiztalk;
 
     @Operation(summary = "원격 웨이팅", description = "원격 웨이팅을 신규로 신청합니다.")
     @ApiResponses({
@@ -98,5 +97,18 @@ public class WaitingController {
     @PatchMapping("/cancel")
     public ResponseEntity<WaitingResponse> cancel(@RequestBody CancelRequest request) {
         return ResponseEntity.ok(cancelWaiting.execute(request));
+    }
+
+    @Operation(summary = "알림톡 웨이팅 현황 조회", description = "사용자(회원)가 자신의 신청한 웨이팅 현황을 알림톡을 통해 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/biztalk-status/{pubId}")
+    public ResponseEntity<StatusResponse> getStatusByBiztalk(@PathVariable(value = "pubId") UUID pubId) {
+        return ResponseEntity.ok(getStatusByBiztalk.execute(pubId));
     }
 }
