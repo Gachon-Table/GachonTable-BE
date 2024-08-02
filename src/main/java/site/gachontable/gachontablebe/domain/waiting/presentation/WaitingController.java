@@ -13,7 +13,6 @@ import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.CancelRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.StatusRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.StatusResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingHistoryResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
@@ -21,6 +20,7 @@ import site.gachontable.gachontablebe.domain.waiting.usecase.*;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/waiting")
@@ -107,8 +107,8 @@ public class WaitingController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/biztalk-status")
-    public ResponseEntity<StatusResponse> getStatusByBiztalk(@RequestBody StatusRequest request) {
-        return ResponseEntity.ok(getStatusByBiztalk.execute(request));
+    @GetMapping("/biztalk-status/{pubId}")
+    public ResponseEntity<StatusResponse> getStatusByBiztalk(@PathVariable(value = "pubId") UUID pubId) {
+        return ResponseEntity.ok(getStatusByBiztalk.execute(pubId));
     }
 }

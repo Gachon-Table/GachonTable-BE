@@ -6,11 +6,11 @@ import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.StatusRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.StatusResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -18,8 +18,8 @@ public class GetStatusByBiztalkImpl implements GetStatusByBiztalk {
     private final WaitingRepository waitingRepository;
 
     @Override
-    public StatusResponse execute(StatusRequest request) {
-        Waiting waiting = waitingRepository.findById(request.waitingId())
+    public StatusResponse execute(UUID pubId) {
+        Waiting waiting = waitingRepository.findById(pubId)
                 .orElseThrow(WaitingNotFoundException::new);
         Pub pub = waiting.getPub();
 
