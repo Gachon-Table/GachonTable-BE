@@ -68,7 +68,7 @@ public class SecurityConfig {
 
                                 .requestMatchers("waiting/cancel").permitAll() // 예약 취소
 
-                                .requestMatchers("waiting/biztalk-status/").permitAll() // 알림톡 웨이팅 조회
+                                .requestMatchers("waiting/biztalk-status/{pubId}").permitAll() // 알림톡 웨이팅 조회
 
                                 .requestMatchers("/admin/waitings", "/admin/enter", "/admin/call").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 웨이팅 관리
                                 .requestMatchers("/admin/status").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 상태 변경
@@ -77,7 +77,6 @@ public class SecurityConfig {
 
                                 .requestMatchers("waiting/remote").hasAuthority(Role.ROLE_USER.getRole()) // 원격 웨이팅
                                 .requestMatchers("waiting/status", "waiting/history").hasAuthority(Role.ROLE_USER.getRole()) // 마이페이지 웨이팅 현황 및 기록 조회
-//                                .requestMatchers("pub/{pubId}").hasAuthority(Role.ROLE_USER.getRole()) // 주점 상세 조회
 
                                 .anyRequest().authenticated()
                 );
