@@ -45,7 +45,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         waitingRepository.save(
                 Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, user.getUserTel(), user, pub));
 
-        pub.updateWaitingCount(pub.getWaitingCount() + 1);
+        pub.increaseWaitingCount();
         pubRepository.save(pub);
         // TODO : 카카오 알림톡 전송
 
@@ -62,7 +62,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         waitingRepository.save(
                 Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, request.tel(), null, pub));
 
-        pub.updateWaitingCount(pub.getWaitingCount() + 1);
+        pub.increaseWaitingCount();
         pubRepository.save(pub);
         // TODO : 카카오 알림톡 전송
 
