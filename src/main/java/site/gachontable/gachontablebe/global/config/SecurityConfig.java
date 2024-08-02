@@ -68,6 +68,8 @@ public class SecurityConfig {
 
                                 .requestMatchers("waiting/cancel").permitAll() // 예약 취소
 
+                                .requestMatchers("waiting/biztalk-status/").permitAll() // 알림톡 웨이팅 조회
+
                                 .requestMatchers("/admin/waitings", "/admin/enter", "/admin/call").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 웨이팅 관리
                                 .requestMatchers("/admin/status").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 상태 변경
                                 .requestMatchers("pub/manage").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 관리(주점 상세정보 변경)
