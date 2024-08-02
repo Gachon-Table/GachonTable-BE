@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.global.filter.ExceptionHandleFilter;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 import site.gachontable.gachontablebe.global.jwt.TokenAuthenticationFilter;
@@ -54,7 +53,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll() // API 명세서
+/*                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll() // API 명세서
 
                                 .requestMatchers("health-check").permitAll() // 로드 밸런서 상태 확인
 
@@ -76,9 +75,9 @@ public class SecurityConfig {
                                 .requestMatchers("waiting/onsite").hasAuthority(Role.ROLE_ADMIN.getRole()) // 현장 웨이팅
 
                                 .requestMatchers("waiting/remote").hasAuthority(Role.ROLE_USER.getRole()) // 원격 웨이팅
-                                .requestMatchers("waiting/status", "waiting/history").hasAuthority(Role.ROLE_USER.getRole()) // 마이페이지 웨이팅 현황 및 기록 조회
+                                .requestMatchers("waiting/status", "waiting/history").hasAuthority(Role.ROLE_USER.getRole()) // 마이페이지 웨이팅 현황 및 기록 조회*/
 
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 );
 
         http
