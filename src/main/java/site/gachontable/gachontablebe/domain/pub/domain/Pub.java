@@ -48,10 +48,6 @@ public class Pub {
     @Column(nullable = false)
     private Integer waitingCount;
 
-    public void updateWaitingCount(Integer waitingCount) {
-        this.waitingCount = waitingCount;
-    }
-
     public static Pub create(String pubName,
                              String oneLiner,
                              String instagramUrl,
@@ -99,12 +95,19 @@ public class Pub {
         this.waitingCount = waitingCount;
     }
 
+    public void increaseWaitingCount() {
+        this.waitingCount += 1;
+    }
+
     public void decreaseWaitingCount() {
-        if (this.getWaitingCount() == 0) {
+        validateWaitingCount();
+        this.waitingCount -= 1;
+    }
+
+    private void validateWaitingCount() {
+        if (waitingCount < 1) {
             throw new EmptyWaitingCountException();
         }
-
-        this.waitingCount -= this.waitingCount;
     }
 
     public void updatePubInfo(List<String> thumbnails, Boolean studentCard, List<Menu> menus) {
