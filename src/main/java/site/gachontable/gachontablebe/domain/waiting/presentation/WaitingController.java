@@ -58,7 +58,7 @@ public class WaitingController {
     @PostMapping("/onsite")
     public ResponseEntity<WaitingResponse> createOnsite(@AuthenticationPrincipal AuthDetails authDetails,
                                                         @RequestBody OnsiteWaitingRequest request) {
-        return ResponseEntity.ok(createWaiting.execute(authDetails, request));
+        return ResponseEntity.ok(createWaiting.execute(authDetails, request, Position.ONSITE.getPositionKo()));
     }
 
     @Operation(summary = "웨이팅 현황 조회", description = "사용자(회원)가 자신의 신청한 웨이팅 현황을 조회합니다.")

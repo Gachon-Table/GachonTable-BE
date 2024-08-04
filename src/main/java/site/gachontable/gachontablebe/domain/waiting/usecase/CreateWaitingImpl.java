@@ -63,8 +63,9 @@ public class CreateWaitingImpl implements CreateWaiting {
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }
 
+    @RedissonLock(key = "#lockKey")
     @Override
-    public WaitingResponse execute(AuthDetails authDetails, OnsiteWaitingRequest request) { // 현장 웨이팅
+    public WaitingResponse execute(AuthDetails authDetails, OnsiteWaitingRequest request, String lockKey) { // 현장 웨이팅
         Pub pub = adminRepository.findByUsername(authDetails.getUsername()).orElseThrow(AdminNotFoundException::new)
                 .getPub();
 
