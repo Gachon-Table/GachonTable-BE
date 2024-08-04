@@ -9,12 +9,12 @@ import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundExcept
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.CallUserRequest;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubMismatchException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
+import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
 import site.gachontable.gachontablebe.global.biztalk.dto.request.CallUserTemplateParameterRequest;
 import site.gachontable.gachontablebe.global.biztalk.dto.request.TemplateParameter;
@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 public class CallUser {
     private final WaitingRepository waitingRepository;
     private final AdminRepository adminRepository;
-    private final PubRepository pubRepository;
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private final TransactionTemplate transactionTemplate;
     private final sendBiztalk sendBiztalk;
@@ -38,7 +37,8 @@ public class CallUser {
     private static final String CALL_TEMPLATE_CODE = "CALL";
     private static final String FORCE_CANCEL_TEMPLATE_CODE = "FCANCEL";
 
-    public String execute(AuthDetails authDetails, CallUserRequest request) {
+    @RedissonLock(key = "#lockKey")
+    public String execute(AuthDetails authDetails, CallUserRequest request, String lockKey) {
         Admin admin = adminRepository.findById(authDetails.getUuid()).
                 orElseThrow(AdminNotFoundException::new);
         Waiting waiting = waitingRepository.findById(request.waitingId()).
@@ -49,8 +49,8 @@ public class CallUser {
             throw new PubMismatchException();
         }
 
-        updateWaitingStatusToAvailable(waiting);
-
+        waiting.toAvailable();
+        
         // TODO : 카카오 알림톡 전송
         TemplateParameter templateParameter = new CallUserTemplateParameterRequest(pub.getPubName(), waiting.getWaitingId().toString());
         sendBiztalk.execute(CALL_TEMPLATE_CODE, waiting.getTel(), templateParameter);
@@ -61,9 +61,9 @@ public class CallUser {
                 transactionTemplate.execute(innerStatus -> {
                     if (waiting.getWaitingStatus().equals(Status.AVAILABLE)) {
                         // 사용자가 5분 이내에 응답하지 않으면 예약을 취소합니다.
-                        updateWaitingStatusToCanceled(waiting);
-                        decreaseWaitingCount(pub);
-
+                        waiting.cancel();
+                        pub.decreaseWaitingCount();
+                        
                         // TODO : 카카오 알림톡 전송
                         sendBiztalk.execute(FORCE_CANCEL_TEMPLATE_CODE, waiting.getTel(), new CancelWaitingTemplateParameterRequest(pub.getPubName()));
                     }
@@ -73,23 +73,6 @@ public class CallUser {
             return null;
         });
 
-
         return SuccessCode.USER_CALL_SUCCESS.getMessage();
-    }
-
-    private void updateWaitingStatusToAvailable(Waiting waiting) {
-        waiting.toAvailable();
-        waitingRepository.save(waiting);
-    }
-
-    private void updateWaitingStatusToCanceled(Waiting waiting) {
-        waiting.cancel();
-        waitingRepository.save(waiting);
-    }
-
-    private void decreaseWaitingCount(Pub Pub) {
-        Pub.decreaseWaitingCount();
-        pubRepository.save(Pub);
-
     }
 }
