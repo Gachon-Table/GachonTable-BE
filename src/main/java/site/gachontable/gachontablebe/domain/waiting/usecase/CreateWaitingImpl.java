@@ -21,6 +21,7 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.Re
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
+import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
 import site.gachontable.gachontablebe.global.biztalk.dto.request.CreateWaitingTemplateParameterRequest;
 import site.gachontable.gachontablebe.global.biztalk.dto.request.TemplateParameter;
@@ -31,17 +32,18 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CreateWaitingImpl implements CreateWaiting {
+    private static final Integer WAITING_MAX_COUNT = 3;
+    private static final String TEMPLATE_CODE = "WAITING";
+
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
     private final sendBiztalk sendBiztalk;
 
-    private static final Integer WAITING_MAX_COUNT = 3;
-    private static final String TEMPLATE_CODE = "WAITING";
-
+    @RedissonLock(key = "#lockKey")
     @Override
-    public WaitingResponse execute(AuthDetails authDetails, RemoteWaitingRequest request) { // 원격 웨이팅
+    public WaitingResponse execute(AuthDetails authDetails, RemoteWaitingRequest request, String lockKey) { // 원격 웨이팅
         User user = userRepository.findById(authDetails.getUuid())
                 .orElseThrow(UserNotFoundException::new);
         Pub pub = pubRepository.findByPubId(request.pubId())
@@ -80,7 +82,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
     }
 
-    public void checkPreConditions(Pub pub, String tel) throws
+    private void checkPreConditions(Pub pub, String tel) throws
             PubNotOpenException, UserWaitingLimitExcessException, WaitingAlreadyExistsException {
         if (!pub.getOpenStatus()) {
             throw new PubNotOpenException();
