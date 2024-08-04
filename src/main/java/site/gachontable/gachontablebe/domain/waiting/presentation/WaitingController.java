@@ -16,6 +16,7 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.Re
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.StatusResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingHistoryResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
+import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.usecase.*;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 
@@ -43,7 +44,7 @@ public class WaitingController {
     @PostMapping("/remote")
     public ResponseEntity<WaitingResponse> createRemote(@AuthenticationPrincipal AuthDetails authDetails,
                                                         @RequestBody RemoteWaitingRequest request) {
-        return ResponseEntity.ok(createWaiting.execute(authDetails, request));
+        return ResponseEntity.ok(createWaiting.execute(authDetails, request, Position.REMOTE.getPositionKo()));
     }
 
     @Operation(summary = "현장 웨이팅", description = "현장 웨이팅을 신규로 신청합니다.")
