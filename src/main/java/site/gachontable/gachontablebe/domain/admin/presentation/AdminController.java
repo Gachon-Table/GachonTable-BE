@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.*;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.AdminLoginResponse;
+import site.gachontable.gachontablebe.domain.admin.type.Status;
 import site.gachontable.gachontablebe.domain.admin.usecase.*;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
@@ -101,7 +102,7 @@ public class AdminController {
     })
     @PatchMapping("/enter")
     public ResponseEntity<String> enterUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody EnterUserRequest request) {
-        return ResponseEntity.ok(enterUser.execute(authDetails, request));
+        return ResponseEntity.ok(enterUser.execute(authDetails, request, Status.ENTER.getStatusKo()));
     }
 
     @Operation(summary = "사용자 호출", description = "관리자가 담당하는 주점의 사용자를 호출합니다.")
@@ -114,7 +115,7 @@ public class AdminController {
     })
     @PatchMapping("/call")
     public ResponseEntity<String> callUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody CallUserRequest request){
-        return ResponseEntity.ok(callUser.execute(authDetails, request));
+        return ResponseEntity.ok(callUser.execute(authDetails, request, Status.CALL.getStatusKo()));
     }
 
     @Operation(summary = "주점 상태 변경", description = "관리자가 담당하는 주점의 상태(오픈 여부)를 변경합니다.")
