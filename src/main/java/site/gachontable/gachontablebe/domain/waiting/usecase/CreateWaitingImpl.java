@@ -48,14 +48,14 @@ public class CreateWaitingImpl implements CreateWaiting {
                 Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, user.getUserTel(), user, pub));
 
         pub.increaseWaitingCount();
-        pubRepository.save(pub);
         // TODO : 카카오 알림톡 전송
 
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }
 
+    @RedissonLock(key = "#lockKey")
     @Override
-    public WaitingResponse execute(AuthDetails authDetails, OnsiteWaitingRequest request) { // 현장 웨이팅
+    public WaitingResponse execute(AuthDetails authDetails, OnsiteWaitingRequest request, String lockKey) { // 현장 웨이팅
         Pub pub = adminRepository.findByUsername(authDetails.getUsername()).orElseThrow(AdminNotFoundException::new)
                 .getPub();
 
@@ -65,7 +65,6 @@ public class CreateWaitingImpl implements CreateWaiting {
                 Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, request.tel(), null, pub));
 
         pub.increaseWaitingCount();
-        pubRepository.save(pub);
         // TODO : 카카오 알림톡 전송
 
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
@@ -89,5 +88,4 @@ public class CreateWaitingImpl implements CreateWaiting {
             throw new UserWaitingLimitExcessException();
         }
     }
-
 }
