@@ -4,5 +4,5 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.Ca
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 
 public interface CancelWaiting {
-    WaitingResponse execute(CancelRequest request);
+    WaitingResponse execute(CancelRequest request, String lockKey);
 }

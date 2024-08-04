@@ -97,7 +97,7 @@ public class WaitingController {
     })
     @PatchMapping("/cancel")
     public ResponseEntity<WaitingResponse> cancel(@RequestBody CancelRequest request) {
-        return ResponseEntity.ok(cancelWaiting.execute(request));
+        return ResponseEntity.ok(cancelWaiting.execute(request, Position.CANCEL.getPositionKo()));
     }
 
     @Operation(summary = "알림톡 웨이팅 현황 조회", description = "사용자(회원)가 자신의 신청한 웨이팅 현황을 알림톡을 통해 조회합니다.")
