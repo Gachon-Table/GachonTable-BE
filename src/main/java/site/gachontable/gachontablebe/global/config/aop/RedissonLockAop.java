@@ -41,8 +41,7 @@ public class RedissonLockAop {
                 return false;
             }
 
-            log.info("Lock 수행 : {}", key);
-            return aopForTransaction.proceed(joinPoint);
+            return aopForTransaction.proceed(joinPoint, key);
         } catch (InterruptedException e) {
             throw new InterruptedException();
         } finally {
