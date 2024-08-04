@@ -5,9 +5,9 @@ spring:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
     properties:
@@ -35,6 +35,10 @@ spring:
             scope:
               - account_email
               - profile
-
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 15
 jwt:
   secret_key: ENC(CJzB4FyuHQrRdJ9V+3J0GhZbhxevmxah4rJItf5dM0GJj6Rmq2AsaVHFfSuSBPNmOsckPdYUjSxhheiOR3kJGm1i2+zpO4JdiN8GAv6i1zc=)
