@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.auth.usecase.AdminAuthDetailsService;
 import site.gachontable.gachontablebe.domain.auth.usecase.UserAuthDetailsService;
@@ -44,6 +45,7 @@ public class JwtProvider {
         this.userAuthDetailsService = userAuthDetailsService;
     }
 
+    @Transactional
     public JwtResponse refreshAccessToken(String refreshToken) {
         validateToken(refreshToken);
 
@@ -63,7 +65,7 @@ public class JwtProvider {
         return generateToken(uuid, tokenSubject, REFRESH_TOKEN_DURATION, role);
     }
 
-    public String generateToken(UUID uuid, String tokenSubject, Duration duration, Role role) {
+    private String generateToken(UUID uuid, String tokenSubject, Duration duration, Role role) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + duration.toMillis());
 
@@ -110,11 +112,5 @@ public class JwtProvider {
         } catch (ExpiredJwtException e) {
             throw new ExpiredTokenException();
         }
-    }
-
-    public UUID getUserIdFromToken(String authorizationHeader) {
-        String token = authorizationHeader.substring(7);
-        Claims claims = parseClaims(token);
-        return UUID.fromString(claims.get("uid", String.class));
     }
 }
