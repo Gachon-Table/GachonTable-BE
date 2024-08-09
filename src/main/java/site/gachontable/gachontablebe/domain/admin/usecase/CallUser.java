@@ -14,6 +14,10 @@ import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
+import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
+import site.gachontable.gachontablebe.global.biztalk.dto.request.CallUserTemplateParameterRequest;
+import site.gachontable.gachontablebe.global.biztalk.dto.request.TemplateParameter;
+import site.gachontable.gachontablebe.global.biztalk.dto.request.CancelWaitingTemplateParameterRequest;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
 import site.gachontable.gachontablebe.global.biztalk.dto.request.CallUserTemplateParameterRequest;
@@ -50,7 +54,7 @@ public class CallUser {
         }
 
         waiting.toAvailable();
-        
+
         // TODO : 카카오 알림톡 전송
         TemplateParameter templateParameter = new CallUserTemplateParameterRequest(pub.getPubName(), waiting.getWaitingId().toString());
         sendBiztalk.execute(CALL_TEMPLATE_CODE, waiting.getTel(), templateParameter);
@@ -63,7 +67,7 @@ public class CallUser {
                         // 사용자가 5분 이내에 응답하지 않으면 예약을 취소합니다.
                         waiting.cancel();
                         pub.decreaseWaitingCount();
-                        
+
                         // TODO : 카카오 알림톡 전송
                         sendBiztalk.execute(FORCE_CANCEL_TEMPLATE_CODE, waiting.getTel(), new CancelWaitingTemplateParameterRequest(pub.getPubName()));
                     }
