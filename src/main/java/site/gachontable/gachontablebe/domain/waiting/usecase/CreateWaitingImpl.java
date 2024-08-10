@@ -100,4 +100,28 @@ public class CreateWaitingImpl implements CreateWaiting {
             throw new UserWaitingLimitExcessException();
         }
     }
+
+    @Transactional
+    public void executeWithoutRedisson(Integer tel) { // 원격 웨이팅
+        Pub pub = pubRepository.findByPubId(1)
+                .orElseThrow(PubNotFoundException::new);
+
+        waitingRepository.save(
+                Waiting.create(Position.REMOTE, 3, Status.WAITING, String.valueOf(tel), null, pub));
+
+        pub.increaseWaitingCount();
+        // TODO : 카카오 알림톡 전송
+    }
+
+    @RedissonLock(key = "#lockKey")
+    public void executeWithRedisson(Integer tel, String lockKey) { // 원격 웨이팅
+        Pub pub = pubRepository.findByPubId(1)
+                .orElseThrow(PubNotFoundException::new);
+
+        waitingRepository.save(
+                Waiting.create(Position.REMOTE, 3, Status.WAITING, String.valueOf(tel), null, pub));
+
+        pub.increaseWaitingCount();
+        // TODO : 카카오 알림톡 전송
+    }
 }
