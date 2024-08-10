@@ -8,21 +8,21 @@ import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundExcept
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.EnterUserRequest;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubMismatchException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
+import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 @Service
 @RequiredArgsConstructor
 public class EnterUser {
-    private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final AdminRepository adminRepository;
 
-    public String execute(AuthDetails authDetails, EnterUserRequest request) {
+    @RedissonLock(key = "#lockKey")
+    public String execute(AuthDetails authDetails, EnterUserRequest request, String lockKey) {
         Admin admin = adminRepository.findById(authDetails.getUuid()).
                 orElseThrow(AdminNotFoundException::new);
         Waiting waiting = waitingRepository.findById(request.waitingId()).
@@ -33,19 +33,9 @@ public class EnterUser {
             throw new PubMismatchException();
         }
 
-        updateWaitingStatusToEntered(waiting);
-        decreaseWaitingCount(pub);
+        waiting.enter();
+        pub.decreaseWaitingCount();
 
         return SuccessCode.ENTERED_SUCCESS.getMessage();
-    }
-
-    private void decreaseWaitingCount(Pub Pub) {
-        Pub.decreaseWaitingCount();
-        pubRepository.save(Pub);
-    }
-
-    private void updateWaitingStatusToEntered(Waiting waiting) {
-        waiting.enter();
-        waitingRepository.save(waiting);
     }
 }

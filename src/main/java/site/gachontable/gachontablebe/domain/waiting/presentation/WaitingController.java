@@ -16,6 +16,7 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.Re
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.StatusResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingHistoryResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
+import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.usecase.*;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 
@@ -43,7 +44,7 @@ public class WaitingController {
     @PostMapping("/remote")
     public ResponseEntity<WaitingResponse> createRemote(@AuthenticationPrincipal AuthDetails authDetails,
                                                         @RequestBody RemoteWaitingRequest request) {
-        return ResponseEntity.ok(createWaiting.execute(authDetails, request));
+        return ResponseEntity.ok(createWaiting.execute(authDetails, request, Position.REMOTE.getPositionKo()));
     }
 
     @Operation(summary = "현장 웨이팅", description = "현장 웨이팅을 신규로 신청합니다.")
@@ -57,7 +58,7 @@ public class WaitingController {
     @PostMapping("/onsite")
     public ResponseEntity<WaitingResponse> createOnsite(@AuthenticationPrincipal AuthDetails authDetails,
                                                         @RequestBody OnsiteWaitingRequest request) {
-        return ResponseEntity.ok(createWaiting.execute(authDetails, request));
+        return ResponseEntity.ok(createWaiting.execute(authDetails, request, Position.ONSITE.getPositionKo()));
     }
 
     @Operation(summary = "웨이팅 현황 조회", description = "사용자(회원)가 자신의 신청한 웨이팅 현황을 조회합니다.")
@@ -96,7 +97,7 @@ public class WaitingController {
     })
     @PatchMapping("/cancel")
     public ResponseEntity<WaitingResponse> cancel(@RequestBody CancelRequest request) {
-        return ResponseEntity.ok(cancelWaiting.execute(request));
+        return ResponseEntity.ok(cancelWaiting.execute(request, Position.CANCEL.getPositionKo()));
     }
 
     @Operation(summary = "알림톡 웨이팅 현황 조회", description = "사용자(회원)가 자신의 신청한 웨이팅 현황을 알림톡을 통해 조회합니다.")
