@@ -118,5 +118,6 @@ public class Pub {
 
     public void updateOpenStatus(Boolean openStatus) {
         this.openStatus = openStatus;
+        this.waitingCount = 0;
     }
 }
