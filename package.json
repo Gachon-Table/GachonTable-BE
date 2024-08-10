@@ -3,7 +3,7 @@
     "postinstall": "npm i husky --save -dev"
   },
   "devDependencies": {
-    "husky": "^9.0.11",
+    "husky": "^9.1.4",
     "jira-prepare-commit-msg": "^1.7.2",
     "prettier-plugin-java": "^2.6.0"
   },
