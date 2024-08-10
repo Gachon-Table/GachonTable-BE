@@ -40,6 +40,7 @@ spring:
       host: ENC(dPw3pRsyq4YPqQ8qIYU0Gdb/glUKo4OS)
       port: 6379
       database: 15
+      password: ENC(XqNvLZRYgL+pvlpsHhchME0hUXfIs0bExSjhYiasoQs=)
 
 jwt:
   secret_key: ENC(CJzB4FyuHQrRdJ9V+3J0GhZbhxevmxah4rJItf5dM0GJj6Rmq2AsaVHFfSuSBPNmOsckPdYUjSxhheiOR3kJGm1i2+zpO4JdiN8GAv6i1zc=)
