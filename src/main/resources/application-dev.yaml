@@ -37,7 +37,7 @@ spring:
               - profile
   data:
     redis:
-      host: ENC(skENmW7jlfYHXXMs68EXY77tlLgkBtrd)
+      host: ENC(dPw3pRsyq4YPqQ8qIYU0Gdb/glUKo4OS)
       port: 6379
       database: 15
 
