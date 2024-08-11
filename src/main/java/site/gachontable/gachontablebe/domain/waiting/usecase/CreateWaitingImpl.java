@@ -23,17 +23,24 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.W
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
+import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
+import site.gachontable.gachontablebe.global.biztalk.dto.request.CreateWaitingTemplateParameterRequest;
+import site.gachontable.gachontablebe.global.biztalk.dto.request.TemplateParameter;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CreateWaitingImpl implements CreateWaiting {
     private static final Integer WAITING_MAX_COUNT = 3;
+    private static final String TEMPLATE_CODE = "WAITING";
 
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
+    private final sendBiztalk sendBiztalk;
 
     @RedissonLock(key = "#lockKey")
     @Override
@@ -45,11 +52,13 @@ public class CreateWaitingImpl implements CreateWaiting {
 
         checkPreConditions(pub, user.getUserTel());
 
-        waitingRepository.save(
+        Waiting waiting = waitingRepository.save(
                 Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, user.getUserTel(), user, pub));
 
         pub.increaseWaitingCount();
+
         // TODO : 카카오 알림톡 전송
+        sendBiztalk.execute(TEMPLATE_CODE, user.getUserTel(), createTemplateParameter(pub, waiting, request.headCount()));
 
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }
@@ -62,11 +71,13 @@ public class CreateWaitingImpl implements CreateWaiting {
 
         checkPreConditions(pub, request.tel());
 
-        waitingRepository.save(
+        Waiting waiting = waitingRepository.save(
                 Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, request.tel(), null, pub));
 
         pub.increaseWaitingCount();
+
         // TODO : 카카오 알림톡 전송
+        sendBiztalk.execute(TEMPLATE_CODE, request.tel(), createTemplateParameter(pub, waiting, request.headCount()));
 
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
     }
@@ -90,27 +101,12 @@ public class CreateWaitingImpl implements CreateWaiting {
         }
     }
 
-    @Transactional
-    public void executeWithoutRedisson(Integer tel) { // 원격 웨이팅
-        Pub pub = pubRepository.findByPubId(1)
-                .orElseThrow(PubNotFoundException::new);
+    public TemplateParameter createTemplateParameter(Pub pub, Waiting waiting, Integer headCount) {
+        List<Waiting> waitings = waitingRepository
+                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
+        String order = String.valueOf(waitings.size());
+        String indexOfWaiting = String.valueOf(waitings.indexOf(waiting) + 1);
 
-        waitingRepository.save(
-                Waiting.create(Position.REMOTE, 3, Status.WAITING, String.valueOf(tel), null, pub));
-
-        pub.increaseWaitingCount();
-        // TODO : 카카오 알림톡 전송
-    }
-
-    @RedissonLock(key = "#lockKey")
-    public void executeWithRedisson(Integer tel, String lockKey) { // 원격 웨이팅
-        Pub pub = pubRepository.findByPubId(1)
-                .orElseThrow(PubNotFoundException::new);
-
-        waitingRepository.save(
-                Waiting.create(Position.REMOTE, 3, Status.WAITING, String.valueOf(tel), null, pub));
-
-        pub.increaseWaitingCount();
-        // TODO : 카카오 알림톡 전송
-    }
+        return new CreateWaitingTemplateParameterRequest(pub.getPubName(), String.valueOf(headCount), order,
+                indexOfWaiting, String.valueOf(waiting.getWaitingId()));
 }
