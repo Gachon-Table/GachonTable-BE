@@ -27,14 +27,14 @@ spring:
         registration:
           kakao:
             client-name: kakao
-            client-secret: ENC(joWfBVWHH5ET6ACePZcu6qYVFG4bosXPqoBXx75rWZA1GkvkA8EZ+77PXrfpeP/I)
+            client-secret: ENC(/yGYpmJCRdCtBsFF6gbcP9Ysn5J3AzHRCMQFxQFh7XTxS6qFOJ+SzxorkKbpFDDZ)
             client-authentication-method: client_secret_post
-            client-id: ENC(xNieyTRGxYZ4SF0gSQEbkEx3zF2O4K1vq/aAOZyjCCGlpAzuQzLUM4rz0yZSW/RJ)
+            client-id: ENC(W7XxEXUIYHJ3SdOUrnElMFjczI/UqT2blR8PiDg8mNLJ9ZmGv4ICIGy9CGqa1ifT)
             redirect-uri: http://localhost:3000/oauth
             authorization-grant-type: authorization_code
             scope:
-              - account_email
-              - profile
+              - name
+              - phone_number
   data:
     redis:
       host: 127.0.0.1
