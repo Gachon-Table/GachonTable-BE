@@ -109,4 +109,5 @@ public class CreateWaitingImpl implements CreateWaiting {
 
         return new CreateWaitingTemplateParameterRequest(pub.getPubName(), String.valueOf(headCount), order,
                 indexOfWaiting, String.valueOf(waiting.getWaitingId()));
+    }
 }
