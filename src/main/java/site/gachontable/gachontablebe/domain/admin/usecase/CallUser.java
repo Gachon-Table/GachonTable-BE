@@ -32,15 +32,15 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 public class CallUser {
+    private static final String CALL_TEMPLATE_CODE = "CALL";
+    private static final String FORCE_CANCEL_TEMPLATE_CODE = "FCANCEL";
+  
     private final WaitingRepository waitingRepository;
     private final AdminRepository adminRepository;
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private final TransactionTemplate transactionTemplate;
     private final sendBiztalk sendBiztalk;
-
-    private static final String CALL_TEMPLATE_CODE = "CALL";
-    private static final String FORCE_CANCEL_TEMPLATE_CODE = "FCANCEL";
-
+  
     @RedissonLock(key = "#lockKey")
     public String execute(AuthDetails authDetails, CallUserRequest request, String lockKey) {
         Admin admin = adminRepository.findById(authDetails.getUuid()).

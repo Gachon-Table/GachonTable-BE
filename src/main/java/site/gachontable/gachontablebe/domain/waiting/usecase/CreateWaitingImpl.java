@@ -2,6 +2,7 @@ package site.gachontable.gachontablebe.domain.waiting.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
 import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
@@ -108,6 +109,4 @@ public class CreateWaitingImpl implements CreateWaiting {
 
         return new CreateWaitingTemplateParameterRequest(pub.getPubName(), String.valueOf(headCount), order,
                 indexOfWaiting, String.valueOf(waiting.getWaitingId()));
-    }
-
 }

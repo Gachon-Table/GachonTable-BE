@@ -17,10 +17,10 @@ import site.gachontable.gachontablebe.global.success.SuccessCode;
 @Service
 @RequiredArgsConstructor
 public class CancelWaitingImpl implements CancelWaiting {
+    private static final String TEMPLATE_CODE = "CANCEL";
+  
     private final WaitingRepository waitingRepository;
     private final sendBiztalk sendBiztalk;
-
-    private static final String TEMPLATE_CODE = "CANCEL";
 
     @RedissonLock(key = "#lockKey")
     @Override
@@ -30,12 +30,12 @@ public class CancelWaitingImpl implements CancelWaiting {
 
         waiting.cancel();
         waiting.getPub().decreaseWaitingCount();
-
+      
         // TODO : 카카오 알림톡 전송
         Pub pub = waiting.getPub();
         TemplateParameter templateParameter = new CancelWaitingTemplateParameterRequest(pub.getPubName());
         sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), templateParameter);
-
+      
         return new WaitingResponse(true, SuccessCode.WAITING_CANCEL_SUCCESS.getMessage());
     }
 }
