@@ -9,19 +9,22 @@ public record StatusResponse(UUID waitingId,
                              String pubName,
                              String orderStatus,
                              Integer order,
-                             String createdAt) {
+                             String createdAt,
+                             Integer headCount) {
 
     public static StatusResponse of(UUID waitingId,
                                     String pubName,
                                     String orderStatus,
                                     Integer order,
-                                    String createdAt) {
+                                    String createdAt,
+                                    Integer headCount) {
         return new StatusResponse(
                 waitingId,
                 pubName,
                 orderStatus,
                 order,
-                createdAt
+                createdAt,
+                headCount
         );
     }
 

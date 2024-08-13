@@ -42,7 +42,9 @@ public class GetStatusImpl implements GetStatus {
                         pub.getPubName(),
                         waiting.getWaitingStatus().getStatusKo(),
                         waitings.indexOf(waiting) + 1,
-                        String.valueOf(waiting.getCreatedAt())));
+                        String.valueOf(waiting.getCreatedAt()),
+                        waiting.getHeadCount())
+                );
     }
 
     private List<Pub> getPubsFromWaitings(User user) {

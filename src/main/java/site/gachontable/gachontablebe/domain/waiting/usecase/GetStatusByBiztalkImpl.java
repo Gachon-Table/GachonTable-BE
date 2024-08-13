@@ -28,7 +28,8 @@ public class GetStatusByBiztalkImpl implements GetStatusByBiztalk {
                 pub.getPubName(),
                 waiting.getWaitingStatus().getStatusKo(),
                 getIndexOfWaiting(waiting, pub),
-                String.valueOf(waiting.getCreatedAt())
+                String.valueOf(waiting.getCreatedAt()),
+                waiting.getHeadCount()
         );
     }
 
