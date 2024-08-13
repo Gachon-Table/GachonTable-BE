@@ -18,8 +18,8 @@ public class GetStatusByBiztalkImpl implements GetStatusByBiztalk {
     private final WaitingRepository waitingRepository;
 
     @Override
-    public StatusResponse execute(UUID pubId) {
-        Waiting waiting = waitingRepository.findById(pubId)
+    public StatusResponse execute(UUID waitingId) {
+        Waiting waiting = waitingRepository.findById(waitingId)
                 .orElseThrow(WaitingNotFoundException::new);
         Pub pub = waiting.getPub();
 
