@@ -33,8 +33,6 @@ spring:
             redirect-uri: http://localhost:3000/oauth
             authorization-grant-type: authorization_code
             scope:
-              - account_email
-              - profile
               - name
               - phone_number
   data:
