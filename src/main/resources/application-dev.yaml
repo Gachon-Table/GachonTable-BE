@@ -30,11 +30,9 @@ spring:
             client-secret: ENC(/yGYpmJCRdCtBsFF6gbcP9Ysn5J3AzHRCMQFxQFh7XTxS6qFOJ+SzxorkKbpFDDZ)
             client-authentication-method: client_secret_post
             client-id: ENC(W7XxEXUIYHJ3SdOUrnElMFjczI/UqT2blR8PiDg8mNLJ9ZmGv4ICIGy9CGqa1ifT)
-            redirect-uri: http://localhost:3000/oauth
+            redirect-uri: https://www.lupg.me/oauth
             authorization-grant-type: authorization_code
             scope:
-              - account_email
-              - profile
               - name
               - phone_number
   data:

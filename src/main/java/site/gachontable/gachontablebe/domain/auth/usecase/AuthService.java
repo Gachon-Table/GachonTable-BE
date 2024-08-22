@@ -84,8 +84,8 @@ public class AuthService {
     }
 
     private User getUser(KakaoProfile kakaoProfile) {
-        String tel = kakaoProfile.email();
-        String username = kakaoProfile.nickname();
+        String tel = kakaoProfile.tel();
+        String username = kakaoProfile.username();
 
         return userRepository.findByUsername(username)
                 .orElseGet(() -> userRepository.save(User.create(username, tel)));
