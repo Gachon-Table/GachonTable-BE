@@ -2,7 +2,6 @@ package site.gachontable.gachontablebe.domain.waiting.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.seating.domain.Seating;
 import site.gachontable.gachontablebe.domain.shared.BaseTimeEntity;
@@ -11,7 +10,7 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.P
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -41,7 +40,7 @@ public class Waiting extends BaseTimeEntity {
     private String tel; // 비회원 식별을 위한 휴대폰 번호
 
     @Column
-    private Date exitTime;
+    private LocalDateTime exitTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)")
