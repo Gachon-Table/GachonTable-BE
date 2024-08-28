@@ -10,6 +10,7 @@ public record StatusResponse(UUID waitingId,
                              String pubName,
                              String orderStatus,
                              Integer order,
+                             @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
                              String createdAt,
                              Integer headCount) {
 
