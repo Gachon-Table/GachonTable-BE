@@ -46,6 +46,8 @@ jwt:
   secret_key: ENC(CJzB4FyuHQrRdJ9V+3J0GhZbhxevmxah4rJItf5dM0GJj6Rmq2AsaVHFfSuSBPNmOsckPdYUjSxhheiOR3kJGm1i2+zpO4JdiN8GAv6i1zc=)
 
 biztalk:
-  app_key: ENC(o0y3pOIBp5FhpwsRQbvhWo9iCexESXrWkxYraNQH+x4=)
-  secret_key: ENC(Ui34V4wHltYCwy1WgS9QuCPW1ybekfImeXuieGmvJGzqTnA4nuc3E5qWlP5Fgr0c)
-  sender_key: ENC(VgMBO/4Pg0FNwzlIlZ1aQbtLWIXT9pE3EInsWBgABDTm7AcYyQbX2No98ICpSI3/lwTsmM20oUg=)
+  app_key: ENC(0ICRmKzOLkG/IpjvTio1+R+eOswJtOgcL8y0rQ9BmDc=)
+  secret_key: ENC(Bcr1J5xzQKefOfe+chqJ0M+P4Yfb4F3lrIExy4W2VI+d7sacNw0G1LPbKYnsDXvl)
+  pfId: ENC(NDFFA17+qF4c7EpyBdlV2e2679atMVd9Gv06OkLSh+gAIOuW5uTmEVZOj3mVsgER)
+  sender_phoneNumber: ENC(oUI8aODxdLXMsFy8AdNSXMnyWXqzj0/1)
+
