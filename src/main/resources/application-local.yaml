@@ -50,3 +50,9 @@ biztalk:
   secret_key: ENC(Bcr1J5xzQKefOfe+chqJ0M+P4Yfb4F3lrIExy4W2VI+d7sacNw0G1LPbKYnsDXvl)
   pfId: ENC(NDFFA17+qF4c7EpyBdlV2e2679atMVd9Gv06OkLSh+gAIOuW5uTmEVZOj3mVsgER)
   sender_phoneNumber: ENC(oUI8aODxdLXMsFy8AdNSXMnyWXqzj0/1)
+  templateId:
+    call: ENC(CGOu3LjBj919zkRKkEf86epBCWUZ3TJJhVXnl7QfKnyRiUJA1/5CfUiWyJcjTOjt)
+    cancel: ENC(LQRVbWO+DLV2jWam066LfZ+SynyQeSGmGNS4pfcLP4vqSFpLaFYT3otPohV8pUAm)
+    forceCancel: ENC(yEIJoeLcbFwRqdPjOy0W5+4uwSIHUhbHDpWG98jOorBqc98td/mVpoD88ELUNwab)
+    ready: ENC(zybEFNnDo6FVcQA+LEtmuQOEf29IzPpZIvg05785hZ6GAr9u5qbuNk4ROd2lsMvj)
+    waiting: ENC(WF8cdPQOkFbebfrWuDfjl3ncRr0CoBve4Xg+zPu2A/MwH6Gh1zfyPQ+0fQrn6AVm)
