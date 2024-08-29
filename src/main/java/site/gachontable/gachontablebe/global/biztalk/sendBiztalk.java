@@ -1,5 +1,6 @@
 package site.gachontable.gachontablebe.global.biztalk;
 
+import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.KakaoOption;
 import net.nurigo.sdk.message.model.Message;
@@ -14,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Objects;
 
-
+@Slf4j
 @Configuration
 public class sendBiztalk {
 
@@ -49,6 +50,7 @@ public class sendBiztalk {
         SingleMessageSentResponse response = defaultMessageService.sendOne(new SingleMessageSendingRequest(message));
 
         if (!Objects.equals(response.getStatusCode(), String.valueOf(HttpURLConnection.HTTP_OK))) {
+            log.error("알림톡 전송 실패. 코드: {}, 메시지: {}", response.getStatusCode(), response.getStatusMessage());
             throw new BiztalkSendFailException();
         }
     }
