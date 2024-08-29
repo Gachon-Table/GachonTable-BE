@@ -1,6 +1,7 @@
 package site.gachontable.gachontablebe.domain.admin.usecase;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import site.gachontable.gachontablebe.domain.admin.domain.Admin;
@@ -15,16 +16,11 @@ import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRe
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
-import site.gachontable.gachontablebe.global.biztalk.dto.request.CallUserTemplateParameterRequest;
-import site.gachontable.gachontablebe.global.biztalk.dto.request.TemplateParameter;
-import site.gachontable.gachontablebe.global.biztalk.dto.request.CancelWaitingTemplateParameterRequest;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
-import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
-import site.gachontable.gachontablebe.global.biztalk.dto.request.CallUserTemplateParameterRequest;
-import site.gachontable.gachontablebe.global.biztalk.dto.request.TemplateParameter;
-import site.gachontable.gachontablebe.global.biztalk.dto.request.CancelWaitingTemplateParameterRequest;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -32,14 +28,17 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 public class CallUser {
-    private static final String CALL_TEMPLATE_CODE = "CALL";
-    private static final String FORCE_CANCEL_TEMPLATE_CODE = "FCANCEL";
-  
     private final WaitingRepository waitingRepository;
     private final AdminRepository adminRepository;
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private final TransactionTemplate transactionTemplate;
     private final sendBiztalk sendBiztalk;
+
+    @Value("${biztalk.templateId.call}")
+    private String CALL_TEMPLATE_CODE;
+
+    @Value("${biztalk.templateId.forceCancel}")
+    private String FORCE_CANCEL_TEMPLATE_CODE;
   
     @RedissonLock(key = "#lockKey")
     public String execute(AuthDetails authDetails, CallUserRequest request, String lockKey) {
@@ -56,8 +55,7 @@ public class CallUser {
         waiting.toAvailable();
 
         // TODO : 카카오 알림톡 전송
-        TemplateParameter templateParameter = new CallUserTemplateParameterRequest(pub.getPubName(), waiting.getWaitingId().toString());
-        sendBiztalk.execute(CALL_TEMPLATE_CODE, waiting.getTel(), templateParameter);
+        sendBiztalk.execute(CALL_TEMPLATE_CODE, waiting.getTel(), (HashMap<String, String>) Map.of("#{pub}", pub.getPubName()));
 
         // 사용자가 5분 안에 응답하는지 확인하기 위해 작업을 예약합니다.
         transactionTemplate.execute(status -> {
@@ -69,7 +67,7 @@ public class CallUser {
                         pub.decreaseWaitingCount();
 
                         // TODO : 카카오 알림톡 전송
-                        sendBiztalk.execute(FORCE_CANCEL_TEMPLATE_CODE, waiting.getTel(), new CancelWaitingTemplateParameterRequest(pub.getPubName()));
+                        sendBiztalk.execute(FORCE_CANCEL_TEMPLATE_CODE, waiting.getTel(), (HashMap<String, String>) Map.of("#{pub}", pub.getPubName()));
                     }
                     return null;
                 });
