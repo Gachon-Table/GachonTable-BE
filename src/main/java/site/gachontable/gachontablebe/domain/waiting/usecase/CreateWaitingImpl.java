@@ -1,8 +1,8 @@
 package site.gachontable.gachontablebe.domain.waiting.usecase;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
 import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
@@ -24,23 +24,24 @@ import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
-import site.gachontable.gachontablebe.global.biztalk.dto.request.CreateWaitingTemplateParameterRequest;
-import site.gachontable.gachontablebe.global.biztalk.dto.request.TemplateParameter;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CreateWaitingImpl implements CreateWaiting {
     private static final Integer WAITING_MAX_COUNT = 3;
-    private static final String TEMPLATE_CODE = "WAITING";
 
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
     private final sendBiztalk sendBiztalk;
+
+     @Value("${biztalk.templateId.waiting}")
+    private String TEMPLATE_CODE;
 
     @RedissonLock(key = "#lockKey")
     @Override
@@ -58,7 +59,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         pub.increaseWaitingCount();
 
         // TODO : 카카오 알림톡 전송
-        sendBiztalk.execute(TEMPLATE_CODE, user.getUserTel(), createTemplateParameter(pub, waiting, request.headCount()));
+        sendBiztalk.execute(TEMPLATE_CODE, user.getUserTel(), createVariables(user.getUsername(), pub, waiting, request.headCount()));
 
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }
@@ -77,7 +78,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         pub.increaseWaitingCount();
 
         // TODO : 카카오 알림톡 전송
-        sendBiztalk.execute(TEMPLATE_CODE, request.tel(), createTemplateParameter(pub, waiting, request.headCount()));
+        sendBiztalk.execute(TEMPLATE_CODE, request.tel(), createVariables(request.tel().substring(7), pub, waiting, request.headCount()));
 
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
     }
@@ -101,13 +102,21 @@ public class CreateWaitingImpl implements CreateWaiting {
         }
     }
 
-    public TemplateParameter createTemplateParameter(Pub pub, Waiting waiting, Integer headCount) {
+    public HashMap<String, String> createVariables(String username, Pub pub, Waiting waiting, Integer headCount) {
+
         List<Waiting> waitings = waitingRepository
                 .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
         String order = String.valueOf(waitings.size());
-        String indexOfWaiting = String.valueOf(waitings.indexOf(waiting) + 1);
+        String callNumber = waiting.getTel().substring(7);
 
-        return new CreateWaitingTemplateParameterRequest(pub.getPubName(), String.valueOf(headCount), order,
-                indexOfWaiting, String.valueOf(waiting.getWaitingId()));
+        HashMap<String, String> variables = new HashMap<>();
+        variables.put("#{username}", username);
+        variables.put("#{pub}", pub.getPubName());
+        variables.put("#{headCount}", String.valueOf(headCount));
+        variables.put("#{order}", order);
+        variables.put("#{callNumber}", callNumber);
+        variables.put("#{waitingId}", String.valueOf(waiting.getWaitingId()));
+
+        return variables;
     }
 }
