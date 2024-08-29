@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import site.gachontable.gachontablebe.domain.admin.usecase.ReadyUser;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
@@ -21,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CancelWaitingImpl implements CancelWaiting {
     private final WaitingRepository waitingRepository;
+    private final ReadyUser readyUser;
     private final sendBiztalk sendBiztalk;
 
     @Value("${biztalk.templateId.cancel}")
@@ -38,6 +40,8 @@ public class CancelWaitingImpl implements CancelWaiting {
         // TODO : 카카오 알림톡 전송
         Pub pub = waiting.getPub();
         sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), (HashMap<String, String>) Map.of("#{pub}", pub.getPubName()));
+
+        readyUser.execute(pub, lockKey);
 
         return new WaitingResponse(true, SuccessCode.WAITING_CANCEL_SUCCESS.getMessage());
     }

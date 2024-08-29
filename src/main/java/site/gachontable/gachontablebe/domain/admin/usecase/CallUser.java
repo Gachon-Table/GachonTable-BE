@@ -32,6 +32,7 @@ public class CallUser {
     private final AdminRepository adminRepository;
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private final TransactionTemplate transactionTemplate;
+    private final ReadyUser readyUser;
     private final sendBiztalk sendBiztalk;
 
     @Value("${biztalk.templateId.call}")
@@ -68,6 +69,7 @@ public class CallUser {
 
                         // TODO : 카카오 알림톡 전송
                         sendBiztalk.execute(FORCE_CANCEL_TEMPLATE_CODE, waiting.getTel(), (HashMap<String, String>) Map.of("#{pub}", pub.getPubName()));
+                        readyUser.execute(pub, lockKey);
                     }
                     return null;
                 });
