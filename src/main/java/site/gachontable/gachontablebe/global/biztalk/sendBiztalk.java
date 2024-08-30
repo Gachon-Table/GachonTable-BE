@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import site.gachontable.gachontablebe.global.biztalk.exception.BiztalkSendFailException;
 
-import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -47,9 +46,9 @@ public class sendBiztalk {
         message.setTo(phoneNumber);
         message.setKakaoOptions(kakaoOption);
 
-        SingleMessageSentResponse response = defaultMessageService.sendOne(new SingleMessageSendingRequest(message));
+        SingleMessageSentResponse response = this.defaultMessageService.sendOne(new SingleMessageSendingRequest(message));
 
-        if (!Objects.equals(response.getStatusCode(), String.valueOf(HttpURLConnection.HTTP_OK))) {
+        if (!Objects.equals(response.getStatusCode(), String.valueOf(2000))) {
             log.error("알림톡 전송 실패. 코드: {}, 메시지: {}", response.getStatusCode(), response.getStatusMessage());
             throw new BiztalkSendFailException();
         }
