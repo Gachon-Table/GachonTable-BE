@@ -8,7 +8,6 @@ import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
-import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 
 import java.util.HashMap;
 
@@ -21,8 +20,7 @@ public class ReadyUser {
     @Value("${biztalk.templateId.ready}")
     private String TEMPLATE_CODE;
 
-    @RedissonLock(key = "#lockKey")
-    public void execute(Pub pub, String lockKey) {
+    public void execute(Pub pub) {
 
         // TODO : 카카오 알림톡 전송
         Waiting waiting = waitingRepository
