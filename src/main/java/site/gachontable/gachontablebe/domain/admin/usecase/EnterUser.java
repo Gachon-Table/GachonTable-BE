@@ -37,7 +37,7 @@ public class EnterUser {
         waiting.enter();
         pub.decreaseWaitingCount();
 
-        readyUser.execute(pub, lockKey);
+        readyUser.execute(pub);
 
         return SuccessCode.ENTERED_SUCCESS.getMessage();
     }
