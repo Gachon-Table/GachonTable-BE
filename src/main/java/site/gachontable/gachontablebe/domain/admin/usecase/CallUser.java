@@ -20,7 +20,6 @@ import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +39,7 @@ public class CallUser {
 
     @Value("${biztalk.templateId.forceCancel}")
     private String FORCE_CANCEL_TEMPLATE_CODE;
-  
+
     @RedissonLock(key = "#lockKey")
     public String execute(AuthDetails authDetails, CallUserRequest request, String lockKey) {
         Admin admin = adminRepository.findById(authDetails.getUuid()).
@@ -56,7 +55,9 @@ public class CallUser {
         waiting.toAvailable();
 
         // TODO : 카카오 알림톡 전송
-        sendBiztalk.execute(CALL_TEMPLATE_CODE, waiting.getTel(), (HashMap<String, String>) Map.of("#{pub}", pub.getPubName()));
+        HashMap<String, String> variables = new HashMap<>();
+        variables.put("#{pub}", pub.getPubName());
+        sendBiztalk.execute(CALL_TEMPLATE_CODE, waiting.getTel(), variables);
 
         // 사용자가 5분 안에 응답하는지 확인하기 위해 작업을 예약합니다.
         transactionTemplate.execute(status -> {
@@ -68,7 +69,7 @@ public class CallUser {
                         pub.decreaseWaitingCount();
 
                         // TODO : 카카오 알림톡 전송
-                        sendBiztalk.execute(FORCE_CANCEL_TEMPLATE_CODE, waiting.getTel(), (HashMap<String, String>) Map.of("#{pub}", pub.getPubName()));
+                        sendBiztalk.execute(FORCE_CANCEL_TEMPLATE_CODE, waiting.getTel(), variables);
                         readyUser.execute(pub);
                     }
                     return null;

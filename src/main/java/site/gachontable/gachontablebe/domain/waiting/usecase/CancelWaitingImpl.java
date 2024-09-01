@@ -18,7 +18,6 @@ import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +42,9 @@ public class CancelWaitingImpl implements CancelWaiting {
         waiting.getPub().decreaseWaitingCount();
 
         // TODO : 카카오 알림톡 전송
-        sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), (HashMap<String, String>) Map.of("#{pub}", pub.getPubName()));
+        HashMap<String, String> variables = new HashMap<>();
+        variables.put("#{pub}", pub.getPubName());
+        sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), variables);
 
         if (isWaitingContains(waiting, limitedWaitings)) {
             readyUser.execute(pub);
