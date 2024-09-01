@@ -10,6 +10,7 @@ import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +24,12 @@ public class ReadyUser {
     public void execute(Pub pub) {
 
         // TODO : 카카오 알림톡 전송
-        Waiting waiting = waitingRepository
-                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE).get(2);
+        List<Waiting> waitings = waitingRepository
+                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
+
+        if (waitings.size() < 3) return;
+
+        Waiting waiting = waitings.get(2);
 
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{pub}", pub.getPubName());
