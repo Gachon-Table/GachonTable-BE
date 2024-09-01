@@ -17,6 +17,7 @@ import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -35,18 +36,31 @@ public class CancelWaitingImpl implements CancelWaiting {
         Waiting waiting = waitingRepository.findById(request.waitingId()).
                 orElseThrow(WaitingNotFoundException::new);
 
+        Pub pub = waiting.getPub();
+        List<Waiting> limitedWaitings = getLimitedWaitings(pub);
+
         waiting.cancel();
         waiting.getPub().decreaseWaitingCount();
 
         // TODO : 카카오 알림톡 전송
-        Pub pub = waiting.getPub();
         sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), (HashMap<String, String>) Map.of("#{pub}", pub.getPubName()));
 
-        if (waitingRepository
-                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE).indexOf(waiting) < 3) {
+        if (isWaitingContains(waiting, limitedWaitings)) {
             readyUser.execute(pub);
         }
 
         return new WaitingResponse(true, SuccessCode.WAITING_CANCEL_SUCCESS.getMessage());
+    }
+
+    private List<Waiting> getLimitedWaitings(Pub pub) {
+        return waitingRepository
+                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE)
+                .stream()
+                .limit(3)
+                .toList();
+    }
+
+    private boolean isWaitingContains(Waiting waiting, List<Waiting> limitedWaitings) {
+        return limitedWaitings.contains(waiting);
     }
 }
