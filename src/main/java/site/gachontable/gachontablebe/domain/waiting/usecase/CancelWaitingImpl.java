@@ -11,6 +11,7 @@ import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRe
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.CancelRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
+import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
@@ -41,7 +42,10 @@ public class CancelWaitingImpl implements CancelWaiting {
         Pub pub = waiting.getPub();
         sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), (HashMap<String, String>) Map.of("#{pub}", pub.getPubName()));
 
-        readyUser.execute(pub);
+        if (waitingRepository
+                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE).indexOf(waiting) < 3) {
+            readyUser.execute(pub);
+        }
 
         return new WaitingResponse(true, SuccessCode.WAITING_CANCEL_SUCCESS.getMessage());
     }
