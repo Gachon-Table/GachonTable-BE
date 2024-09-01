@@ -69,7 +69,7 @@ public class CallUser {
 
                         // TODO : 카카오 알림톡 전송
                         sendBiztalk.execute(FORCE_CANCEL_TEMPLATE_CODE, waiting.getTel(), (HashMap<String, String>) Map.of("#{pub}", pub.getPubName()));
-                        readyUser.execute(pub, lockKey);
+                        readyUser.execute(pub);
                     }
                     return null;
                 });

@@ -41,7 +41,7 @@ public class CancelWaitingImpl implements CancelWaiting {
         Pub pub = waiting.getPub();
         sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), (HashMap<String, String>) Map.of("#{pub}", pub.getPubName()));
 
-        readyUser.execute(pub, lockKey);
+        readyUser.execute(pub);
 
         return new WaitingResponse(true, SuccessCode.WAITING_CANCEL_SUCCESS.getMessage());
     }
