@@ -53,6 +53,7 @@ public class PubService {
                 request.thumbnails(),
                 menus,
                 request.openStatus(),
+                request.waitingStatus(),
                 INITIAL_WAITING_COUNT);
     }
 
