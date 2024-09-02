@@ -7,6 +7,7 @@ public record PubRegisterRequest(String pubName,
                                  String instagramUrl,
                                  Boolean studentCard,
                                  String representativeMenu,
+                                 Integer hours,
                                  String pubLoc,
                                  List<String> thumbnails,
                                  Boolean openStatus) {

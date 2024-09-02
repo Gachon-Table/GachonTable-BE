@@ -48,6 +48,7 @@ public class PubService {
                 request.instagramUrl(),
                 request.studentCard(),
                 request.representativeMenu(),
+                request.hours(),
                 request.pubLoc(),
                 request.thumbnails(),
                 menus,

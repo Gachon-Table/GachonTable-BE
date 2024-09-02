@@ -32,6 +32,9 @@ public class Pub {
     @Column(nullable = false)
     private String representativeMenu;
 
+    @Column(nullable = false)
+    private Integer hours;
+
     @Column
     private String pubLoc;
 
@@ -54,6 +57,7 @@ public class Pub {
                              String instagramUrl,
                              Boolean studentCard,
                              String representativeMenu,
+                             Integer hours,
                              String pubLoc,
                              List<String> thumbnails,
                              List<Menu> menus,
@@ -65,6 +69,7 @@ public class Pub {
                 .instagramUrl(instagramUrl)
                 .studentCard(studentCard)
                 .representativeMenu(representativeMenu)
+                .hours(hours)
                 .pubLoc(pubLoc)
                 .thumbnails(thumbnails)
                 .menus(menus)
@@ -79,6 +84,7 @@ public class Pub {
                String instagramUrl,
                Boolean studentCard,
                String representativeMenu,
+               Integer hours,
                String pubLoc,
                List<String> thumbnails,
                List<Menu> menus,
@@ -89,6 +95,7 @@ public class Pub {
         this.instagramUrl = instagramUrl;
         this.studentCard = studentCard;
         this.representativeMenu = representativeMenu;
+        this.hours = hours;
         this.pubLoc = pubLoc;
         this.thumbnails = thumbnails;
         this.menus = menus;
