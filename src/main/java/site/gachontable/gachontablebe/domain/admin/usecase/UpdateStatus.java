@@ -5,5 +5,7 @@ import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 
 public interface UpdateStatus {
-    RegisterResponse execute(AuthDetails authDetails, UpdateStatusRequest request);
+    RegisterResponse executeForOpenStatus(AuthDetails authDetails, UpdateStatusRequest request);
+
+    RegisterResponse executeForWaitingStatus(AuthDetails authDetails, UpdateStatusRequest request);
 }

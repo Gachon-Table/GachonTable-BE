@@ -22,16 +22,28 @@ public class UpdateStatusImpl implements UpdateStatus{
 
     @Transactional
     @Override
-    public RegisterResponse execute(AuthDetails authDetails, UpdateStatusRequest request) {
+    public RegisterResponse executeForOpenStatus(AuthDetails authDetails, UpdateStatusRequest request) {
         Pub pub = adminRepository.findByUsername(authDetails.getUsername())
                 .orElseThrow(AdminNotFoundException::new)
                 .getPub();
 
-        pub.updateOpenStatus(request.openStatus());
+        pub.updateOpenStatus(request.status());
 
         waitingRepository
                 .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE)
                 .forEach(Waiting::cancel);
+
+        return new RegisterResponse(true, SuccessCode.MANAGE_PUB_SUCCESS.getMessage());
+    }
+
+    @Transactional
+    @Override
+    public RegisterResponse executeForWaitingStatus(AuthDetails authDetails, UpdateStatusRequest request) {
+        Pub pub = adminRepository.findByUsername(authDetails.getUsername())
+                .orElseThrow(AdminNotFoundException::new)
+                .getPub();
+
+        pub.updateWaitingStatus(request.status());
 
         return new RegisterResponse(true, SuccessCode.MANAGE_PUB_SUCCESS.getMessage());
     }
