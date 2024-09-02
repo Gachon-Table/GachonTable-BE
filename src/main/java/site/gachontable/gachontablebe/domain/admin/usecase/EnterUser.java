@@ -20,6 +20,7 @@ import site.gachontable.gachontablebe.global.success.SuccessCode;
 public class EnterUser {
     private final WaitingRepository waitingRepository;
     private final AdminRepository adminRepository;
+    private final ReadyUser readyUser;
 
     @RedissonLock(key = "#lockKey")
     public String execute(AuthDetails authDetails, EnterUserRequest request, String lockKey) {
@@ -35,6 +36,8 @@ public class EnterUser {
 
         waiting.enter();
         pub.decreaseWaitingCount();
+
+        readyUser.execute(pub);
 
         return SuccessCode.ENTERED_SUCCESS.getMessage();
     }
