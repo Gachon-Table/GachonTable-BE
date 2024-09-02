@@ -3,7 +3,6 @@ package site.gachontable.gachontablebe.domain.waiting.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.seating.domain.Seating;
 import site.gachontable.gachontablebe.domain.shared.BaseTimeEntity;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.PubWaitingListResponse;
@@ -11,8 +10,6 @@ import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -50,10 +47,6 @@ public class Waiting extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pub_id", nullable = false)
     private Pub pub;
-
-    @OneToMany
-    @Column
-    private List<Seating> seatings = new ArrayList<>();
 
     public boolean matchesUser(User user) {
         return Objects.equals(this.user, user);
