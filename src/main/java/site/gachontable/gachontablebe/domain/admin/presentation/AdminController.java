@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.*;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.AdminLoginResponse;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.SeatingsResponse;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.WaitingInfosResponse;
 import site.gachontable.gachontablebe.domain.admin.type.Status;
 import site.gachontable.gachontablebe.domain.admin.usecase.*;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
@@ -20,7 +21,6 @@ import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
 import site.gachontable.gachontablebe.domain.shared.dto.request.RefreshRequest;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.PubWaitingListResponse;
 import site.gachontable.gachontablebe.domain.waiting.usecase.GetWaitings;
 import site.gachontable.gachontablebe.global.error.ErrorResponse;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
@@ -90,7 +90,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/waitings")
-    public ResponseEntity<PubWaitingListResponse> getWaiting(@AuthenticationPrincipal AuthDetails authDetails) {
+    public ResponseEntity<WaitingInfosResponse> getWaiting(@AuthenticationPrincipal AuthDetails authDetails) {
         return ResponseEntity.ok(getWaitings.execute(authDetails));
     }
 
