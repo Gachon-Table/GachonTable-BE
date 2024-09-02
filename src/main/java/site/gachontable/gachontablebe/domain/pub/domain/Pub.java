@@ -5,6 +5,7 @@ import lombok.*;
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.pub.exception.EmptyWaitingCountException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "pub")
@@ -31,16 +32,19 @@ public class Pub {
     @Column(nullable = false)
     private String representativeMenu;
 
+    @Column(nullable = false)
+    private Integer hours;
+
     @Column
     private String pubLoc;
 
     @ElementCollection
     @Column(nullable = false)
-    private List<String> thumbnails;
+    private List<String> thumbnails = new ArrayList<>();
 
     @OneToMany
     @Column(nullable = false)
-    private List<Menu> menus;
+    private List<Menu> menus = new ArrayList<>();
 
     @Column(nullable = false)
     private Boolean openStatus;
@@ -53,6 +57,7 @@ public class Pub {
                              String instagramUrl,
                              Boolean studentCard,
                              String representativeMenu,
+                             Integer hours,
                              String pubLoc,
                              List<String> thumbnails,
                              List<Menu> menus,
@@ -64,6 +69,7 @@ public class Pub {
                 .instagramUrl(instagramUrl)
                 .studentCard(studentCard)
                 .representativeMenu(representativeMenu)
+                .hours(hours)
                 .pubLoc(pubLoc)
                 .thumbnails(thumbnails)
                 .menus(menus)
@@ -78,6 +84,7 @@ public class Pub {
                String instagramUrl,
                Boolean studentCard,
                String representativeMenu,
+               Integer hours,
                String pubLoc,
                List<String> thumbnails,
                List<Menu> menus,
@@ -88,6 +95,7 @@ public class Pub {
         this.instagramUrl = instagramUrl;
         this.studentCard = studentCard;
         this.representativeMenu = representativeMenu;
+        this.hours = hours;
         this.pubLoc = pubLoc;
         this.thumbnails = thumbnails;
         this.menus = menus;

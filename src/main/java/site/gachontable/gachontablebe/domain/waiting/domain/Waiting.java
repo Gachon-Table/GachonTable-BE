@@ -2,10 +2,10 @@ package site.gachontable.gachontablebe.domain.waiting.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.WaitingInfosResponse;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.shared.BaseTimeEntity;
 import site.gachontable.gachontablebe.domain.user.domain.User;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.PubWaitingListResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
@@ -34,13 +34,13 @@ public class Waiting extends BaseTimeEntity {
     private Status waitingStatus;
 
     @Column(columnDefinition = "char(16)")
-    private String tel; // 비회원 식별을 위한 휴대폰 번호
+    private String tel;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pub_id", nullable = false)
     private Pub pub;
 
@@ -69,9 +69,9 @@ public class Waiting extends BaseTimeEntity {
         this.pub = pub;
     }
 
-    public static PubWaitingListResponse.WaitingInfo toWaitingInfo(Waiting waiting) {
-        String username = (waiting.getUser() == null) ? waiting.getTel().substring(12) : waiting.getUser().getUsername();
-        return PubWaitingListResponse.WaitingInfo.of(username, waiting);
+    public static WaitingInfosResponse.WaitingInfo toWaitingInfo(Waiting waiting) {
+        String username = waiting.getUser().getUsername();
+        return WaitingInfosResponse.WaitingInfo.of(username, waiting);
     }
 
     public void enter() {

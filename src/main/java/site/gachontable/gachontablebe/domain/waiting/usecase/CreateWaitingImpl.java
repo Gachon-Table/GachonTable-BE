@@ -77,8 +77,7 @@ public class CreateWaitingImpl implements CreateWaiting {
 
         pub.increaseWaitingCount();
 
-        // TODO : 카카오 알림톡 전송
-        sendBiztalk.execute(TEMPLATE_CODE, request.tel(), createVariables(request.tel().substring(7), pub, waiting, request.headCount()));
+        sendBiztalk.execute(TEMPLATE_CODE, request.tel(), createVariables(request.tel().substring(9), pub, waiting, request.headCount()));
 
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
     }
@@ -107,7 +106,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         List<Waiting> waitings = waitingRepository
                 .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
         String order = String.valueOf(waitings.size());
-        String callNumber = waiting.getTel().substring(7);
+        String callNumber = waiting.getTel().substring(9);
 
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{username}", username);

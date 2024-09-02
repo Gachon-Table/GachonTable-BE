@@ -34,7 +34,7 @@ public class ReadyUser {
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{pub}", pub.getPubName());
         variables.put("#{username}", waiting.getUser().getUsername());
-        variables.put("#{callNumber}", waiting.getTel().substring(7));
+        variables.put("#{callNumber}", waiting.getTel().substring(9));
         variables.put("#{waitingId}", waiting.getWaitingId().toString());
 
         sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), variables);

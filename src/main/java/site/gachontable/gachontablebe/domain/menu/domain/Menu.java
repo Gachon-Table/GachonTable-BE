@@ -13,7 +13,7 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer menuID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Pub pub;
 
     @Column(nullable = false)

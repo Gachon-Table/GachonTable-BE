@@ -28,7 +28,7 @@ public class Admin {
     @Column
     private String refreshToken;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pub_id")
     private Pub pub;
 

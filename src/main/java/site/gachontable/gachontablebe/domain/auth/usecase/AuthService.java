@@ -84,7 +84,8 @@ public class AuthService {
     }
 
     private User getUser(KakaoProfile kakaoProfile) {
-        String tel = kakaoProfile.tel();
+        String kakaoTel = kakaoProfile.tel();
+        String tel = kakaoTel.replace("+82 ", "0");
         String username = kakaoProfile.username();
 
         return userRepository.findByUsername(username)
