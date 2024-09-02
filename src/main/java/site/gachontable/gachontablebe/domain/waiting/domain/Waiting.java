@@ -11,6 +11,7 @@ import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -42,17 +43,17 @@ public class Waiting extends BaseTimeEntity {
     @Column
     private LocalDateTime exitTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pub_id", nullable = false)
     private Pub pub;
 
     @OneToMany
     @Column
-    private List<Seating> seatings;
+    private List<Seating> seatings = new ArrayList<>();
 
     public boolean matchesUser(User user) {
         return Objects.equals(this.user, user);

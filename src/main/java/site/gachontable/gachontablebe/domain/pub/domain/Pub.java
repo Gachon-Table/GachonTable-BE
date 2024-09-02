@@ -5,6 +5,7 @@ import lombok.*;
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.pub.exception.EmptyWaitingCountException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "pub")
@@ -36,11 +37,11 @@ public class Pub {
 
     @ElementCollection
     @Column(nullable = false)
-    private List<String> thumbnails;
+    private List<String> thumbnails = new ArrayList<>();
 
     @OneToMany
     @Column(nullable = false)
-    private List<Menu> menus;
+    private List<Menu> menus = new ArrayList<>();
 
     @Column(nullable = false)
     private Boolean openStatus;
