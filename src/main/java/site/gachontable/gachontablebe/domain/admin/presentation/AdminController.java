@@ -133,7 +133,7 @@ public class AdminController {
         return ResponseEntity.ok(callUser.execute(authDetails, request, Status.CALL.getStatusKo()));
     }
 
-    @Operation(summary = "주점 상태 변경", description = "관리자가 담당하는 주점의 상태(오픈 여부)를 변경합니다.")
+    @Operation(summary = "주점 영업 상태 변경", description = "관리자가 담당하는 주점의 상태(오픈 여부)를 변경합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "201"),
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
@@ -142,7 +142,20 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PatchMapping("/status")
-    public ResponseEntity<RegisterResponse> updateStatus(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody UpdateStatusRequest request) {
-        return ResponseEntity.ok(updateStatus.execute(authDetails, request));
+    public ResponseEntity<RegisterResponse> updateOpenStatus(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody UpdateStatusRequest request) {
+        return ResponseEntity.ok(updateStatus.executeForOpenStatus(authDetails, request));
+    }
+
+    @Operation(summary = "주점 웨이팅 상태 변경", description = "관리자가 담당하는 주점의 상태(오픈 여부)를 변경합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PatchMapping("/status-waiting")
+    public ResponseEntity<RegisterResponse> updateWaitingStatus(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody UpdateStatusRequest request) {
+        return ResponseEntity.ok(updateStatus.executeForWaitingStatus(authDetails, request));
     }
 }

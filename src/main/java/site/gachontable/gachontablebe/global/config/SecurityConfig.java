@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.global.filter.ExceptionHandleFilter;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 import site.gachontable.gachontablebe.global.jwt.TokenAuthenticationFilter;
@@ -69,8 +70,8 @@ public class SecurityConfig {
 
                                 .requestMatchers("waiting/biztalk-status/{pubId}").permitAll() // 알림톡 웨이팅 조회
 
-                                .requestMatchers("/admin/waitings", "/admin/enter", "/admin/call").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 웨이팅 관리
-                                .requestMatchers("/admin/status").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 상태 변경
+                                .requestMatchers("/admin/waitings", "/admin/seatings", "/admin/enter", "/admin/call").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 웨이팅 관리
+                                .requestMatchers("/admin/status", "admin/status-waiting").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 상태 변경
                                 .requestMatchers("pub/manage").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 관리(주점 상세정보 변경)
                                 .requestMatchers("waiting/onsite").hasAuthority(Role.ROLE_ADMIN.getRole()) // 현장 웨이팅
 

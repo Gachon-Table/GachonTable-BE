@@ -10,5 +10,6 @@ public record PubRegisterRequest(String pubName,
                                  Integer hours,
                                  String pubLoc,
                                  List<String> thumbnails,
-                                 Boolean openStatus) {
+                                 Boolean openStatus,
+                                 Boolean waitingStatus) {
 }
