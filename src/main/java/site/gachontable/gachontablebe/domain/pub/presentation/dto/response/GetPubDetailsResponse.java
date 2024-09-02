@@ -28,7 +28,8 @@ public record GetPubDetailsResponse(
             Boolean studentCard,
             String menu,
             Integer waitingCount,
-            Boolean openStatus
+            Boolean openStatus,
+            Boolean waitingStatus
     ) {
         public static PubInfo from(Pub pub) {
             return new PubInfo(
@@ -40,7 +41,8 @@ public record GetPubDetailsResponse(
                     pub.getStudentCard(),
                     pub.getRepresentativeMenu(),
                     pub.getWaitingCount(),
-                    pub.getOpenStatus());
+                    pub.getOpenStatus(),
+                    pub.getWaitingStatus());
         }
     }
 
