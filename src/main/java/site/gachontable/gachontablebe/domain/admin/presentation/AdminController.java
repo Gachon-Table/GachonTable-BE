@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.*;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.AdminLoginResponse;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.SeatingsResponse;
 import site.gachontable.gachontablebe.domain.admin.type.Status;
 import site.gachontable.gachontablebe.domain.admin.usecase.*;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
@@ -37,6 +38,7 @@ public class AdminController {
     private final EnterUser enterUser;
     private final CallUser callUser;
     private final UpdateStatus updateStatus;
+    private final GetSeatings getSeatings;
 
     @Operation(summary = "관리자 테스트 회원가입", description = "테스트를 위한 관리자 회원가입 기능입니다.")
     @ApiResponses({
@@ -89,7 +91,20 @@ public class AdminController {
     })
     @GetMapping("/waitings")
     public ResponseEntity<PubWaitingListResponse> getWaiting(@AuthenticationPrincipal AuthDetails authDetails) {
-        return ResponseEntity.ok(getWaitings.excute(authDetails));
+        return ResponseEntity.ok(getWaitings.execute(authDetails));
+    }
+
+    @Operation(summary = "주점 테이블 목록 조회", description = "관리자가 담당하는 주점의 테이블 사용 현황을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/seatings")
+    public ResponseEntity<SeatingsResponse> getSeatings(@AuthenticationPrincipal AuthDetails authDetails) {
+        return ResponseEntity.ok(getSeatings.execute(authDetails));
     }
 
     @Operation(summary = "사용자 입장완료", description = "관리자가 담당하는 주점의 사용자를 입장완료 처리합니다.")
@@ -114,7 +129,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PatchMapping("/call")
-    public ResponseEntity<String> callUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody CallUserRequest request){
+    public ResponseEntity<String> callUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody CallUserRequest request) {
         return ResponseEntity.ok(callUser.execute(authDetails, request, Status.CALL.getStatusKo()));
     }
 
@@ -127,7 +142,7 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PatchMapping("/status")
-    public ResponseEntity<RegisterResponse> updateStatus(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody UpdateStatusRequest request){
+    public ResponseEntity<RegisterResponse> updateStatus(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody UpdateStatusRequest request) {
         return ResponseEntity.ok(updateStatus.execute(authDetails, request));
     }
 }
