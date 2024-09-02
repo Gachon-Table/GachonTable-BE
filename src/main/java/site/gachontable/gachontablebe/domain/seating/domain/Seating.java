@@ -9,6 +9,8 @@ import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.Sea
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
+import java.time.LocalDateTime;
+
 @Entity(name = "seating")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,6 +26,9 @@ public class Seating {
     @Column(nullable = false)
     private Boolean allocated;
 
+    @Column(nullable = false)
+    private LocalDateTime exitTime;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pub_id")
     private Pub pub;
@@ -32,19 +37,21 @@ public class Seating {
     @JoinColumn(name = "waiting_id")
     private Waiting waiting;
 
-    public static Seating create(Integer seatingNum, Boolean allocated, Pub pub, Waiting waiting) {
+    public static Seating create(Integer seatingNum, Boolean allocated, LocalDateTime exitTime, Pub pub, Waiting waiting) {
         return Seating.builder()
                 .seatingNum(seatingNum)
                 .allocated(allocated)
+                .exitTime(exitTime)
                 .pub(pub)
                 .waiting(waiting)
                 .build();
     }
 
     @Builder
-    public Seating(Integer seatingNum, Boolean allocated, Pub pub, Waiting waiting) {
+    public Seating(Integer seatingNum, Boolean allocated, LocalDateTime exitTime, Pub pub, Waiting waiting) {
         this.seatingNum = seatingNum;
         this.allocated = allocated;
+        this.exitTime = exitTime;
         this.pub = pub;
         this.waiting = waiting;
     }

@@ -9,7 +9,6 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.P
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -35,10 +34,7 @@ public class Waiting extends BaseTimeEntity {
     private Status waitingStatus;
 
     @Column(columnDefinition = "char(16)")
-    private String tel; // 비회원 식별을 위한 휴대폰 번호
-
-    @Column
-    private LocalDateTime exitTime;
+    private String tel;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)")

@@ -14,7 +14,7 @@ public record SeatingsResponse(List<SeatingResponse> seatings) {
         public static SeatingResponse from(Seating seating) {
             return SeatingResponse.builder()
                     .tableNum(seating.getSeatingNum())
-                    .exitTime(seating.getWaiting().getExitTime())
+                    .exitTime(seating.getExitTime())
                     .waitingId(seating.getWaiting().getWaitingId())
                     .build();
         }
