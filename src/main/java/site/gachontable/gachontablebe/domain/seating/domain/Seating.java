@@ -5,7 +5,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.SeatingsResponse;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
+import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 @Entity(name = "seating")
 @Getter
@@ -26,18 +28,28 @@ public class Seating {
     @JoinColumn(name = "pub_id")
     private Pub pub;
 
-    public static Seating create(Integer seatingNum, Boolean allocated, Pub pub) {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "waiting_id")
+    private Waiting waiting;
+
+    public static Seating create(Integer seatingNum, Boolean allocated, Pub pub, Waiting waiting) {
         return Seating.builder()
                 .seatingNum(seatingNum)
                 .allocated(allocated)
                 .pub(pub)
+                .waiting(waiting)
                 .build();
     }
 
     @Builder
-    public Seating(Integer seatingNum, Boolean allocated, Pub pub) {
+    public Seating(Integer seatingNum, Boolean allocated, Pub pub, Waiting waiting) {
         this.seatingNum = seatingNum;
         this.allocated = allocated;
         this.pub = pub;
+        this.waiting = waiting;
+    }
+
+    public static SeatingsResponse.SeatingResponse toSeatingResponse(Seating seating) {
+        return SeatingsResponse.SeatingResponse.from(seating);
     }
 }

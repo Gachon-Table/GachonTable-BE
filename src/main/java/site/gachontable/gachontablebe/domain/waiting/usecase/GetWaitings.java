@@ -19,7 +19,7 @@ public class GetWaitings {
     private final WaitingRepository waitingRepository;
     private final AdminRepository adminRepository;
 
-    public PubWaitingListResponse excute(AuthDetails authDetails) {
+    public PubWaitingListResponse execute(AuthDetails authDetails) {
         Pub pub = adminRepository.findById(authDetails.getUuid())
                 .orElseThrow(AdminNotFoundException::new)
                 .getPub();
