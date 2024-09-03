@@ -1,6 +1,5 @@
 package site.gachontable.gachontablebe.domain.waiting.presentation.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 
 import java.util.UUID;

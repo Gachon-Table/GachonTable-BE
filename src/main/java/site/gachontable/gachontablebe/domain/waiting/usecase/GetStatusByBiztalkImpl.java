@@ -34,9 +34,17 @@ public class GetStatusByBiztalkImpl implements GetStatusByBiztalk {
     }
 
     private Integer getIndexOfWaiting(Waiting waiting, Pub pub) {
+        if (isEnteredOrCanceled(waiting)) {
+            return -1;
+        }
+
         List<Waiting> waitings = waitingRepository
                 .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
 
         return waitings.indexOf(waiting) + 1;
+    }
+
+    private boolean isEnteredOrCanceled(Waiting waiting) {
+        return waiting.getWaitingStatus() == Status.CANCELED || waiting.getWaitingStatus() == Status.ENTERED;
     }
 }
