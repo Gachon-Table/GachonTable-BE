@@ -18,6 +18,7 @@ public enum ErrorCode {
     PUB_NOT_FOUND(404, "PUB_NOT_FOUND", "존재하지 않는 술집입니다."),
     WAITING_OVER_COUNT(412, "WAITING_OVER_COUNT", "예약가능한 주점이 최대 개수를 초과했습니다"),
     WAITING_ALREADY_EXIST(412, "WAITING_ALREADY_EXIST", "이미 웨이팅이 존재합니다"),
+    SEATING_ALREADY_EXIST(412, "SEATING_ALREADY_EXIST", "현재 이용 중인 주점이 존재합니다"),
     INTERNAL_SERVER_ERROR(500, "INTERNAL_SERVER_ERROR", "서버 오류가 발생했습니다."),
     BIZTALK_SEND_FAIL(503, "BIZTALK_SEND_FAIL", "카카오 알림톡 전송에 실패했습니다."),
     PUB_NOT_OPEN(503, "PUB_NOT_OPEN", "현재 오픈되어 있지 않은 주점입니다.");

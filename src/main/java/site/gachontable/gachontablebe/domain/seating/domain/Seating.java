@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.SeatingsResponse;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
+import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 import java.time.LocalDateTime;
@@ -37,23 +38,29 @@ public class Seating {
     @JoinColumn(name = "waiting_id")
     private Waiting waiting;
 
-    public static Seating create(Integer seatingNum, Boolean allocated, LocalDateTime exitTime, Pub pub, Waiting waiting) {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public static Seating create(Integer seatingNum, Boolean allocated, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
         return Seating.builder()
                 .seatingNum(seatingNum)
                 .allocated(allocated)
                 .exitTime(exitTime)
                 .pub(pub)
                 .waiting(waiting)
+                .user(user)
                 .build();
     }
 
     @Builder
-    public Seating(Integer seatingNum, Boolean allocated, LocalDateTime exitTime, Pub pub, Waiting waiting) {
+    public Seating(Integer seatingNum, Boolean allocated, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
         this.seatingNum = seatingNum;
         this.allocated = allocated;
         this.exitTime = exitTime;
         this.pub = pub;
         this.waiting = waiting;
+        this.user = user;
     }
 
     public static SeatingsResponse.SeatingResponse toSeatingResponse(Seating seating) {

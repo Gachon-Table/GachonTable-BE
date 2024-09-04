@@ -53,7 +53,8 @@ public class EnterUser {
                 true,
                 LocalDateTime.now().plusHours(pub.getHours()),
                 pub,
-                waiting);
+                waiting,
+                waiting.getUser());
 
         seatingRepository.save(seating);
     }

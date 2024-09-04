@@ -2,13 +2,14 @@ package site.gachontable.gachontablebe.domain.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import site.gachontable.gachontablebe.domain.shared.BaseTimeEntity;
 
 import java.util.UUID;
 
 @Entity(name = "user")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

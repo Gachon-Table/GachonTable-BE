@@ -23,7 +23,6 @@ public class ReadyUser {
 
     public void execute(Pub pub) {
 
-        // TODO : 카카오 알림톡 전송
         List<Waiting> waitings = waitingRepository
                 .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
 
