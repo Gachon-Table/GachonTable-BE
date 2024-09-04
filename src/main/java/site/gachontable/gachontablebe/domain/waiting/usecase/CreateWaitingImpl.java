@@ -64,7 +64,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }
 
-    @RedissonLock(key = "#lockKey")
+/*    @RedissonLock(key = "#lockKey")
     @Override
     public WaitingResponse execute(AuthDetails authDetails, OnsiteWaitingRequest request, String lockKey) { // 현장 웨이팅
         Pub pub = adminRepository.findByUsername(authDetails.getUsername()).orElseThrow(AdminNotFoundException::new)
@@ -80,7 +80,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         sendBiztalk.execute(TEMPLATE_CODE, request.tel(), createVariables(request.tel().substring(9), pub, waiting, request.headCount()));
 
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
-    }
+    }*/
 
     private void checkPreConditions(Pub pub, String tel) throws
             PubNotOpenException, UserWaitingLimitExcessException, WaitingAlreadyExistsException {

@@ -11,7 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.CancelRequest;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.OnsiteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.StatusResponse;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingHistoryResponse;
@@ -47,7 +46,7 @@ public class WaitingController {
         return ResponseEntity.ok(createWaiting.execute(authDetails, request, Position.REMOTE.getPositionKo()));
     }
 
-    @Operation(summary = "현장 웨이팅", description = "현장 웨이팅을 신규로 신청합니다.")
+/*    @Operation(summary = "현장 웨이팅", description = "현장 웨이팅을 신규로 신청합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "201"),
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
@@ -59,7 +58,7 @@ public class WaitingController {
     public ResponseEntity<WaitingResponse> createOnsite(@AuthenticationPrincipal AuthDetails authDetails,
                                                         @RequestBody OnsiteWaitingRequest request) {
         return ResponseEntity.ok(createWaiting.execute(authDetails, request, Position.ONSITE.getPositionKo()));
-    }
+    }*/
 
     @Operation(summary = "웨이팅 현황 조회", description = "사용자(회원)가 자신의 신청한 웨이팅 현황을 조회합니다.")
     @ApiResponses({
