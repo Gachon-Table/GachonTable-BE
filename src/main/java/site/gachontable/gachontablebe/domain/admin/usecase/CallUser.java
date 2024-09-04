@@ -54,11 +54,11 @@ public class CallUser {
 
         waiting.toAvailable();
 
-        // TODO : 카카오 알림톡 전송
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{pub}", pub.getPubName());
         sendBiztalk.execute(CALL_TEMPLATE_CODE, waiting.getTel(), variables);
 
+        // TODO: 강제 취소 로직 변경
         // 사용자가 5분 안에 응답하는지 확인하기 위해 작업을 예약합니다.
         transactionTemplate.execute(status -> {
             executorService.schedule(() -> {
@@ -68,7 +68,6 @@ public class CallUser {
                         waiting.cancel();
                         pub.decreaseWaitingCount();
 
-                        // TODO : 카카오 알림톡 전송
                         sendBiztalk.execute(FORCE_CANCEL_TEMPLATE_CODE, waiting.getTel(), variables);
                         readyUser.execute(pub);
                     }

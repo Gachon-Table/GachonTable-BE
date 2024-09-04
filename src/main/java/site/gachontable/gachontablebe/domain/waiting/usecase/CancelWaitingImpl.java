@@ -41,7 +41,6 @@ public class CancelWaitingImpl implements CancelWaiting {
         waiting.cancel();
         waiting.getPub().decreaseWaitingCount();
 
-        // TODO : 카카오 알림톡 전송
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{pub}", pub.getPubName());
         sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), variables);

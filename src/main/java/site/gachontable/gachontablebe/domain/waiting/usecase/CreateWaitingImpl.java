@@ -58,7 +58,6 @@ public class CreateWaitingImpl implements CreateWaiting {
 
         pub.increaseWaitingCount();
 
-        // TODO : 카카오 알림톡 전송
         sendBiztalk.execute(TEMPLATE_CODE, user.getUserTel(), createVariables(user.getUsername(), pub, waiting, request.headCount()));
 
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
