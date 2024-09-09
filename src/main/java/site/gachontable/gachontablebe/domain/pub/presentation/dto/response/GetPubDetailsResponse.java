@@ -48,12 +48,14 @@ public record GetPubDetailsResponse(
 
 
     public record MenuInfo(
+            Integer menuId,
             String menuName,
             String price,
             String oneLiner
     ) {
         public static MenuInfo from(Menu menu) {
             return new MenuInfo(
+                    menu.getMenuId(),
                     menu.getMenuName(),
                     menu.getPrice(),
                     menu.getOneLiner()
