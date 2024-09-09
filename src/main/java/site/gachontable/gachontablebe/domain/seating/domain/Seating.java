@@ -66,4 +66,8 @@ public class Seating {
     public static SeatingsResponse.SeatingResponse toSeatingResponse(Seating seating) {
         return SeatingsResponse.SeatingResponse.from(seating);
     }
+
+    public void updateExitTime() {
+        this.exitTime = LocalDateTime.now();
+    }
 }
