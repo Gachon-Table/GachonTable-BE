@@ -2,7 +2,7 @@ package site.gachontable.gachontablebe.domain.pub.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import site.gachontable.gachontablebe.domain.admin.domain.Admin;
+import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
 import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
@@ -26,14 +26,15 @@ public class ManagePubImpl implements ManagePub {
     private final PubRepository pubRepository;
 
     @Override
+    @Transactional
     public String execute(AuthDetails authDetails, PubManageRequest request) {
-        Admin admin = adminRepository.findByUsername(authDetails.getUsername())
-                .orElseThrow(AdminNotFoundException::new);
-        Pub pub = admin.getPub();
+        Pub pub = adminRepository.findById(authDetails.getUuid())
+                .orElseThrow(AdminNotFoundException::new)
+                .getPub();
 
         List<Menu> menus = manageMenus(request, pub);
 
-        pub.updatePubInfo(request.thumbnails(), request.studentCard(), menus);
+        pub.updatePubInfo(request.thumbnails(), menus);
         pubRepository.save(pub);
 
         return SuccessCode.MANAGE_PUB_SUCCESS.getMessage();
