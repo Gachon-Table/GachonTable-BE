@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.pub.usecase;
+package site.gachontable.gachontablebe.domain.admin.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.menu.domain.repository.MenuRepository;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.request.PubManageRequest;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.PubManageRequest;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.ArrayList;
