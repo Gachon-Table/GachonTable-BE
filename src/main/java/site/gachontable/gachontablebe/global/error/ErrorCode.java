@@ -16,6 +16,7 @@ public enum ErrorCode {
     ADMIN_NOT_FOUND(404, "ADMIN_NOT_FOUND", "존재하지 않는 관리자입니다."),
     WAITING_NOT_FOUND(404, "WAITING_NOT_FOUND", "존재하지 않는 대기열입니다."),
     PUB_NOT_FOUND(404, "PUB_NOT_FOUND", "존재하지 않는 술집입니다."),
+    SEATING_NOT_FOUND(404, "SEATING_NOT_FOUND", "존재하지 않는 테이블입니다."),
     WAITING_OVER_COUNT(412, "WAITING_OVER_COUNT", "예약가능한 주점이 최대 개수를 초과했습니다"),
     WAITING_ALREADY_EXIST(412, "WAITING_ALREADY_EXIST", "이미 웨이팅이 존재합니다"),
     SEATING_ALREADY_EXIST(412, "SEATING_ALREADY_EXIST", "현재 이용 중인 주점이 존재합니다"),
