@@ -37,6 +37,7 @@ public class AdminController {
     private final GetWaitings getWaitings;
     private final EnterUser enterUser;
     private final CallUser callUser;
+    private final ExitUser exitUser;
     private final UpdateStatus updateStatus;
     private final GetSeatings getSeatings;
 
@@ -131,6 +132,19 @@ public class AdminController {
     @PatchMapping("/call")
     public ResponseEntity<String> callUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody CallUserRequest request) {
         return ResponseEntity.ok(callUser.execute(authDetails, request, Status.CALL.getStatusKo()));
+    }
+
+    @Operation(summary = "사용자 퇴장", description = "주점 이용을 완료한 사용자를 퇴장 처리합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PatchMapping("/exit")
+    public ResponseEntity<String> exitUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody ExitUserRequest request) {
+        return ResponseEntity.ok(exitUser.execute(authDetails, request));
     }
 
     @Operation(summary = "주점 영업 상태 변경", description = "관리자가 담당하는 주점의 상태(오픈 여부)를 변경합니다.")
