@@ -5,13 +5,14 @@ import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.seating.domain.Seating;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface SeatingRepository extends JpaRepository<Seating, Long> {
-    List<Seating> findAllByPubOrderBySeatingNum(Pub pub);
+    List<Seating> findAllByPubAndExitTimeBeforeOrderByExitTime(Pub pub, LocalDateTime now);
 
-    List<Seating> findAllByUser(User user);
+    Optional<Seating> findFirstByUserAndExitTimeBefore(User user, LocalDateTime now);
 
     Optional<Seating> findBySeatingId(Integer seatingId);
 }
