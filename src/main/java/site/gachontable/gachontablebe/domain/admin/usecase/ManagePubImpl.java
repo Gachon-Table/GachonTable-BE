@@ -13,7 +13,6 @@ import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.PubManageRequest;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,20 +40,28 @@ public class ManagePubImpl implements ManagePub {
     }
 
     private List<Menu> manageMenus(PubManageRequest request, Pub pub) {
-        Map<String, Menu> existingMenus = menuRepository.findByPub(pub).stream()
-                .collect(Collectors.toMap(Menu::getMenuName, menu -> menu));
+        Map<Integer, Menu> existingMenus = menuRepository.findAllByPub(pub).stream()
+                .collect(Collectors.toMap(Menu::getMenuId, menu -> menu));
 
-        return new ArrayList<>(
-                request.menuRequests().stream()
-                        .map(menuRequest -> {
-                            Menu menu = existingMenus.get(menuRequest.menuName());
-                            if (menu != null) {
-                                menu.update(menuRequest.price(), menuRequest.oneLiner());
-                                return menuRepository.save(menu);
-                            }
-                            return menuRepository.save(
-                                    Menu.create(pub, menuRequest.menuName(), menuRequest.price(), menuRequest.oneLiner()));
-                        })
-                        .toList());
+        List<Menu> updatedMenus = request.menuRequests().stream()
+                .map(menuRequest -> {
+                    Menu menu = existingMenus.get(menuRequest.menuId());
+                    if (menu != null) {
+                        menu.update(
+                                menuRequest.menuName(),
+                                menuRequest.price(),
+                                menuRequest.oneLiner(),
+                                menuRequest.thumbnail());
+                        return menu;
+                    }
+                    return Menu.create(
+                            pub,
+                            menuRequest.menuName(),
+                            menuRequest.price(),
+                            menuRequest.oneLiner(),
+                            menuRequest.thumbnail());
+                }).toList();
+
+        return menuRepository.saveAll(updatedMenus);
     }
 }
