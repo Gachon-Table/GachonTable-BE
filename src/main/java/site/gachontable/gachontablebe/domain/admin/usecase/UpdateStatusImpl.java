@@ -23,7 +23,7 @@ public class UpdateStatusImpl implements UpdateStatus{
     @Transactional
     @Override
     public RegisterResponse executeForOpenStatus(AuthDetails authDetails, UpdateStatusRequest request) {
-        Pub pub = adminRepository.findByUsername(authDetails.getUsername())
+        Pub pub = adminRepository.findById(authDetails.getUuid())
                 .orElseThrow(AdminNotFoundException::new)
                 .getPub();
 
@@ -39,7 +39,7 @@ public class UpdateStatusImpl implements UpdateStatus{
     @Transactional
     @Override
     public RegisterResponse executeForWaitingStatus(AuthDetails authDetails, UpdateStatusRequest request) {
-        Pub pub = adminRepository.findByUsername(authDetails.getUsername())
+        Pub pub = adminRepository.findById(authDetails.getUuid())
                 .orElseThrow(AdminNotFoundException::new)
                 .getPub();
 

@@ -19,6 +19,7 @@ import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.PubManageRequest;
 import site.gachontable.gachontablebe.domain.shared.dto.request.RefreshRequest;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 import site.gachontable.gachontablebe.domain.waiting.usecase.GetWaitings;
@@ -38,6 +39,7 @@ public class AdminController {
     private final EnterUser enterUser;
     private final CallUser callUser;
     private final ExitUser exitUser;
+    private final ManagePub managePub;
     private final UpdateStatus updateStatus;
     private final GetSeatings getSeatings;
 
@@ -171,5 +173,18 @@ public class AdminController {
     @PatchMapping("/status-waiting")
     public ResponseEntity<RegisterResponse> updateWaitingStatus(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody UpdateStatusRequest request) {
         return ResponseEntity.ok(updateStatus.executeForWaitingStatus(authDetails, request));
+    }
+
+    @Operation(summary = "주점 관리", description = "메뉴 등록, 대표 사진 및 학생증 필수 여부를 수정할 수 있습니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PatchMapping("/manage")
+    public ResponseEntity<String> managePub(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody PubManageRequest request){
+        return ResponseEntity.ok(managePub.execute(authDetails, request));
     }
 }

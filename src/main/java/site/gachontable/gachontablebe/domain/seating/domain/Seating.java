@@ -25,9 +25,6 @@ public class Seating {
     private Integer seatingNum;
 
     @Column(nullable = false)
-    private Boolean allocated;
-
-    @Column(nullable = false)
     private LocalDateTime exitTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,14 +35,13 @@ public class Seating {
     @JoinColumn(name = "waiting_id")
     private Waiting waiting;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public static Seating create(Integer seatingNum, Boolean allocated, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
+    public static Seating create(Integer seatingNum, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
         return Seating.builder()
                 .seatingNum(seatingNum)
-                .allocated(allocated)
                 .exitTime(exitTime)
                 .pub(pub)
                 .waiting(waiting)
@@ -54,9 +50,8 @@ public class Seating {
     }
 
     @Builder
-    public Seating(Integer seatingNum, Boolean allocated, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
+    public Seating(Integer seatingNum, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
         this.seatingNum = seatingNum;
-        this.allocated = allocated;
         this.exitTime = exitTime;
         this.pub = pub;
         this.waiting = waiting;

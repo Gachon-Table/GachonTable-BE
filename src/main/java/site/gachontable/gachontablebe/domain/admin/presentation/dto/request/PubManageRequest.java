@@ -1,11 +1,12 @@
-package site.gachontable.gachontablebe.domain.pub.presentation.dto.request;
+package site.gachontable.gachontablebe.domain.admin.presentation.dto.request;
 
 import java.util.List;
 
 public record PubManageRequest(List<String> thumbnails,
-                               Boolean studentCard,
                                List<MenuRequest> menuRequests) {
-    public record MenuRequest(String menuName,
+    public record MenuRequest(Integer menuId,
+                              String thumbnail,
+                              String menuName,
                               String price,
                               String oneLiner) {
     }
