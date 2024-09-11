@@ -26,7 +26,7 @@ public class Pub {
     @Column(nullable = false)
     private String instagramUrl;
 
-    @Column(nullable = false)
+    @Column
     private Boolean studentCard;
 
     @Column(nullable = false)
@@ -125,9 +125,8 @@ public class Pub {
         }
     }
 
-    public void updatePubInfo(List<String> thumbnails, Boolean studentCard, List<Menu> menus) {
+    public void updatePubInfo(List<String> thumbnails, List<Menu> menus) {
         this.thumbnails = thumbnails;
-        this.studentCard = studentCard;
         this.menus = menus;
     }
 
