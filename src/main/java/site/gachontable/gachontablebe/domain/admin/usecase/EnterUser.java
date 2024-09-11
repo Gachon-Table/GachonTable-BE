@@ -49,8 +49,8 @@ public class EnterUser {
     }
 
     private void createSeating(Pub pub, Waiting waiting, Integer seatingNum) {
-        Seating seating = Seating.create(seatingNum,
-                true,
+        Seating seating = Seating.create(
+                seatingNum,
                 LocalDateTime.now().plusHours(pub.getHours()),
                 pub,
                 waiting,
