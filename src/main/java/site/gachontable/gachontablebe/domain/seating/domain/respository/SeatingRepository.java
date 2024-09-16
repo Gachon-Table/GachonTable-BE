@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SeatingRepository extends JpaRepository<Seating, Long> {
-    List<Seating> findAllByPubAndExitTimeBeforeOrderByExitTime(Pub pub, LocalDateTime now);
+    List<Seating> findAllByPubAndExitTimeAfterOrderByExitTime(Pub pub, LocalDateTime now);
 
     Optional<Seating> findFirstByUserAndExitTimeBefore(User user, LocalDateTime now);
 
