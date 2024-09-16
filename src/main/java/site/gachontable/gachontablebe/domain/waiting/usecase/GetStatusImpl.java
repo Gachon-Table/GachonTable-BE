@@ -37,14 +37,7 @@ public class GetStatusImpl implements GetStatus {
     private static Stream<StatusResponse> getStatusResponse(User user, Pub pub, List<Waiting> waitings) {
         return waitings.stream()
                 .filter(waiting -> waiting.matchesUser(user))
-                .map(waiting -> StatusResponse.of(
-                        waiting.getWaitingId(),
-                        pub.getPubName(),
-                        waiting.getWaitingStatus().getStatusKo(),
-                        waitings.indexOf(waiting) + 1,
-                        String.valueOf(waiting.getCreatedAt()),
-                        waiting.getHeadCount())
-                );
+                .map(waiting -> StatusResponse.of(waiting, pub, waitings.indexOf(waiting) + 1));
     }
 
     private List<Pub> getPubsFromWaitings(User user) {

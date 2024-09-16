@@ -23,14 +23,7 @@ public class GetStatusByBiztalkImpl implements GetStatusByBiztalk {
                 .orElseThrow(WaitingNotFoundException::new);
         Pub pub = waiting.getPub();
 
-        return StatusResponse.of(
-                waiting.getWaitingId(),
-                pub.getPubName(),
-                waiting.getWaitingStatus().getStatusKo(),
-                getIndexOfWaiting(waiting, pub),
-                String.valueOf(waiting.getCreatedAt()),
-                waiting.getHeadCount()
-        );
+        return StatusResponse.of(waiting, pub, getIndexOfWaiting(waiting, pub));
     }
 
     private Integer getIndexOfWaiting(Waiting waiting, Pub pub) {
