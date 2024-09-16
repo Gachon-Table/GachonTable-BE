@@ -1,8 +1,12 @@
 package site.gachontable.gachontablebe.domain.waiting.presentation.dto.response;
 
 import lombok.Builder;
+import site.gachontable.gachontablebe.domain.pub.domain.Pub;
+import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 import java.util.UUID;
+
+import static site.gachontable.gachontablebe.domain.shared.DateTimeFormatters.WITH_WEEKDAY;
 
 @Builder
 public record StatusResponse(UUID waitingId,
@@ -12,20 +16,15 @@ public record StatusResponse(UUID waitingId,
                              String createdAt,
                              Integer headCount) {
 
-    public static StatusResponse of(UUID waitingId,
-                                    String pubName,
-                                    String orderStatus,
-                                    Integer order,
-                                    String createdAt,
-                                    Integer headCount) {
-        return new StatusResponse(
-                waitingId,
-                pubName,
-                orderStatus,
-                order,
-                createdAt,
-                headCount
-        );
+    public static StatusResponse of(Waiting waiting, Pub pub, Integer order) {
+        return StatusResponse.builder()
+                .waitingId(waiting.getWaitingId())
+                .pubName(pub.getPubName())
+                .orderStatus(waiting.getWaitingStatus().getStatusKo())
+                .order(order)
+                .createdAt(waiting.getCreatedAt().format(WITH_WEEKDAY))
+                .headCount(waiting.getHeadCount())
+                .build();
     }
 
 }

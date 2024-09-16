@@ -5,24 +5,26 @@ import site.gachontable.gachontablebe.domain.seating.domain.Seating;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static site.gachontable.gachontablebe.domain.shared.DateTimeFormatters.WITH_WEEKDAY;
 
 @Builder
 public record WaitingHistoryResponse(
         UUID waitingId,
         String pubName,
         Status status,
-        LocalDateTime enteredTime,
-        LocalDateTime exitTime) {
+        String enteredTime,
+        String exitTime) {
 
     public static WaitingHistoryResponse of(Waiting waiting, Seating seating) {
+
         return WaitingHistoryResponse.builder()
                 .waitingId(waiting.getWaitingId())
                 .pubName(waiting.getPub().getPubName())
                 .status(waiting.getWaitingStatus())
-                .enteredTime(waiting.getUpdatedAt())
-                .exitTime(seating.getExitTime())
+                .enteredTime(waiting.getUpdatedAt().format(WITH_WEEKDAY))
+                .exitTime(seating.getExitTime().format(WITH_WEEKDAY))
                 .build();
     }
 }
