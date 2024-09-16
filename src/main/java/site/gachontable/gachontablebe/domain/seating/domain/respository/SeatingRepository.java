@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.seating.domain.Seating;
 import site.gachontable.gachontablebe.domain.user.domain.User;
+import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,4 +16,6 @@ public interface SeatingRepository extends JpaRepository<Seating, Long> {
     Optional<Seating> findFirstByUserAndExitTimeBefore(User user, LocalDateTime now);
 
     Optional<Seating> findBySeatingId(Integer seatingId);
+
+    Optional<Seating> findByWaiting(Waiting waiting);
 }
