@@ -112,10 +112,12 @@ public class CreateWaitingImpl implements CreateWaiting {
     }
 
     private void checkDuplicatePubWaiting(Pub pub, User user) {
-        if (waitingRepository.findByTelAndPubAndWaitingStatusOrWaitingStatus(
-                user.getUserTel(), pub, Status.WAITING, Status.AVAILABLE).isPresent()) {
-            throw new WaitingAlreadyExistsException();
-        }
+        waitingRepository
+                .findByTelAndPubAndWaitingStatusOrWaitingStatus(
+                        user.getUserTel(), pub, Status.WAITING, Status.AVAILABLE)
+                .ifPresent(waiting -> {
+                    throw new WaitingAlreadyExistsException();
+                });
     }
 
     private HashMap<String, String> createVariables(String username, Pub pub, Waiting waiting, Integer headCount) {
