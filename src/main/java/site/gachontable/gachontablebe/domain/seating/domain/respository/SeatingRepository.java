@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface SeatingRepository extends JpaRepository<Seating, Long> {
     List<Seating> findAllByPubAndExitTimeAfterOrderByExitTime(Pub pub, LocalDateTime now);
 
-    Optional<Seating> findFirstByUserAndExitTimeBefore(User user, LocalDateTime now);
+    Optional<Seating> findFirstByUserAndExitTimeAfter(User user, LocalDateTime now);
 
     Optional<Seating> findBySeatingId(Integer seatingId);
 

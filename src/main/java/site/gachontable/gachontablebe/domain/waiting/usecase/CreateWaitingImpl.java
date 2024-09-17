@@ -98,7 +98,7 @@ public class CreateWaitingImpl implements CreateWaiting {
     }
 
     private void checkSeatings(User user) {
-        seatingRepository.findFirstByUserAndExitTimeBefore(user, LocalDateTime.now())
+        seatingRepository.findFirstByUserAndExitTimeAfter(user, LocalDateTime.now())
                 .ifPresent(seating -> {
                     throw new SeatingAlreadyExistsException();
                 });
