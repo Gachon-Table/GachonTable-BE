@@ -7,8 +7,6 @@ import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
-import site.gachontable.gachontablebe.domain.pub.exception.PubNotOpenException;
-import site.gachontable.gachontablebe.domain.seating.domain.respository.SeatingRepository;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
@@ -35,7 +33,6 @@ public class CreateWaitingImpl implements CreateWaiting {
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
-    private final SeatingRepository seatingRepository;
     private final sendBiztalk sendBiztalk;
 
     @Value("${biztalk.templateId.waiting}")
@@ -79,11 +76,9 @@ public class CreateWaitingImpl implements CreateWaiting {
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
     }*/
 
-    private void checkPreConditions(Pub pub, User user) throws
-            PubNotOpenException, UserWaitingLimitExcessException, WaitingAlreadyExistsException {
-        if (!pub.getOpenStatus()) {
-            throw new PubNotOpenException();
-        }
+    private void checkPreConditions(Pub pub, User user) {
+        // 신청할 주점의 상태 확인
+        pub.checkStatus();
 
         // 해당 주점에 웨이팅 대기중이면 예외 처리
         checkDuplicatePubWaiting(pub, user);

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.pub.exception.EmptyWaitingCountException;
+import site.gachontable.gachontablebe.domain.pub.exception.PubNotOpenException;
+import site.gachontable.gachontablebe.domain.waiting.exception.PubClosedForWaitingException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,5 +141,15 @@ public class Pub {
     public void updateWaitingStatus(Boolean waitingStatus) {
         this.waitingStatus = waitingStatus;
         this.waitingCount = 0;
+    }
+
+    public void checkStatus() {
+        if (!this.openStatus) {
+            throw new PubNotOpenException();
+        }
+
+        if (!this.waitingStatus) {
+            throw new PubClosedForWaitingException();
+        }
     }
 }
