@@ -14,7 +14,6 @@ import site.gachontable.gachontablebe.domain.user.domain.repository.UserReposito
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.domain.waiting.exception.SeatingAlreadyExistsException;
 import site.gachontable.gachontablebe.domain.waiting.exception.UserWaitingLimitExcessException;
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingAlreadyExistsException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
@@ -25,7 +24,6 @@ import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -87,21 +85,11 @@ public class CreateWaitingImpl implements CreateWaiting {
             throw new PubNotOpenException();
         }
 
-        // 현재 주점을 이용중이라면 예외 처리
-        checkSeatings(user);
-
         // 해당 주점에 웨이팅 대기중이면 예외 처리
         checkDuplicatePubWaiting(pub, user);
 
         // 같은 번호로 3개 이상의 웨이팅이 대기중이면 예외 처리
         checkWaitingLimit(user);
-    }
-
-    private void checkSeatings(User user) {
-        seatingRepository.findFirstByUserAndExitTimeAfter(user, LocalDateTime.now())
-                .ifPresent(seating -> {
-                    throw new SeatingAlreadyExistsException();
-                });
     }
 
     private void checkWaitingLimit(User user) {
