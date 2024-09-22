@@ -25,7 +25,7 @@ public class GetSeatingsImpl implements GetSeatings {
                 .getPub();
 
         return new SeatingsResponse(
-                seatingRepository.findAllByPubAndExitTimeBeforeOrderByExitTime(pub, LocalDateTime.now())
+                seatingRepository.findAllByPubAndExitTimeAfterOrderByExitTime(pub, LocalDateTime.now())
                         .stream()
                         .map(Seating::toSeatingResponse)
                         .toList()

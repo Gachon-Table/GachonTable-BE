@@ -51,14 +51,16 @@ public record GetPubDetailsResponse(
             Integer menuId,
             String menuName,
             String price,
-            String oneLiner
+            String oneLiner,
+            String thumbnail
     ) {
         public static MenuInfo from(Menu menu) {
             return new MenuInfo(
                     menu.getMenuId(),
                     menu.getMenuName(),
                     menu.getPrice(),
-                    menu.getOneLiner()
+                    menu.getOneLiner(),
+                    menu.getThumbnail()
             );
         }
     }

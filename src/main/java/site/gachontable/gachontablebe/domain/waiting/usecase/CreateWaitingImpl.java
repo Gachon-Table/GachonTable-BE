@@ -7,14 +7,11 @@ import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
-import site.gachontable.gachontablebe.domain.pub.exception.PubNotOpenException;
-import site.gachontable.gachontablebe.domain.seating.domain.respository.SeatingRepository;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.domain.waiting.exception.SeatingAlreadyExistsException;
 import site.gachontable.gachontablebe.domain.waiting.exception.UserWaitingLimitExcessException;
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingAlreadyExistsException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.RemoteWaitingRequest;
@@ -25,7 +22,6 @@ import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,7 +33,6 @@ public class CreateWaitingImpl implements CreateWaiting {
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
-    private final SeatingRepository seatingRepository;
     private final sendBiztalk sendBiztalk;
 
     @Value("${biztalk.templateId.waiting}")
@@ -81,27 +76,15 @@ public class CreateWaitingImpl implements CreateWaiting {
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
     }*/
 
-    private void checkPreConditions(Pub pub, User user) throws
-            PubNotOpenException, UserWaitingLimitExcessException, WaitingAlreadyExistsException {
-        if (!pub.getOpenStatus()) {
-            throw new PubNotOpenException();
-        }
-
-        // 현재 주점을 이용중이라면 예외 처리
-        checkSeatings(user);
+    private void checkPreConditions(Pub pub, User user) {
+        // 신청할 주점의 상태 확인
+        pub.checkStatus();
 
         // 해당 주점에 웨이팅 대기중이면 예외 처리
         checkDuplicatePubWaiting(pub, user);
 
         // 같은 번호로 3개 이상의 웨이팅이 대기중이면 예외 처리
         checkWaitingLimit(user);
-    }
-
-    private void checkSeatings(User user) {
-        seatingRepository.findFirstByUserAndExitTimeBefore(user, LocalDateTime.now())
-                .ifPresent(seating -> {
-                    throw new SeatingAlreadyExistsException();
-                });
     }
 
     private void checkWaitingLimit(User user) {
@@ -112,10 +95,12 @@ public class CreateWaitingImpl implements CreateWaiting {
     }
 
     private void checkDuplicatePubWaiting(Pub pub, User user) {
-        if (waitingRepository.findByTelAndPubAndWaitingStatusOrWaitingStatus(
-                user.getUserTel(), pub, Status.WAITING, Status.AVAILABLE).isPresent()) {
-            throw new WaitingAlreadyExistsException();
-        }
+        waitingRepository
+                .findByTelAndPubAndWaitingStatusOrWaitingStatus(
+                        user.getUserTel(), pub, Status.WAITING, Status.AVAILABLE)
+                .ifPresent(waiting -> {
+                    throw new WaitingAlreadyExistsException();
+                });
     }
 
     private HashMap<String, String> createVariables(String username, Pub pub, Waiting waiting, Integer headCount) {

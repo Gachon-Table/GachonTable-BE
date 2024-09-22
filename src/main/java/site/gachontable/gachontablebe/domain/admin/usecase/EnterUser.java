@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.admin.domain.Admin;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
 import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
+import site.gachontable.gachontablebe.domain.admin.exception.SeatingNumAlreadyExistsException;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.EnterUserRequest;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
@@ -54,6 +55,8 @@ public class EnterUser {
     }
 
     private void createSeating(Pub pub, Waiting waiting, Integer seatingNum) {
+        checkSeatingExists(pub, seatingNum);
+
         Seating seating = Seating.create(
                 seatingNum,
                 LocalDateTime.now().plusHours(pub.getHours()),
@@ -62,5 +65,13 @@ public class EnterUser {
                 waiting.getUser());
 
         seatingRepository.save(seating);
+    }
+
+    private void checkSeatingExists(Pub pub, Integer seatingNum) {
+        seatingRepository
+                .findFirstByPubAndSeatingNumAndExitTimeAfter(pub, seatingNum, LocalDateTime.now())
+                .ifPresent(seating -> {
+                    throw new SeatingNumAlreadyExistsException();
+                });
     }
 }
