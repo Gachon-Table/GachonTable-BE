@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Pub {
+    private static final Integer MAX_WAITING_COUNT = 30;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -114,6 +115,13 @@ public class Pub {
 
     public void increaseWaitingCount() {
         this.waitingCount += 1;
+        checkMaxWaitingCount();
+    }
+
+    private void checkMaxWaitingCount() {
+        if (this.waitingCount >= MAX_WAITING_COUNT) {
+            this.waitingStatus = false;
+        }
     }
 
     public void decreaseWaitingCount() {

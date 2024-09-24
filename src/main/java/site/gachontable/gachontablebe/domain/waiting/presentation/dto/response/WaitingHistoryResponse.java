@@ -24,7 +24,7 @@ public record WaitingHistoryResponse(
                 .pubName(waiting.getPub().getPubName())
                 .status(waiting.getWaitingStatus())
                 .enteredTime(waiting.getUpdatedAt().format(WITH_WEEKDAY))
-                .exitTime(seating.getExitTime().format(WITH_WEEKDAY))
+                .exitTime(seating != null ? seating.getExitTime().format(WITH_WEEKDAY) : null)
                 .build();
     }
 }

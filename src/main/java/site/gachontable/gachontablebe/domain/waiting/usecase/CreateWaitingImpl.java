@@ -49,11 +49,11 @@ public class CreateWaitingImpl implements CreateWaiting {
         checkPreConditions(pub, user);
 
         Waiting waiting = waitingRepository.save(
-                Waiting.create(Position.REMOTE, request.headCount(), Status.WAITING, user.getUserTel(), user, pub));
+                Waiting.create(Position.REMOTE, request.tableType(), Status.WAITING, user.getUserTel(), user, pub));
 
         pub.increaseWaitingCount();
 
-        sendBiztalk.execute(TEMPLATE_CODE, user.getUserTel(), createVariables(user.getUsername(), pub, waiting, request.headCount()));
+        sendBiztalk.execute(TEMPLATE_CODE, user.getUserTel(), createVariables(user.getUsername(), pub, waiting, request.tableType().getNameKo()));
 
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }
@@ -103,7 +103,7 @@ public class CreateWaitingImpl implements CreateWaiting {
                 });
     }
 
-    private HashMap<String, String> createVariables(String username, Pub pub, Waiting waiting, Integer headCount) {
+    private HashMap<String, String> createVariables(String username, Pub pub, Waiting waiting, String tableType) {
 
         List<Waiting> waitings = waitingRepository
                 .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
@@ -113,7 +113,7 @@ public class CreateWaitingImpl implements CreateWaiting {
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{username}", username);
         variables.put("#{pub}", pub.getPubName());
-        variables.put("#{headCount}", String.valueOf(headCount));
+        variables.put("#{headCount}", tableType);
         variables.put("#{order}", order);
         variables.put("#{callNumber}", callNumber);
         variables.put("#{waitingId}", String.valueOf(waiting.getWaitingId()));

@@ -8,6 +8,7 @@ import site.gachontable.gachontablebe.domain.shared.BaseTimeEntity;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
+import site.gachontable.gachontablebe.domain.shared.Table;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -26,8 +27,9 @@ public class Waiting extends BaseTimeEntity {
     @Column(nullable = false)
     private Position waitingType;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Integer headCount;
+    private Table tableType;
 
     @Enumerated(EnumType.STRING)
     @Column
@@ -48,10 +50,10 @@ public class Waiting extends BaseTimeEntity {
         return Objects.equals(this.user, user);
     }
 
-    public static Waiting create(Position waitingType, Integer headCount, Status waitingStatus, String tel, User user, Pub pub) {
+    public static Waiting create(Position waitingType, Table tableType, Status waitingStatus, String tel, User user, Pub pub) {
         return Waiting.builder()
                 .waitingType(waitingType)
-                .headCount(headCount)
+                .tableType(tableType)
                 .waitingStatus(waitingStatus)
                 .tel(tel)
                 .user(user)
@@ -60,9 +62,9 @@ public class Waiting extends BaseTimeEntity {
     }
 
     @Builder
-    public Waiting(Position waitingType, Integer headCount, Status waitingStatus, String tel, User user, Pub pub) {
+    public Waiting(Position waitingType, Table tableType, Status waitingStatus, String tel, User user, Pub pub) {
         this.waitingType = waitingType;
-        this.headCount = headCount;
+        this.tableType = tableType;
         this.waitingStatus = waitingStatus;
         this.tel = tel;
         this.user = user;

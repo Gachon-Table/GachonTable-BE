@@ -32,9 +32,12 @@ public class GetWaitingHistory {
 
         return waitings.stream()
                 .map(waiting -> {
-                    Seating seating = seatingRepository.findByWaiting(waiting)
-                            .orElseThrow(SeatingNotFoundException::new);
-                    return WaitingHistoryResponse.of(waiting, seating);
+                    if (waiting.getWaitingStatus() == Status.ENTERED) {
+                        Seating seating = seatingRepository.findByWaiting(waiting)
+                                .orElseThrow(SeatingNotFoundException::new);
+                        return WaitingHistoryResponse.of(waiting, seating);
+                    }
+                    return WaitingHistoryResponse.of(waiting, null);
                 })
                 .toList();
     }

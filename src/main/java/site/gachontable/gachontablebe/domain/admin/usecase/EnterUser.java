@@ -59,6 +59,7 @@ public class EnterUser {
 
         Seating seating = Seating.create(
                 seatingNum,
+                waiting.getTableType(),
                 LocalDateTime.now().plusHours(pub.getHours()),
                 pub,
                 waiting,

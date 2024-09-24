@@ -9,6 +9,7 @@ import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.Sea
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
+import site.gachontable.gachontablebe.domain.shared.Table;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +24,10 @@ public class Seating {
 
     @Column(nullable = false)
     private Integer seatingNum;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Table tableType;
 
     @Column(nullable = false)
     private LocalDateTime exitTime;
@@ -39,9 +44,10 @@ public class Seating {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public static Seating create(Integer seatingNum, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
+    public static Seating create(Integer seatingNum, Table tableType, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
         return Seating.builder()
                 .seatingNum(seatingNum)
+                .tableType(tableType)
                 .exitTime(exitTime)
                 .pub(pub)
                 .waiting(waiting)
@@ -50,8 +56,9 @@ public class Seating {
     }
 
     @Builder
-    public Seating(Integer seatingNum, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
+    public Seating(Integer seatingNum, Table tableType, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
         this.seatingNum = seatingNum;
+        this.tableType = tableType;
         this.exitTime = exitTime;
         this.pub = pub;
         this.waiting = waiting;
