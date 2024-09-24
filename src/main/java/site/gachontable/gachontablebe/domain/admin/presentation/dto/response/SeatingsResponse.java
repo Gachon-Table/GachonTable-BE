@@ -12,11 +12,11 @@ import static site.gachontable.gachontablebe.domain.shared.DateTimeFormatters.WI
 public record SeatingsResponse(List<SeatingResponse> seatings) {
 
     @Builder
-    public record SeatingResponse(Integer tableId, Integer tableNum, Table tableType, String exitTime, UUID waitingId) {
+    public record SeatingResponse(Integer seatingId, Integer tableNum, Table tableType, String exitTime, UUID waitingId) {
         public static SeatingResponse from(Seating seating) {
 
             return SeatingResponse.builder()
-                    .tableId(seating.getSeatingId())
+                    .seatingId(seating.getSeatingId())
                     .tableNum(seating.getSeatingNum())
                     .tableType(seating.getTableType())
                     .exitTime(seating.getExitTime().format(WITH_WEEKDAY))
