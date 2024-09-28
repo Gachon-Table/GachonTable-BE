@@ -142,13 +142,14 @@ public class Pub {
 
     public void updateOpenStatus(Boolean openStatus) {
         this.openStatus = openStatus;
-        this.waitingStatus = openStatus;
         this.waitingCount = 0;
     }
 
     public void updateWaitingStatus(Boolean waitingStatus) {
+        if (!this.openStatus && waitingStatus) {
+            throw new PubNotOpenException();
+        }
         this.waitingStatus = waitingStatus;
-        this.waitingCount = 0;
     }
 
     public void checkStatus() {
