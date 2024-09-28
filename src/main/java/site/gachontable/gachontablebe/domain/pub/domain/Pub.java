@@ -146,9 +146,6 @@ public class Pub {
     }
 
     public void updateWaitingStatus(Boolean waitingStatus) {
-        if (!this.openStatus && waitingStatus) {
-            throw new PubNotOpenException();
-        }
         this.waitingStatus = waitingStatus;
     }
 
