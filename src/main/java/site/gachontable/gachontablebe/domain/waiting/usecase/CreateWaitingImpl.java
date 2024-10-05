@@ -18,8 +18,8 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.Re
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
+import site.gachontable.gachontablebe.global.biztalk.SendBiztalk;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
-import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.HashMap;
@@ -28,12 +28,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CreateWaitingImpl implements CreateWaiting {
+
     private static final Integer WAITING_MAX_COUNT = 3;
 
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
-    private final sendBiztalk sendBiztalk;
+    private final SendBiztalk sendBiztalk;
 
     @Value("${biztalk.templateId.waiting}")
     private String TEMPLATE_CODE;
@@ -71,7 +72,7 @@ public class CreateWaitingImpl implements CreateWaiting {
 
         pub.increaseWaitingCount();
 
-        sendBiztalk.execute(TEMPLATE_CODE, request.tel(), createVariables(request.tel().substring(9), pub, waiting, request.headCount()));
+        SendBiztalk.execute(TEMPLATE_CODE, request.tel(), createVariables(request.tel().substring(9), pub, waiting, request.headCount()));
 
         return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
     }*/
