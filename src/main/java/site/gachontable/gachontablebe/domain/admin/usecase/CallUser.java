@@ -42,15 +42,11 @@ public class CallUser {
 
     @RedissonLock(key = "#lockKey")
     public String execute(AuthDetails authDetails, CallUserRequest request, String lockKey) {
-        Admin admin = adminRepository.findById(authDetails.getUuid()).
-                orElseThrow(AdminNotFoundException::new);
-        Waiting waiting = waitingRepository.findById(request.waitingId()).
-                orElseThrow(WaitingNotFoundException::new);
+        Waiting waiting = waitingRepository.findById(request.waitingId())
+                .orElseThrow(WaitingNotFoundException::new);
         Pub pub = waiting.getPub();
 
-        if (!pub.equals(admin.getPub())) {
-            throw new PubMismatchException();
-        }
+        checkPubMatches(authDetails, pub);
 
         waiting.toAvailable();
 
@@ -78,5 +74,14 @@ public class CallUser {
         });
 
         return SuccessCode.USER_CALL_SUCCESS.getMessage();
+    }
+
+    private void checkPubMatches(AuthDetails authDetails, Pub pub) {
+        Admin admin = adminRepository.findById(authDetails.getUuid()).
+                orElseThrow(AdminNotFoundException::new);
+
+        if (!pub.equals(admin.getPub())) {
+            throw new PubMismatchException();
+        }
     }
 }
