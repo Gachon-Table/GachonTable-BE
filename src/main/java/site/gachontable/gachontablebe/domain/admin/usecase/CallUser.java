@@ -58,7 +58,7 @@ public class CallUser {
 
     private void scheduleAutoCancel(UUID waitingId, Pub pub, HashMap<String, String> variables) {
         executorService.schedule(() ->
-                autoCancelUser.execute(waitingId, pub, variables), 1, TimeUnit.MINUTES);
+                autoCancelUser.execute(waitingId, pub, variables), 5, TimeUnit.MINUTES);
     }
 
     private void checkPubMatches(AuthDetails authDetails, Pub pub) {
