@@ -16,13 +16,13 @@ import java.util.Objects;
 
 @Slf4j
 @Configuration
-public class sendBiztalk {
+public class SendBiztalk {
 
     private final DefaultMessageService defaultMessageService;
     private final String pfId;
     private final String senderPhoneNumber;
 
-    public sendBiztalk(
+    public SendBiztalk(
             @Value("${biztalk.app_key}") String appkey,
             @Value("${biztalk.secret_key}") String secretKey,
             @Value("${biztalk.pfId}") String pfId,

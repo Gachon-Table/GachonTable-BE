@@ -12,8 +12,8 @@ import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundEx
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.CancelRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
+import site.gachontable.gachontablebe.global.biztalk.SendBiztalk;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
-import site.gachontable.gachontablebe.global.biztalk.sendBiztalk;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.HashMap;
@@ -22,9 +22,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CancelWaitingImpl implements CancelWaiting {
+
     private final WaitingRepository waitingRepository;
     private final ReadyUser readyUser;
-    private final sendBiztalk sendBiztalk;
+    private final SendBiztalk sendBiztalk;
 
     @Value("${biztalk.templateId.cancel}")
     private String TEMPLATE_CODE;
