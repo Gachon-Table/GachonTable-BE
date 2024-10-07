@@ -23,6 +23,14 @@ public class Waiting extends BaseTimeEntity {
     @Column(columnDefinition = "BINARY(16)")
     private UUID waitingId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pub_id", nullable = false)
+    private Pub pub;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Position waitingType;
@@ -32,23 +40,11 @@ public class Waiting extends BaseTimeEntity {
     private Table tableType;
 
     @Enumerated(EnumType.STRING)
-    @Column
+    @Column(nullable = false)
     private Status waitingStatus;
 
     @Column(columnDefinition = "char(16)")
     private String tel;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pub_id", nullable = false)
-    private Pub pub;
-
-    public boolean matchesUser(User user) {
-        return Objects.equals(this.user, user);
-    }
 
     public static Waiting create(Position waitingType, Table tableType, Status waitingStatus, String tel, User user, Pub pub) {
         return Waiting.builder()
@@ -87,4 +83,8 @@ public class Waiting extends BaseTimeEntity {
     public void toAvailable() {
         this.waitingStatus = Status.AVAILABLE;
     }
- }
+
+    public boolean matchesUser(User user) {
+        return Objects.equals(this.user, user);
+    }
+}

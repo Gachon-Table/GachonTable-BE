@@ -20,6 +20,14 @@ public class Pub {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pubId;
 
+    @OneToMany
+    @Column(nullable = false)
+    private List<Menu> menus = new ArrayList<>();
+
+    @ElementCollection
+    @Column(nullable = false)
+    private List<String> thumbnails = new ArrayList<>();
+
     @Column(nullable = false)
     private String pubName;
 
