@@ -12,17 +12,16 @@ public record GetPubsResponse(
         String pubName,
         String oneLiner,
         Integer waitingCount,
-        Boolean openStatus
-) {
+        Boolean openStatus) {
 
     public static GetPubsResponse of(Pub pub) {
+
         return new GetPubsResponse(
                 pub.getPubId(),
                 pub.getThumbnails(),
                 pub.getPubName(),
                 pub.getOneLiner(),
                 pub.getWaitingCount(),
-                pub.getOpenStatus()
-        );
+                pub.getOpenStatus());
     }
 }
