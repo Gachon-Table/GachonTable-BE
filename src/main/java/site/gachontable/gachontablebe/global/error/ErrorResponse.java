@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class ErrorResponse {
+
     private final int httpStatus;
     private final String message;
     private final String code;
