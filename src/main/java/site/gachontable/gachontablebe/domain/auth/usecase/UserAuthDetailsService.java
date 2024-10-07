@@ -13,6 +13,7 @@ import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundExceptio
 @Service
 @RequiredArgsConstructor
 public class UserAuthDetailsService implements UserDetailsService {
+
     private final UserRepository userRepository;
 
     @Override

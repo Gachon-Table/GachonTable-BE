@@ -17,6 +17,7 @@ import site.gachontable.gachontablebe.global.success.SuccessCode;
 @Service
 @RequiredArgsConstructor
 public class UpdateStatusImpl implements UpdateStatus{
+
     private final AdminRepository adminRepository;
     private final WaitingRepository waitingRepository;
 

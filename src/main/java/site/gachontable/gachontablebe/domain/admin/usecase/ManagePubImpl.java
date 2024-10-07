@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ManagePubImpl implements ManagePub {
+
     private final AdminRepository adminRepository;
     private final MenuRepository menuRepository;
     private final PubRepository pubRepository;

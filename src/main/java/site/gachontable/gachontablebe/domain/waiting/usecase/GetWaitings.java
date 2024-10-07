@@ -16,6 +16,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GetWaitings {
+
     private final WaitingRepository waitingRepository;
     private final AdminRepository adminRepository;
 

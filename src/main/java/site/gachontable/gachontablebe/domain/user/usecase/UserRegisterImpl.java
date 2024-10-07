@@ -15,6 +15,7 @@ import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException
 @Service
 @RequiredArgsConstructor
 public class UserRegisterImpl implements UserRegister {
+
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

@@ -59,24 +59,6 @@ public class CreateWaitingImpl implements CreateWaiting {
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }
 
-/*    @RedissonLock(key = "#lockKey")
-    @Override
-    public WaitingResponse execute(AuthDetails authDetails, OnsiteWaitingRequest request, String lockKey) { // 현장 웨이팅
-        Pub pub = adminRepository.findByUsername(authDetails.getUsername()).orElseThrow(AdminNotFoundException::new)
-                .getPub();
-
-        checkPreConditions(pub, request.tel());
-
-        Waiting waiting = waitingRepository.save(
-                Waiting.create(Position.ONSITE, request.headCount(), Status.WAITING, request.tel(), null, pub));
-
-        pub.increaseWaitingCount();
-
-        SendBiztalk.execute(TEMPLATE_CODE, request.tel(), createVariables(request.tel().substring(9), pub, waiting, request.headCount()));
-
-        return new WaitingResponse(true, SuccessCode.ONSITE_WAITING_SUCCESS.getMessage());
-    }*/
-
     private void checkPreConditions(Pub pub, User user) {
         // 신청할 주점의 상태 확인
         pub.checkStatus();

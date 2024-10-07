@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class GetStatusImpl implements GetStatus {
+
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
 

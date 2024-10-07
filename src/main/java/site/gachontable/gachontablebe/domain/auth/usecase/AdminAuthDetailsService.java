@@ -13,6 +13,7 @@ import site.gachontable.gachontablebe.domain.shared.Role;
 @Service
 @RequiredArgsConstructor
 public class AdminAuthDetailsService implements UserDetailsService {
+
     private final AdminRepository adminRepository;
 
     @Override

@@ -12,9 +12,10 @@ import site.gachontable.gachontablebe.domain.seating.domain.respository.SeatingR
 
 import java.time.LocalDateTime;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class GetSeatingsImpl implements GetSeatings {
+
     private final AdminRepository adminRepository;
     private final SeatingRepository seatingRepository;
 

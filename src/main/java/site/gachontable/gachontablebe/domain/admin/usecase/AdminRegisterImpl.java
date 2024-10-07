@@ -18,6 +18,7 @@ import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException
 @Service
 @RequiredArgsConstructor
 public class AdminRegisterImpl implements AdminRegister {
+
     private final PasswordEncoder passwordEncoder;
     private final AdminRepository adminRepository;
     private final PubRepository pubRepository;

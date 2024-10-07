@@ -12,9 +12,10 @@ import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import java.util.List;
 import java.util.UUID;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class GetStatusByBiztalkImpl implements GetStatusByBiztalk {
+
     private final WaitingRepository waitingRepository;
 
     @Override
