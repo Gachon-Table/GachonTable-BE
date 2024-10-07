@@ -16,9 +16,6 @@ import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.Wai
 import site.gachontable.gachontablebe.domain.admin.type.Status;
 import site.gachontable.gachontablebe.domain.admin.usecase.*;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
-import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.PubManageRequest;
 import site.gachontable.gachontablebe.domain.shared.dto.request.RefreshRequest;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
@@ -31,9 +28,9 @@ import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
+
     private final AdminRegister adminRegister;
     private final AdminLogin adminLogin;
-    private final PubRepository pubRepository;
     private final JwtProvider jwtProvider;
     private final GetWaitings getWaitings;
     private final EnterUser enterUser;
@@ -53,8 +50,7 @@ public class AdminController {
     })
     @PostMapping("/test-register")
     public ResponseEntity<RegisterResponse> register(@RequestBody AdminRegisterRequest request) {
-        Pub pub = pubRepository.findByPubId(request.pubId()).orElseThrow(PubNotFoundException::new);
-        return ResponseEntity.ok(adminRegister.execute(request.username(), request.password(), request.tel(), pub));
+        return ResponseEntity.ok(adminRegister.execute(request));
     }
 
     @Operation(summary = "관리자 로그인", description = "관리자 계정으로 로그인합니다.")
@@ -119,7 +115,8 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PatchMapping("/enter")
-    public ResponseEntity<String> enterUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody EnterUserRequest request) {
+    public ResponseEntity<String> enterUser(@AuthenticationPrincipal AuthDetails authDetails,
+                                            @RequestBody EnterUserRequest request) {
         return ResponseEntity.ok(enterUser.execute(authDetails, request, Status.ENTER.getStatusKo()));
     }
 
@@ -132,7 +129,8 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PatchMapping("/call")
-    public ResponseEntity<String> callUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody CallUserRequest request) {
+    public ResponseEntity<String> callUser(@AuthenticationPrincipal AuthDetails authDetails,
+                                           @RequestBody CallUserRequest request) {
         return ResponseEntity.ok(callUser.execute(authDetails, request, Status.CALL.getStatusKo()));
     }
 
@@ -145,7 +143,8 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PatchMapping("/exit")
-    public ResponseEntity<String> exitUser(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody ExitUserRequest request) {
+    public ResponseEntity<String> exitUser(@AuthenticationPrincipal AuthDetails authDetails,
+                                           @RequestBody ExitUserRequest request) {
         return ResponseEntity.ok(exitUser.execute(authDetails, request));
     }
 
@@ -158,7 +157,8 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PatchMapping("/status")
-    public ResponseEntity<RegisterResponse> updateOpenStatus(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody UpdateStatusRequest request) {
+    public ResponseEntity<RegisterResponse> updateOpenStatus(@AuthenticationPrincipal AuthDetails authDetails,
+                                                             @RequestBody UpdateStatusRequest request) {
         return ResponseEntity.ok(updateStatus.executeForOpenStatus(authDetails, request));
     }
 
@@ -171,7 +171,8 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PatchMapping("/status-waiting")
-    public ResponseEntity<RegisterResponse> updateWaitingStatus(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody UpdateStatusRequest request) {
+    public ResponseEntity<RegisterResponse> updateWaitingStatus(@AuthenticationPrincipal AuthDetails authDetails,
+                                                                @RequestBody UpdateStatusRequest request) {
         return ResponseEntity.ok(updateStatus.executeForWaitingStatus(authDetails, request));
     }
 
@@ -184,7 +185,8 @@ public class AdminController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PatchMapping("/manage")
-    public ResponseEntity<String> managePub(@AuthenticationPrincipal AuthDetails authDetails, @RequestBody PubManageRequest request){
+    public ResponseEntity<String> managePub(@AuthenticationPrincipal AuthDetails authDetails,
+                                            @RequestBody PubManageRequest request){
         return ResponseEntity.ok(managePub.execute(authDetails, request));
     }
 }
