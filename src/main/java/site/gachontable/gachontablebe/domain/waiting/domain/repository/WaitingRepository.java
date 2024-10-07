@@ -11,11 +11,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface WaitingRepository extends JpaRepository<Waiting, UUID> {
-    List<Waiting> findAllByTelAndWaitingStatusOrWaitingStatus(String tel, Status waiting, Status available);
-    List<Waiting> findAllByTel(String tel);
 
     Optional<Waiting> findByTelAndPubAndWaitingStatusOrWaitingStatus(String tel, Pub pub, Status waiting, Status available);
 
+    List<Waiting> findAllByTelAndWaitingStatusOrWaitingStatus(String tel, Status waiting, Status available);
+
+    List<Waiting> findAllByTel(String tel);
+
     List<Waiting> findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(Pub pub, Status waiting, Status available);
+
     List<Waiting> findAllByUserAndWaitingStatusOrWaitingStatus(User user, Status entered, Status canceled);
 }

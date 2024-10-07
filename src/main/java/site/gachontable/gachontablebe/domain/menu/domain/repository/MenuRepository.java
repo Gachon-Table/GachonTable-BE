@@ -7,5 +7,6 @@ import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import java.util.List;
 
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
+
     List<Menu> findAllByPub(Pub pub);
 }
