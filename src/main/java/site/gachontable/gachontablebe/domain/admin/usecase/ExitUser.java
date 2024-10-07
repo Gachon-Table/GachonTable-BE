@@ -4,5 +4,6 @@ import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.Exit
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 
 public interface ExitUser {
+
     String execute(AuthDetails authDetails, ExitUserRequest request);
 }

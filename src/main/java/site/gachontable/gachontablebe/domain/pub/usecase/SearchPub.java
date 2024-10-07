@@ -5,5 +5,6 @@ import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPu
 import java.util.List;
 
 public interface SearchPub {
+
     List<GetPubsResponse> execute(String keyword);
 }

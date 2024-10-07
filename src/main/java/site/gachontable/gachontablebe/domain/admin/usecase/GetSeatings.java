@@ -4,5 +4,6 @@ import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.Sea
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 
 public interface GetSeatings {
+
     SeatingsResponse execute(AuthDetails authDetails);
 }

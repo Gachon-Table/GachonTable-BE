@@ -44,7 +44,7 @@ public class CreateWaitingImpl implements CreateWaiting {
     public WaitingResponse execute(AuthDetails authDetails, RemoteWaitingRequest request, String lockKey) { // 원격 웨이팅
         User user = userRepository.findById(authDetails.getUuid())
                 .orElseThrow(UserNotFoundException::new);
-        Pub pub = pubRepository.findByPubId(request.pubId())
+        Pub pub = pubRepository.findById(request.pubId())
                 .orElseThrow(PubNotFoundException::new);
 
         checkPreConditions(pub, user);

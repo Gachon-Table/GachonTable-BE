@@ -29,7 +29,7 @@ public class PubService {
     }
 
     public GetPubDetailsResponse findPubDetail(Integer pubId) {
-        Pub pub = pubRepository.findByPubId(pubId).orElseThrow(PubNotFoundException::new);
+        Pub pub = pubRepository.findById(pubId).orElseThrow(PubNotFoundException::new);
         List<Menu> menu = pub.getMenus();
 
         return GetPubDetailsResponse.of(pub, menu);

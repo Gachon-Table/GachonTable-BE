@@ -5,7 +5,6 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.Re
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 
 public interface CreateWaiting {
-    WaitingResponse execute(AuthDetails authDetails, RemoteWaitingRequest request, String lockKey);
 
-//    WaitingResponse execute(AuthDetails authDetails, OnsiteWaitingRequest request, String lockKey);
+    WaitingResponse execute(AuthDetails authDetails, RemoteWaitingRequest request, String lockKey);
 }

@@ -23,7 +23,7 @@ public class ExitUserImpl implements ExitUser{
     @Override
     @Transactional
     public String execute(AuthDetails authDetails, ExitUserRequest request) {
-        Seating seating = seatingRepository.findBySeatingId(request.seatingId())
+        Seating seating = seatingRepository.findById(request.seatingId())
                 .orElseThrow(SeatingNotFoundException::new);
 
         checkPubMatches(authDetails, seating);
