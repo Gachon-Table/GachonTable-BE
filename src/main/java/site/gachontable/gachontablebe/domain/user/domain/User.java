@@ -19,16 +19,14 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String username;
 
+    @Column
     private String password;
 
-    @Column(columnDefinition = "char(16)")
+    @Column(columnDefinition = "char(16)", nullable = false)
     private String userTel;
 
+    @Column(nullable = false)
     private String refreshToken;
-
-    public void updateRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
 
     public static User createForTest(String username, String password, String userTel) {
         return User.builder()
@@ -50,5 +48,9 @@ public class User extends BaseTimeEntity {
         this.username = username;
         this.password = password;
         this.userTel = userTel;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

@@ -18,6 +18,7 @@ public record StatusResponse(UUID waitingId,
                              Table tableType) {
 
     public static StatusResponse of(Waiting waiting, Pub pub, Integer order) {
+
         return StatusResponse.builder()
                 .waitingId(waiting.getWaitingId())
                 .pubName(pub.getPubName())
@@ -27,5 +28,4 @@ public record StatusResponse(UUID waitingId,
                 .tableType(waiting.getTableType())
                 .build();
     }
-
 }

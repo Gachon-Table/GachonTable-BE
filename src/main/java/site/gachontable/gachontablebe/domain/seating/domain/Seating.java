@@ -22,6 +22,18 @@ public class Seating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer seatingId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pub_id", nullable = false)
+    private Pub pub;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "waiting_id", nullable = false)
+    private Waiting waiting;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Column(nullable = false)
     private Integer seatingNum;
 
@@ -31,18 +43,6 @@ public class Seating {
 
     @Column(nullable = false)
     private LocalDateTime exitTime;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pub_id")
-    private Pub pub;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "waiting_id")
-    private Waiting waiting;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
 
     public static Seating create(Integer seatingNum, Table tableType, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
         return Seating.builder()

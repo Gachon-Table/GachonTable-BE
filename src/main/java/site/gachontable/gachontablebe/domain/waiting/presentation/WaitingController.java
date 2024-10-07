@@ -26,6 +26,7 @@ import java.util.UUID;
 @RequestMapping("/waiting")
 @RequiredArgsConstructor
 public class WaitingController {
+
     private final CreateWaiting createWaiting;
     private final GetStatus getStatus;
     private final GetWaitingHistory getWaitingHistory;
@@ -45,20 +46,6 @@ public class WaitingController {
                                                         @RequestBody RemoteWaitingRequest request) {
         return ResponseEntity.ok(createWaiting.execute(authDetails, request, Position.REMOTE.getPositionKo()));
     }
-
-/*    @Operation(summary = "현장 웨이팅", description = "현장 웨이팅을 신규로 신청합니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201"),
-            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    @PostMapping("/onsite")
-    public ResponseEntity<WaitingResponse> createOnsite(@AuthenticationPrincipal AuthDetails authDetails,
-                                                        @RequestBody OnsiteWaitingRequest request) {
-        return ResponseEntity.ok(createWaiting.execute(authDetails, request, Position.ONSITE.getPositionKo()));
-    }*/
 
     @Operation(summary = "웨이팅 현황 조회", description = "사용자(회원)가 자신의 신청한 웨이팅 현황을 조회합니다.")
     @ApiResponses({

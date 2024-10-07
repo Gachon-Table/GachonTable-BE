@@ -6,5 +6,6 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.S
 import java.util.List;
 
 public interface GetStatus {
+
     List<StatusResponse> execute(AuthDetails authDetails);
 }

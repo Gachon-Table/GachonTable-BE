@@ -25,6 +25,7 @@ import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
+
     private final UserRegister userRegister;
     private final UserLogin userLogin;
     private final JwtProvider jwtProvider;

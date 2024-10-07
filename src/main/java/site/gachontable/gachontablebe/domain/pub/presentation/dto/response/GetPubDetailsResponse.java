@@ -7,8 +7,7 @@ import java.util.List;
 
 public record GetPubDetailsResponse(
         PubInfo pub,
-        List<MenuInfo> menu
-) {
+        List<MenuInfo> menu) {
 
     public static GetPubDetailsResponse of(Pub pub, List<Menu> menuList) {
 
@@ -25,43 +24,41 @@ public record GetPubDetailsResponse(
             String pubName,
             String oneLiner,
             String instagramUrl,
-            Boolean studentCard,
-            String menu,
+            String menuUrl,
             Integer waitingCount,
             Boolean openStatus,
-            Boolean waitingStatus
-    ) {
+            Boolean waitingStatus) {
+
         public static PubInfo from(Pub pub) {
+
             return new PubInfo(
                     pub.getPubId(),
                     pub.getThumbnails(),
                     pub.getPubName(),
                     pub.getOneLiner(),
                     pub.getInstagramUrl(),
-                    pub.getStudentCard(),
-                    pub.getRepresentativeMenu(),
+                    pub.getMenuUrl(),
                     pub.getWaitingCount(),
                     pub.getOpenStatus(),
                     pub.getWaitingStatus());
         }
     }
 
-
     public record MenuInfo(
             Integer menuId,
             String menuName,
             String price,
             String oneLiner,
-            String thumbnail
-    ) {
+            String thumbnail) {
+
         public static MenuInfo from(Menu menu) {
+
             return new MenuInfo(
                     menu.getMenuId(),
                     menu.getMenuName(),
                     menu.getPrice(),
                     menu.getOneLiner(),
-                    menu.getThumbnail()
-            );
+                    menu.getThumbnail());
         }
     }
 }

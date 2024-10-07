@@ -24,6 +24,7 @@ import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
     private static final String USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
     private static final String TOKEN_URI = "https://kauth.kakao.com/oauth/token";
 

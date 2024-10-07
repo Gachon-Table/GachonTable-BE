@@ -12,7 +12,12 @@ import static site.gachontable.gachontablebe.domain.shared.DateTimeFormatters.WI
 public record SeatingsResponse(List<SeatingResponse> seatings) {
 
     @Builder
-    public record SeatingResponse(Integer seatingId, Integer seatingNum, Table tableType, String exitTime, UUID waitingId) {
+    public record SeatingResponse(Integer seatingId,
+                                  Integer seatingNum,
+                                  Table tableType,
+                                  String exitTime,
+                                  UUID waitingId) {
+
         public static SeatingResponse from(Seating seating) {
 
             return SeatingResponse.builder()

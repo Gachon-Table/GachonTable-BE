@@ -29,6 +29,7 @@ import java.util.UUID;
 
 @Service
 public class JwtProvider {
+
     public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14);
     public static final Duration ACCESS_TOKEN_DURATION = Duration.ofHours(6);
 

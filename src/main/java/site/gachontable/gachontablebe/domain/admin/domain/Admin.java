@@ -16,6 +16,10 @@ public class Admin {
     @Column(columnDefinition = "BINARY(16)")
     private UUID adminId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pub_id", nullable = false)
+    private Pub pub;
+
     @Column(nullable = false)
     private String username;
 
@@ -25,12 +29,8 @@ public class Admin {
     @Column(columnDefinition = "char(16)", nullable = false)
     private String adminTel;
 
-    @Column
+    @Column(nullable = false)
     private String refreshToken;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pub_id")
-    private Pub pub;
 
     public static Admin create(String username, String adminPassword, String adminTel, Pub pub) {
         return Admin.builder()

@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class EnterUser {
+
     private final WaitingRepository waitingRepository;
     private final AdminRepository adminRepository;
     private final ReadyUser readyUser;

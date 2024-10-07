@@ -5,5 +5,6 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.S
 import java.util.UUID;
 
 public interface GetStatusByBiztalk {
+
     StatusResponse execute(UUID waitingId);
 }

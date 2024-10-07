@@ -20,6 +20,14 @@ public class Pub {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pubId;
 
+    @OneToMany
+    @Column(nullable = false)
+    private List<Menu> menus = new ArrayList<>();
+
+    @ElementCollection
+    @Column(nullable = false)
+    private List<String> thumbnails = new ArrayList<>();
+
     @Column(nullable = false)
     private String pubName;
 
@@ -29,25 +37,11 @@ public class Pub {
     @Column(nullable = false)
     private String instagramUrl;
 
-    @Column
-    private Boolean studentCard;
-
-    @Column(nullable = false)
-    private String representativeMenu;
-
     @Column(nullable = false)
     private Integer hours;
 
-    @Column
-    private String pubLoc;
-
-    @ElementCollection
     @Column(nullable = false)
-    private List<String> thumbnails = new ArrayList<>();
-
-    @OneToMany
-    @Column(nullable = false)
-    private List<Menu> menus = new ArrayList<>();
+    private String menuUrl;
 
     @Column(nullable = false)
     private Boolean openStatus;
@@ -61,10 +55,8 @@ public class Pub {
     public static Pub create(String pubName,
                              String oneLiner,
                              String instagramUrl,
-                             Boolean studentCard,
-                             String representativeMenu,
                              Integer hours,
-                             String pubLoc,
+                             String menuUrl,
                              List<String> thumbnails,
                              List<Menu> menus,
                              Boolean openStatus,
@@ -74,10 +66,8 @@ public class Pub {
                 .pubName(pubName)
                 .oneLiner(oneLiner)
                 .instagramUrl(instagramUrl)
-                .studentCard(studentCard)
-                .representativeMenu(representativeMenu)
                 .hours(hours)
-                .pubLoc(pubLoc)
+                .menuUrl(menuUrl)
                 .thumbnails(thumbnails)
                 .menus(menus)
                 .openStatus(openStatus)
@@ -90,10 +80,8 @@ public class Pub {
     public Pub(String pubName,
                String oneLiner,
                String instagramUrl,
-               Boolean studentCard,
-               String representativeMenu,
                Integer hours,
-               String pubLoc,
+               String menuUrl,
                List<String> thumbnails,
                List<Menu> menus,
                Boolean openStatus,
@@ -102,10 +90,8 @@ public class Pub {
         this.pubName = pubName;
         this.oneLiner = oneLiner;
         this.instagramUrl = instagramUrl;
-        this.studentCard = studentCard;
-        this.representativeMenu = representativeMenu;
         this.hours = hours;
-        this.pubLoc = pubLoc;
+        this.menuUrl = menuUrl;
         this.thumbnails = thumbnails;
         this.menus = menus;
         this.openStatus = openStatus;

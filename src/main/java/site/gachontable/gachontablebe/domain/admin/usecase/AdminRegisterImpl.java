@@ -5,7 +5,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.admin.domain.Admin;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
+import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminRegisterRequest;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
+import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
+import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
 import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
@@ -15,14 +18,19 @@ import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException
 @Service
 @RequiredArgsConstructor
 public class AdminRegisterImpl implements AdminRegister {
+
     private final PasswordEncoder passwordEncoder;
     private final AdminRepository adminRepository;
+    private final PubRepository pubRepository;
     private final JwtProvider jwtProvider;
 
     @Override
-    public RegisterResponse execute(String username, String password, String tel, Pub pub) {
-        Admin admin = Admin.create(username, passwordEncoder.encode(password), tel, pub);
+    public RegisterResponse execute(AdminRegisterRequest request) {
+        Pub pub = pubRepository.findById(request.pubId()).orElseThrow(PubNotFoundException::new);
+
+        Admin admin = Admin.create(request.username(), passwordEncoder.encode(request.password()), request.tel(), pub);
         adminRepository.save(admin);
+
         generateRefreshToken(admin);
 
         return new RegisterResponse(true, "어드민 가입 성공");

@@ -19,6 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GetWaitingHistory {
+
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
     private final SeatingRepository seatingRepository;

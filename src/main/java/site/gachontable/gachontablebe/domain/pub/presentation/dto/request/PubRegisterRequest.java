@@ -5,10 +5,8 @@ import java.util.List;
 public record PubRegisterRequest(String pubName,
                                  String oneLiner,
                                  String instagramUrl,
-                                 Boolean studentCard,
-                                 String representativeMenu,
                                  Integer hours,
-                                 String pubLoc,
+                                 String menuUrl,
                                  List<String> thumbnails,
                                  Boolean openStatus,
                                  Boolean waitingStatus) {

@@ -1,4 +1,5 @@
 package site.gachontable.gachontablebe.domain.admin.presentation.dto.request;
 
-public record AdminLoginRequest(String id, String password) {
+public record AdminLoginRequest(String id,
+                                String password) {
 }

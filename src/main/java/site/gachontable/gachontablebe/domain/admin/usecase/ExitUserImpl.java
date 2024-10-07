@@ -17,13 +17,14 @@ import site.gachontable.gachontablebe.global.success.SuccessCode;
 @Service
 @RequiredArgsConstructor
 public class ExitUserImpl implements ExitUser{
+
     private final SeatingRepository seatingRepository;
     private final AdminRepository adminRepository;
 
-    @Override
     @Transactional
+    @Override
     public String execute(AuthDetails authDetails, ExitUserRequest request) {
-        Seating seating = seatingRepository.findBySeatingId(request.seatingId())
+        Seating seating = seatingRepository.findById(request.seatingId())
                 .orElseThrow(SeatingNotFoundException::new);
 
         checkPubMatches(authDetails, seating);

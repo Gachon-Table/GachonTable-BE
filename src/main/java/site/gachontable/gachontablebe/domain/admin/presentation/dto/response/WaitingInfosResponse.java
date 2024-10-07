@@ -9,10 +9,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public record WaitingInfosResponse(Integer count, List<WaitingInfosResponse.WaitingInfo> waitingInfos) {
+public record WaitingInfosResponse(Integer count,
+                                   List<WaitingInfosResponse.WaitingInfo> waitingInfos) {
 
     @Builder
-    public record WaitingInfo(String username, LocalDateTime time, Table tableType, String tel, UUID waitingId, Status waitingStatus) {
+    public record WaitingInfo(String username,
+                              LocalDateTime time,
+                              Table tableType,
+                              String tel,
+                              UUID waitingId,
+                              Status waitingStatus) {
         public static WaitingInfo of(String userName, Waiting waiting) {
             return WaitingInfo.builder()
                     .username(userName)

@@ -10,12 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SeatingRepository extends JpaRepository<Seating, Long> {
-    List<Seating> findAllByPubAndExitTimeAfterOrderByExitTime(Pub pub, LocalDateTime now);
-
-    Optional<Seating> findBySeatingId(Integer seatingId);
 
     Optional<Seating> findByWaiting(Waiting waiting);
 
     Optional<Seating> findFirstByPubAndSeatingNumAndExitTimeAfter(Pub pub, Integer seatingNum, LocalDateTime now);
 
+    List<Seating> findAllByPubAndExitTimeAfterOrderByExitTime(Pub pub, LocalDateTime now);
 }
