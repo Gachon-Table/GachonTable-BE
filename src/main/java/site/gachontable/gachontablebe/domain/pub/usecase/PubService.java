@@ -17,6 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PubService {
+
     private static final Integer INITIAL_WAITING_COUNT = 0;
 
     private final PubRepository pubRepository;
@@ -46,15 +47,12 @@ public class PubService {
         return Pub.create(request.pubName(),
                 request.oneLiner(),
                 request.instagramUrl(),
-                request.studentCard(),
-                request.representativeMenu(),
                 request.hours(),
-                request.pubLoc(),
+                request.menuUrl(),
                 request.thumbnails(),
                 menus,
                 request.openStatus(),
                 request.waitingStatus(),
                 INITIAL_WAITING_COUNT);
     }
-
 }

@@ -11,10 +11,8 @@ public record GetPubsResponse(
         List<String> thumbnails,
         String pubName,
         String oneLiner,
-        Boolean studentCard,
-        String menu,
-        Integer queueing,
-        Boolean isOpen
+        Integer waitingCount,
+        Boolean openStatus
 ) {
 
     public static GetPubsResponse of(Pub pub) {
@@ -23,12 +21,8 @@ public record GetPubsResponse(
                 pub.getThumbnails(),
                 pub.getPubName(),
                 pub.getOneLiner(),
-                pub.getStudentCard(),
-                pub.getRepresentativeMenu(),
                 pub.getWaitingCount(),
                 pub.getOpenStatus()
         );
-
     }
-
 }

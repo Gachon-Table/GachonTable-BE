@@ -25,8 +25,7 @@ public record GetPubDetailsResponse(
             String pubName,
             String oneLiner,
             String instagramUrl,
-            Boolean studentCard,
-            String menu,
+            String menuUrl,
             Integer waitingCount,
             Boolean openStatus,
             Boolean waitingStatus
@@ -38,8 +37,7 @@ public record GetPubDetailsResponse(
                     pub.getPubName(),
                     pub.getOneLiner(),
                     pub.getInstagramUrl(),
-                    pub.getStudentCard(),
-                    pub.getRepresentativeMenu(),
+                    pub.getMenuUrl(),
                     pub.getWaitingCount(),
                     pub.getOpenStatus(),
                     pub.getWaitingStatus());
