@@ -19,6 +19,7 @@ import site.gachontable.gachontablebe.global.error.ErrorResponse;
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
+
     private final AuthService authService;
 
     @Operation(summary = "카카오 로그인", description = "토큰을 통해 사용자를 로그인합니다.")

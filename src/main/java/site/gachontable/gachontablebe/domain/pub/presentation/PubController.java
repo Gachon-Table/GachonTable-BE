@@ -22,6 +22,7 @@ import java.util.List;
 @RequestMapping("/pub")
 @RequiredArgsConstructor
 public class PubController {
+
     private final PubService pubService;
     private final SearchPub searchPub;
 
