@@ -18,6 +18,7 @@ import java.util.List;
         version = "v1.0.0"))
 @Configuration
 public class SwaggerConfig {
+
     @Bean
     public OpenAPI openApi() {
         String jwt = "JWT";
