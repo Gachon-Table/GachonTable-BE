@@ -56,3 +56,29 @@ biztalk:
     forceCancel: ENC(yEIJoeLcbFwRqdPjOy0W5+4uwSIHUhbHDpWG98jOorBqc98td/mVpoD88ELUNwab)
     ready: ENC(zybEFNnDo6FVcQA+LEtmuQOEf29IzPpZIvg05785hZ6GAr9u5qbuNk4ROd2lsMvj)
     waiting: ENC(WF8cdPQOkFbebfrWuDfjl3ncRr0CoBve4Xg+zPu2A/MwH6Gh1zfyPQ+0fQrn6AVm)
+
+management:
+  server:
+    port: 63544
+  endpoints:
+    enabled-by-default: false
+    jmx:
+      exposure:
+        exclude: "*"
+    web:
+      exposure:
+        include: info, health, prometheus, metrics
+      base-path: ENC(djCq5yP+wuQcOpBaOgZYbubHDHG8KwWN4eLyukWl46+Y6xz7fDUGRH0/lwVLqhDL)
+  endpoint:
+    health:
+      enabled: true
+    info:
+      enabled: true
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true

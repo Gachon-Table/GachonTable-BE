@@ -1,6 +1,7 @@
 package site.gachontable.gachontablebe.global.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -31,7 +32,11 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final JwtProvider tokenProvider;
+
+    @Value("${management.endpoints.web.base-path}")
+    private String actuatorBasePath;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -57,6 +62,7 @@ public class SecurityConfig {
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll() // API 명세서
 
                                 .requestMatchers("health-check").permitAll() // 로드 밸런서 상태 확인
+                                .requestMatchers(actuatorBasePath+"/**").permitAll() // Actuator 경로
 
                                 .requestMatchers("/login").permitAll() // 카카오 로그인
                                 .requestMatchers("/admin/test-register", "/admin/login").permitAll() //관리자 로그인
@@ -77,7 +83,7 @@ public class SecurityConfig {
                                 .requestMatchers("waiting/remote").hasAuthority(Role.ROLE_USER.getRole()) // 원격 웨이팅
                                 .requestMatchers("waiting/status", "waiting/history").hasAuthority(Role.ROLE_USER.getRole()) // 마이페이지 웨이팅 현황 및 기록 조회
 
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 );
 
         http

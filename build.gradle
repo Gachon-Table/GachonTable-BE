@@ -34,11 +34,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.redisson:redisson-spring-boot-starter:3.34.1'
 
+	implementation "org.springframework.boot:spring-boot-starter-actuator"
+
 	implementation 'net.nurigo:sdk:4.3.0'
 
 	compileOnly 'org.projectlombok:lombok'
 
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	runtimeOnly "io.micrometer:micrometer-registry-prometheus"
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
