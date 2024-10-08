@@ -68,5 +68,5 @@ jobs:
             fi
             
             sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q) 
-            sudo docker run -d --log-driver=syslog -p 8080:8080 -e JAVA_OPTS=-Djasypt.encryptor.password=${{secrets.JASYPT_ENCRYPTOR_PASSWORD}} ${{secrets.DOCKER_USERNAME}}/gachontable:latest
+            sudo docker run -d --log-driver=syslog -p 8080:8080 -p 63544:63544 -e JAVA_OPTS=-Djasypt.encryptor.password=${{secrets.JASYPT_ENCRYPTOR_PASSWORD}} ${{secrets.DOCKER_USERNAME}}/gachontable:latest
             sudo docker image prune -a -f
