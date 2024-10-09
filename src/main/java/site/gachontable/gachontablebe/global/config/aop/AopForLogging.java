@@ -38,16 +38,16 @@ public class AopForLogging {
     @Around("publicMethodsFromService()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
+
         try {
             return joinPoint.proceed();
         } finally {
-            long end = System.currentTimeMillis();
-            long duration = end - start;
+            long duration = System.currentTimeMillis() - start;
 
             String className = joinPoint.getSignature().getDeclaringType().getSimpleName();
             String method = joinPoint.getSignature().getName();
-            log.info("{}.{} | time = {}ms",
-                    className, method, duration);
+
+            log.info("{}.{} | time = {}ms", className, method, duration);
         }
     }
 
@@ -59,6 +59,7 @@ public class AopForLogging {
 
         String controllerName = joinPoint.getSignature().getDeclaringType().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
+
         Map<String, Object> params = new HashMap<>();
 
         try {
@@ -82,11 +83,13 @@ public class AopForLogging {
     private JSONObject getParams(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         Enumeration<String> params = request.getParameterNames();
+
         while (params.hasMoreElements()) {
             String param = params.nextElement();
             String replaceParam = param.replaceAll("\\.", "-");
             jsonObject.put(replaceParam, request.getParameter(param));
         }
+
         return jsonObject;
     }
 
@@ -94,6 +97,7 @@ public class AopForLogging {
     @AfterReturning(value = "publicMethodsFromController()", returning = "result")
     public void logAfterController(JoinPoint joinPoint, Object result) {
         String methodName = joinPoint.getSignature().getDeclaringType().getSimpleName();
+
         log.info("✅End: {}() - {}", methodName, result);
     }
 
@@ -102,6 +106,7 @@ public class AopForLogging {
     public void logBeforeService(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         String methodName = joinPoint.getSignature().getDeclaringType().getSimpleName();
+
         log.info("⚠️Start: {}() - {}", methodName, Arrays.toString(args));
     }
 
@@ -109,6 +114,7 @@ public class AopForLogging {
     @AfterReturning(value = "publicMethodsFromService()")
     public void logAfterService(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().getDeclaringType().getSimpleName();
+
         log.info("✅End: {}()", methodName);
     }
 
