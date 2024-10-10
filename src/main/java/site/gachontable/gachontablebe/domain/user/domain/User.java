@@ -25,7 +25,7 @@ public class User extends BaseTimeEntity {
     @Column(columnDefinition = "char(16)", nullable = false)
     private String userTel;
 
-    @Column(nullable = false)
+    @Column
     private String refreshToken;
 
     public static User createForTest(String username, String password, String userTel) {
