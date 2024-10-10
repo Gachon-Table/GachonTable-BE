@@ -12,21 +12,19 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import site.gachontable.gachontablebe.domain.shared.Role;
+import site.gachontable.gachontablebe.global.error.exception.CustomAccessDeniedHandler;
 import site.gachontable.gachontablebe.global.filter.ExceptionHandleFilter;
+import site.gachontable.gachontablebe.global.jwt.JwtAuthenticationEntryPoint;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 import site.gachontable.gachontablebe.global.jwt.TokenAuthenticationFilter;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +32,8 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 public class SecurityConfig {
 
     private final JwtProvider tokenProvider;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
     @Value("${management.endpoints.web.base-path}")
     private String actuatorBasePath;
@@ -62,7 +62,7 @@ public class SecurityConfig {
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll() // API 명세서
 
                                 .requestMatchers("health-check").permitAll() // 로드 밸런서 상태 확인
-                                .requestMatchers(actuatorBasePath+"/**").permitAll() // Actuator 경로
+                                .requestMatchers(actuatorBasePath + "/**").permitAll() // Actuator 경로
 
                                 .requestMatchers("/login").permitAll() // 카카오 로그인
                                 .requestMatchers("/admin/test-register", "/admin/login").permitAll() //관리자 로그인
@@ -89,8 +89,8 @@ public class SecurityConfig {
         http
                 .exceptionHandling(exceptionHandlingCustomizer ->
                         exceptionHandlingCustomizer
-                                .authenticationEntryPoint(new HttpStatusEntryPoint(FORBIDDEN))
-                                .accessDeniedHandler(new AccessDeniedHandlerImpl())
+                                .authenticationEntryPoint(authenticationEntryPoint)
+                                .accessDeniedHandler(accessDeniedHandler)
                 );
 
         http
