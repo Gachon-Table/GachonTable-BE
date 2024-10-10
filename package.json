@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "postinstall": "npm i husky --save -dev"
+  },
+  "devDependencies": {
+    "husky": "^9.1.4",
+    "jira-prepare-commit-msg": "^1.7.2",
+    "prettier-plugin-java": "^2.6.0"
+  },
+  "jira-prepare-commit-msg": {
+    "messagePattern": "[$J] $M",
+    "allowEmptyCommitMessage": false,
+    "ignoredBranchesPattern": "^(master|main|dev|develop|development|release)$"
+  }
+}
