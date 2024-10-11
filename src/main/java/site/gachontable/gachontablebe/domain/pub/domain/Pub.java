@@ -6,9 +6,6 @@ import site.gachontable.gachontablebe.domain.pub.exception.EmptyWaitingCountExce
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotOpenException;
 import site.gachontable.gachontablebe.domain.waiting.exception.PubClosedForWaitingException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity(name = "pub")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,10 +15,6 @@ public class Pub {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pubId;
-
-    @ElementCollection
-    @Column
-    private List<String> thumbnails = new ArrayList<>();
 
     @Column(nullable = false)
     private String pubName;
@@ -106,10 +99,6 @@ public class Pub {
         if (waitingCount < 1) {
             throw new EmptyWaitingCountException();
         }
-    }
-
-    public void updateThumbnails(List<String> thumbnails) {
-        this.thumbnails = thumbnails;
     }
 
     public void updateOpenStatus(Boolean openStatus) {
