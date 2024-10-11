@@ -39,7 +39,7 @@ public class Menu {
     }
 
     @Builder
-    public Menu(Pub pub, String menuName, String price, String oneLiner, String thumbnail) {
+    private Menu(Pub pub, String menuName, String price, String oneLiner, String thumbnail) {
         this.pub = pub;
         this.menuName = menuName;
         this.price = price;

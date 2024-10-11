@@ -42,7 +42,7 @@ public class Admin {
     }
 
     @Builder
-    public Admin(String username, String adminPassword, String adminTel, Pub pub) {
+    private Admin(String username, String adminPassword, String adminTel, Pub pub) {
         this.username = username;
         this.adminPassword = adminPassword;
         this.adminTel = adminTel;

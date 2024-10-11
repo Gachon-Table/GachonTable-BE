@@ -56,7 +56,7 @@ public class Seating {
     }
 
     @Builder
-    public Seating(Integer seatingNum, Table tableType, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
+    private Seating(Integer seatingNum, Table tableType, LocalDateTime exitTime, Pub pub, Waiting waiting, User user) {
         this.seatingNum = seatingNum;
         this.tableType = tableType;
         this.exitTime = exitTime;

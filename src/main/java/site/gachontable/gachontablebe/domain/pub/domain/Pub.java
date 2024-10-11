@@ -61,7 +61,7 @@ public class Pub {
     }
 
     @Builder
-    public Pub(String pubName,
+    private Pub(String pubName,
                String oneLiner,
                String instagramUrl,
                Integer hours,

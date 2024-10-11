@@ -30,7 +30,7 @@ public class Thumbnail {
     }
 
     @Builder
-    public Thumbnail(String url, Pub pub) {
+    private Thumbnail(String url, Pub pub) {
         this.url = url;
         this.pub = pub;
     }
