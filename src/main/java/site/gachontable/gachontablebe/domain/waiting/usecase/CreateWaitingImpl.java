@@ -71,19 +71,20 @@ public class CreateWaitingImpl implements CreateWaiting {
     }
 
     private void checkWaitingLimit(User user) {
-        if (waitingRepository.findAllByTelAndWaitingStatusOrWaitingStatus(
-                user.getUserTel(), Status.WAITING, Status.AVAILABLE).size() >= WAITING_MAX_COUNT) {
+        if (waitingRepository.countByTelAndWaitingStatuses(
+                user.getUserTel(), Status.WAITING, Status.AVAILABLE) >= WAITING_MAX_COUNT) {
             throw new UserWaitingLimitExcessException();
         }
     }
 
     private void checkDuplicatePubWaiting(Pub pub, User user) {
-        waitingRepository
-                .findByTelAndPubAndWaitingStatusOrWaitingStatus(
-                        user.getUserTel(), pub, Status.WAITING, Status.AVAILABLE)
-                .ifPresent(waiting -> {
-                    throw new WaitingAlreadyExistsException();
-                });
+        boolean duplicatePubWaitingExists = waitingRepository
+                .existsByTelAndPubAndWaitingStatusOrWaitingStatus(
+                        user.getUserTel(), pub, Status.WAITING, Status.AVAILABLE);
+
+        if (duplicatePubWaitingExists) {
+            throw new WaitingAlreadyExistsException();
+        }
     }
 
     private HashMap<String, String> createVariables(String username, Pub pub, Waiting waiting, String tableType) {
