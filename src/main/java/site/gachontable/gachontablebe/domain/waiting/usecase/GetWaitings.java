@@ -2,6 +2,7 @@ package site.gachontable.gachontablebe.domain.waiting.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
 import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.WaitingInfosResponse;
@@ -20,12 +21,15 @@ public class GetWaitings {
     private final WaitingRepository waitingRepository;
     private final AdminRepository adminRepository;
 
+    @Transactional(readOnly = true)
     public WaitingInfosResponse execute(AuthDetails authDetails) {
         Pub pub = adminRepository.findById(authDetails.getUuid())
                 .orElseThrow(AdminNotFoundException::new)
                 .getPub();
 
-        List<Waiting> waitings = waitingRepository.findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
+        List<Waiting> waitings = waitingRepository
+                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(
+                        pub, Status.WAITING, Status.AVAILABLE);
 
         return new WaitingInfosResponse(
                 waitings.size(),

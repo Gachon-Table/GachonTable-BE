@@ -2,6 +2,7 @@ package site.gachontable.gachontablebe.domain.waiting.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.user.domain.User;
@@ -22,6 +23,7 @@ public class GetStatusImpl implements GetStatus {
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<StatusResponse> execute(AuthDetails authDetails) {
         User user = userRepository.findById(authDetails.getUuid()).orElseThrow(UserNotFoundException::new);
