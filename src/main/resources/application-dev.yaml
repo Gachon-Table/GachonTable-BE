@@ -15,6 +15,7 @@ spring:
         format_sql: true
         jdbc:
           time_zone: Asia/Seoul
+    open-in-view: true
   security:
     oauth2:
       client:
