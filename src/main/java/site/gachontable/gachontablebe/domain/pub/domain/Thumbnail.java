@@ -2,6 +2,7 @@ package site.gachontable.gachontablebe.domain.pub.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +21,21 @@ public class Thumbnail {
 
     @Column(nullable = false)
     private String url;
+
+    public static Thumbnail create(String url, Pub pub) {
+        return Thumbnail.builder()
+                .url(url)
+                .pub(pub)
+                .build();
+    }
+
+    @Builder
+    public Thumbnail(String url, Pub pub) {
+        this.url = url;
+        this.pub = pub;
+    }
+
+    public void update(String url) {
+        this.url = url;
+    }
 }
