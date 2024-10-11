@@ -29,7 +29,7 @@ public class Admin {
     @Column(columnDefinition = "char(16)", nullable = false)
     private String adminTel;
 
-    @Column(nullable = false)
+    @Column
     private String refreshToken;
 
     public static Admin create(String username, String adminPassword, String adminTel, Pub pub) {
