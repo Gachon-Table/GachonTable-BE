@@ -15,7 +15,7 @@ public interface SeatingRepository extends JpaRepository<Seating, Long> {
     @Query("SELECT s.exitTime FROM seating s WHERE s.waiting = :waiting")
     Optional<LocalDateTime> findExitTimeByWaiting(Waiting waiting);
 
-    Optional<Seating> findFirstByPubAndSeatingNumAndExitTimeAfter(Pub pub, Integer seatingNum, LocalDateTime now);
+    boolean existsByPubAndSeatingNumAndExitTimeAfter(Pub pub, Integer seatingNum, LocalDateTime now);
 
     List<Seating> findAllByPubAndExitTimeAfterOrderByExitTime(Pub pub, LocalDateTime now);
 }
