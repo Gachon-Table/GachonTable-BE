@@ -32,15 +32,15 @@ public class ManagePubImpl implements ManagePub {
                 .orElseThrow(AdminNotFoundException::new)
                 .getPub();
 
-        List<Menu> menus = manageMenus(request, pub);
+        manageMenus(request, pub);
 
-        pub.updatePubInfo(request.thumbnails(), menus);
+        pub.updateThumbnails(request.thumbnails());
         pubRepository.save(pub);
 
         return SuccessCode.MANAGE_PUB_SUCCESS.getMessage();
     }
 
-    private List<Menu> manageMenus(PubManageRequest request, Pub pub) {
+    private void manageMenus(PubManageRequest request, Pub pub) {
         Map<Integer, Menu> existingMenus = menuRepository.findAllByPub(pub).stream()
                 .collect(Collectors.toMap(Menu::getMenuId, menu -> menu));
 
@@ -63,6 +63,6 @@ public class ManagePubImpl implements ManagePub {
                             menuRequest.thumbnail());
                 }).toList();
 
-        return menuRepository.saveAll(updatedMenus);
+        menuRepository.saveAll(updatedMenus);
     }
 }
