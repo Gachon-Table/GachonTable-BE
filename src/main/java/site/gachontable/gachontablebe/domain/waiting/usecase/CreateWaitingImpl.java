@@ -23,7 +23,6 @@ import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -88,10 +87,7 @@ public class CreateWaitingImpl implements CreateWaiting {
     }
 
     private HashMap<String, String> createVariables(String username, Pub pub, Waiting waiting, String tableType) {
-
-        List<Waiting> waitings = waitingRepository
-                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
-        String order = String.valueOf(waitings.size());
+        String order = String.valueOf(pub.getWaitingCount());
         String callNumber = waiting.getTel().substring(9);
 
         HashMap<String, String> variables = new HashMap<>();
