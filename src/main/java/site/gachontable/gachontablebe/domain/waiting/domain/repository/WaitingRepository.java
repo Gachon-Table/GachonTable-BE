@@ -15,8 +15,11 @@ public interface WaitingRepository extends JpaRepository<Waiting, UUID> {
 
     boolean existsByTelAndPubAndWaitingStatusOrWaitingStatus(String tel, Pub pub, Status waiting, Status available);
 
-    @Query("SELECT COUNT(w) FROM waiting w WHERE w.user.userTel = :tel AND (w.waitingStatus = :waiting OR w.waitingStatus = :available)")
-    int countByTelAndWaitingStatuses(@Param("tel") String tel, @Param("status1") Status waiting, @Param("status2") Status available);
+    @Query("SELECT COUNT(w) FROM waiting w WHERE w.user.userTel = :tel AND " +
+            "(w.waitingStatus = :waiting OR w.waitingStatus = :available)")
+    int countByTelAndWaitingStatuses(@Param("tel") String tel,
+                                     @Param("waiting") Status waiting,
+                                     @Param("available") Status available);
 
     @Query("SELECT DISTINCT w.pub FROM waiting w WHERE w.user.userTel = :tel")
     List<Pub> findDistinctPubsByTel(@Param("tel") String tel);

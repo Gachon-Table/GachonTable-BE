@@ -28,23 +28,22 @@ public class GetStatusImpl implements GetStatus {
 
         return getPubsFromWaitings(user).stream()
                 .flatMap(pub -> {
-                    List<Waiting> waitings = waitingRepository.findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
+                    List<Waiting> waitings = waitingRepository
+                            .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(
+                                    pub, Status.WAITING, Status.AVAILABLE);
 
                     return getStatusResponse(user, pub, waitings);
                 })
                 .toList();
     }
 
-    private static Stream<StatusResponse> getStatusResponse(User user, Pub pub, List<Waiting> waitings) {
+    private Stream<StatusResponse> getStatusResponse(User user, Pub pub, List<Waiting> waitings) {
         return waitings.stream()
                 .filter(waiting -> waiting.matchesUser(user))
                 .map(waiting -> StatusResponse.of(waiting, pub, waitings.indexOf(waiting) + 1));
     }
 
     private List<Pub> getPubsFromWaitings(User user) {
-        return waitingRepository.findAllByTel(user.getUserTel()).stream()
-                .map(Waiting::getPub)
-                .distinct()
-                .toList();
+        return waitingRepository.findDistinctPubsByTel(user.getUserTel());
     }
 }
