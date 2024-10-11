@@ -2,7 +2,6 @@ package site.gachontable.gachontablebe.domain.pub.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.pub.exception.EmptyWaitingCountException;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotOpenException;
 import site.gachontable.gachontablebe.domain.waiting.exception.PubClosedForWaitingException;
@@ -20,12 +19,8 @@ public class Pub {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pubId;
 
-    @OneToMany
-    @Column(nullable = false)
-    private List<Menu> menus = new ArrayList<>();
-
     @ElementCollection
-    @Column(nullable = false)
+    @Column
     private List<String> thumbnails = new ArrayList<>();
 
     @Column(nullable = false)
@@ -57,8 +52,6 @@ public class Pub {
                              String instagramUrl,
                              Integer hours,
                              String menuUrl,
-                             List<String> thumbnails,
-                             List<Menu> menus,
                              Boolean openStatus,
                              Boolean waitingStatus,
                              Integer waitingCount) {
@@ -68,8 +61,6 @@ public class Pub {
                 .instagramUrl(instagramUrl)
                 .hours(hours)
                 .menuUrl(menuUrl)
-                .thumbnails(thumbnails)
-                .menus(menus)
                 .openStatus(openStatus)
                 .waitingStatus(waitingStatus)
                 .waitingCount(waitingCount)
@@ -82,8 +73,6 @@ public class Pub {
                String instagramUrl,
                Integer hours,
                String menuUrl,
-               List<String> thumbnails,
-               List<Menu> menus,
                Boolean openStatus,
                Boolean waitingStatus,
                Integer waitingCount) {
@@ -92,8 +81,6 @@ public class Pub {
         this.instagramUrl = instagramUrl;
         this.hours = hours;
         this.menuUrl = menuUrl;
-        this.thumbnails = thumbnails;
-        this.menus = menus;
         this.openStatus = openStatus;
         this.waitingStatus = waitingStatus;
         this.waitingCount = waitingCount;
@@ -121,9 +108,8 @@ public class Pub {
         }
     }
 
-    public void updatePubInfo(List<String> thumbnails, List<Menu> menus) {
+    public void updateThumbnails(List<String> thumbnails) {
         this.thumbnails = thumbnails;
-        this.menus = menus;
     }
 
     public void updateOpenStatus(Boolean openStatus) {
