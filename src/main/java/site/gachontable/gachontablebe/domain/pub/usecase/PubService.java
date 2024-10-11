@@ -30,17 +30,20 @@ public class PubService {
 
         return pubs.stream()
                 .map(pub -> {
-                    List<String> thumbnails = thumbnailRepository.findAllByPub(pub);
+                    List<String> thumbnails = thumbnailRepository.findUrlsByPub(pub);
                     return GetPubsResponse.from(pub, thumbnails);
                 })
                 .toList();
     }
 
     public GetPubDetailsResponse findPubDetail(Integer pubId) {
-        Pub pub = pubRepository.findById(pubId).orElseThrow(PubNotFoundException::new);
-        List<Menu> menu = menuRepository.findAllByPub(pub);
+        Pub pub = pubRepository.findById(pubId)
+                .orElseThrow(PubNotFoundException::new);
 
-        return GetPubDetailsResponse.of(pub, menu);
+        List<String> thumbnails = thumbnailRepository.findUrlsByPub(pub);
+        List<Menu> menus = menuRepository.findAllByPub(pub);
+
+        return GetPubDetailsResponse.of(pub, thumbnails, menus);
     }
 
     public RegisterResponse register(PubRegisterRequest request) {
