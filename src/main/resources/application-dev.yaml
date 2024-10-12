@@ -7,7 +7,7 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
     properties:
@@ -15,7 +15,7 @@ spring:
         format_sql: true
         jdbc:
           time_zone: Asia/Seoul
-    open-in-view: true
+    open-in-view: false
   security:
     oauth2:
       client:

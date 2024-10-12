@@ -23,7 +23,6 @@ import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -71,34 +70,30 @@ public class CreateWaitingImpl implements CreateWaiting {
     }
 
     private void checkWaitingLimit(User user) {
-        if (waitingRepository.findAllByTelAndWaitingStatusOrWaitingStatus(
-                user.getUserTel(), Status.WAITING, Status.AVAILABLE).size() >= WAITING_MAX_COUNT) {
+        if (waitingRepository.countByTelAndWaitingStatuses(
+                user.getUserTel(), Status.WAITING, Status.AVAILABLE) >= WAITING_MAX_COUNT) {
             throw new UserWaitingLimitExcessException();
         }
     }
 
     private void checkDuplicatePubWaiting(Pub pub, User user) {
-        waitingRepository
-                .findByTelAndPubAndWaitingStatusOrWaitingStatus(
-                        user.getUserTel(), pub, Status.WAITING, Status.AVAILABLE)
-                .ifPresent(waiting -> {
-                    throw new WaitingAlreadyExistsException();
-                });
+        boolean duplicatePubWaitingExists = waitingRepository
+                .existsByTelAndPubAndWaitingStatusOrWaitingStatus(
+                        user.getUserTel(), pub, Status.WAITING, Status.AVAILABLE);
+
+        if (duplicatePubWaitingExists) {
+            throw new WaitingAlreadyExistsException();
+        }
     }
 
     private HashMap<String, String> createVariables(String username, Pub pub, Waiting waiting, String tableType) {
-
-        List<Waiting> waitings = waitingRepository
-                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
-        String order = String.valueOf(waitings.size());
-        String callNumber = waiting.getTel().substring(9);
+        String order = String.valueOf(pub.getWaitingCount());
 
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{username}", username);
         variables.put("#{pub}", pub.getPubName());
         variables.put("#{headCount}", tableType);
         variables.put("#{order}", order);
-        variables.put("#{callNumber}", callNumber);
         variables.put("#{waitingId}", String.valueOf(waiting.getWaitingId()));
 
         return variables;

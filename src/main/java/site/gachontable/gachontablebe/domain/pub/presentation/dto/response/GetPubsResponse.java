@@ -11,17 +11,15 @@ public record GetPubsResponse(
         List<String> thumbnails,
         String pubName,
         String oneLiner,
-        Integer waitingCount,
-        Boolean openStatus) {
+        Integer waitingCount) {
 
-    public static GetPubsResponse of(Pub pub) {
+    public static GetPubsResponse from(Pub pub, List<String> thumbnails) {
 
         return new GetPubsResponse(
                 pub.getPubId(),
-                pub.getThumbnails(),
+                thumbnails,
                 pub.getPubName(),
                 pub.getOneLiner(),
-                pub.getWaitingCount(),
-                pub.getOpenStatus());
+                pub.getWaitingCount());
     }
 }

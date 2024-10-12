@@ -6,6 +6,7 @@ import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.menu.domain.repository.MenuRepository;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
+import site.gachontable.gachontablebe.domain.pub.domain.repository.ThumbnailRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.request.PubRegisterRequest;
 import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubDetailsResponse;
@@ -22,18 +23,27 @@ public class PubService {
 
     private final PubRepository pubRepository;
     private final MenuRepository menuRepository;
+    private final ThumbnailRepository thumbnailRepository;
 
     public List<GetPubsResponse> findAllPubs() {
-        List<Pub> pubList = pubRepository.findAll();
+        List<Pub> pubs = pubRepository.findAll();
 
-        return pubList.stream().map(GetPubsResponse::of).toList();
+        return pubs.stream()
+                .map(pub -> {
+                    List<String> thumbnails = thumbnailRepository.findUrlsByPub(pub);
+                    return GetPubsResponse.from(pub, thumbnails);
+                })
+                .toList();
     }
 
     public GetPubDetailsResponse findPubDetail(Integer pubId) {
-        Pub pub = pubRepository.findById(pubId).orElseThrow(PubNotFoundException::new);
-        List<Menu> menu = menuRepository.findAllByPub(pub);
+        Pub pub = pubRepository.findById(pubId)
+                .orElseThrow(PubNotFoundException::new);
 
-        return GetPubDetailsResponse.of(pub, menu);
+        List<String> thumbnails = thumbnailRepository.findUrlsByPub(pub);
+        List<Menu> menus = menuRepository.findAllByPub(pub);
+
+        return GetPubDetailsResponse.of(pub, thumbnails, menus);
     }
 
     public RegisterResponse register(PubRegisterRequest request) {

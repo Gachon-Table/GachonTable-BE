@@ -9,13 +9,15 @@ import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.menu.domain.repository.MenuRepository;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
+import site.gachontable.gachontablebe.domain.pub.domain.Thumbnail;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.PubManageRequest;
+import site.gachontable.gachontablebe.domain.pub.domain.repository.ThumbnailRepository;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class ManagePubImpl implements ManagePub {
 
     private final AdminRepository adminRepository;
     private final MenuRepository menuRepository;
-    private final PubRepository pubRepository;
+    private final ThumbnailRepository thumbnailRepository;
 
     @Override
     @Transactional
@@ -32,12 +34,28 @@ public class ManagePubImpl implements ManagePub {
                 .orElseThrow(AdminNotFoundException::new)
                 .getPub();
 
+        manageThumbnails(request.thumbnails(), pub);
         manageMenus(request, pub);
 
-        pub.updateThumbnails(request.thumbnails());
-        pubRepository.save(pub);
-
         return SuccessCode.MANAGE_PUB_SUCCESS.getMessage();
+    }
+
+    private void manageThumbnails(List<String> thumbnails, Pub pub) {
+        List<Thumbnail> existingThumbnails = thumbnailRepository.findAllByPub(pub);
+
+        IntStream.range(0, thumbnails.size()).forEach(i -> {
+            String url = thumbnails.get(i);
+
+            if (i < existingThumbnails.size()) {
+                Thumbnail existingThumbnail = existingThumbnails.get(i);
+                if (!existingThumbnail.getUrl().equals(url)) {
+                    existingThumbnail.update(url);
+                }
+
+                return;
+            }
+            thumbnailRepository.save(Thumbnail.create(url, pub));
+        });
     }
 
     private void manageMenus(PubManageRequest request, Pub pub) {

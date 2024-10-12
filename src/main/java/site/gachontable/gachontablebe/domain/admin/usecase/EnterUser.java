@@ -70,10 +70,11 @@ public class EnterUser {
     }
 
     private void checkSeatingExists(Pub pub, Integer seatingNum) {
-        seatingRepository
-                .findFirstByPubAndSeatingNumAndExitTimeAfter(pub, seatingNum, LocalDateTime.now())
-                .ifPresent(seating -> {
-                    throw new SeatingNumAlreadyExistsException();
-                });
+        boolean seatingExists = seatingRepository
+                .existsByPubAndSeatingNumAndExitTimeAfter(pub, seatingNum, LocalDateTime.now());
+
+        if (seatingExists) {
+            throw new SeatingNumAlreadyExistsException();
+        }
     }
 }

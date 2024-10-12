@@ -2,6 +2,7 @@ package site.gachontable.gachontablebe.domain.waiting.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.user.domain.User;
@@ -22,29 +23,29 @@ public class GetStatusImpl implements GetStatus {
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<StatusResponse> execute(AuthDetails authDetails) {
         User user = userRepository.findById(authDetails.getUuid()).orElseThrow(UserNotFoundException::new);
 
         return getPubsFromWaitings(user).stream()
                 .flatMap(pub -> {
-                    List<Waiting> waitings = waitingRepository.findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
+                    List<Waiting> waitings = waitingRepository
+                            .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(
+                                    pub, Status.WAITING, Status.AVAILABLE);
 
                     return getStatusResponse(user, pub, waitings);
                 })
                 .toList();
     }
 
-    private static Stream<StatusResponse> getStatusResponse(User user, Pub pub, List<Waiting> waitings) {
+    private Stream<StatusResponse> getStatusResponse(User user, Pub pub, List<Waiting> waitings) {
         return waitings.stream()
                 .filter(waiting -> waiting.matchesUser(user))
                 .map(waiting -> StatusResponse.of(waiting, pub, waitings.indexOf(waiting) + 1));
     }
 
     private List<Pub> getPubsFromWaitings(User user) {
-        return waitingRepository.findAllByTel(user.getUserTel()).stream()
-                .map(Waiting::getPub)
-                .distinct()
-                .toList();
+        return waitingRepository.findDistinctPubsByTel(user.getUserTel());
     }
 }
