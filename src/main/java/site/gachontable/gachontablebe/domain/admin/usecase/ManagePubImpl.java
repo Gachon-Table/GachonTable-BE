@@ -49,11 +49,11 @@ public class ManagePubImpl implements ManagePub {
         thumbnailRepository.saveAll(newThumbnails);
     }
 
-    private void manageMenus(PubManageRequest request, Pub pub) {
+    private void replaceMenus(List<PubManageRequest.MenuRequest> request, Pub pub) {
         Map<Integer, Menu> existingMenus = menuRepository.findAllByPub(pub).stream()
                 .collect(Collectors.toMap(Menu::getMenuId, menu -> menu));
 
-        List<Menu> updatedMenus = request.menuRequests().stream()
+        List<Menu> updatedMenus = request.stream()
                 .map(menuRequest -> {
                     Menu menu = existingMenus.get(menuRequest.menuId());
                     if (menu != null) {
@@ -62,6 +62,7 @@ public class ManagePubImpl implements ManagePub {
                                 menuRequest.price(),
                                 menuRequest.oneLiner(),
                                 menuRequest.thumbnail());
+                        existingMenus.remove(menuRequest.menuId());
                         return menu;
                     }
                     return Menu.create(
@@ -73,5 +74,6 @@ public class ManagePubImpl implements ManagePub {
                 }).toList();
 
         menuRepository.saveAll(updatedMenus);
+        menuRepository.deleteAll(existingMenus.values());
     }
 }
