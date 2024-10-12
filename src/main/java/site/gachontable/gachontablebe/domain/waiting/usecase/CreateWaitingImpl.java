@@ -88,14 +88,12 @@ public class CreateWaitingImpl implements CreateWaiting {
 
     private HashMap<String, String> createVariables(String username, Pub pub, Waiting waiting, String tableType) {
         String order = String.valueOf(pub.getWaitingCount());
-        String callNumber = waiting.getTel().substring(9);
 
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{username}", username);
         variables.put("#{pub}", pub.getPubName());
         variables.put("#{headCount}", tableType);
         variables.put("#{order}", order);
-        variables.put("#{callNumber}", callNumber);
         variables.put("#{waitingId}", String.valueOf(waiting.getWaitingId()));
 
         return variables;
