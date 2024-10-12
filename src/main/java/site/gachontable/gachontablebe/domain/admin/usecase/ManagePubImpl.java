@@ -17,7 +17,6 @@ import site.gachontable.gachontablebe.global.success.SuccessCode;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -34,28 +33,20 @@ public class ManagePubImpl implements ManagePub {
                 .orElseThrow(AdminNotFoundException::new)
                 .getPub();
 
-        manageThumbnails(request.thumbnails(), pub);
-        manageMenus(request, pub);
+        replaceThumbnails(request.thumbnails(), pub);
+        replaceMenus(request.menuRequests(), pub);
 
         return SuccessCode.MANAGE_PUB_SUCCESS.getMessage();
     }
 
-    private void manageThumbnails(List<String> thumbnails, Pub pub) {
-        List<Thumbnail> existingThumbnails = thumbnailRepository.findAllByPub(pub);
+    private void replaceThumbnails(List<String> thumbnails, Pub pub) {
+        thumbnailRepository.deleteAllByPub(pub);
 
-        IntStream.range(0, thumbnails.size()).forEach(i -> {
-            String url = thumbnails.get(i);
+        List<Thumbnail> newThumbnails = thumbnails.stream()
+                .map(url -> Thumbnail.create(url, pub))
+                .toList();
 
-            if (i < existingThumbnails.size()) {
-                Thumbnail existingThumbnail = existingThumbnails.get(i);
-                if (!existingThumbnail.getUrl().equals(url)) {
-                    existingThumbnail.update(url);
-                }
-
-                return;
-            }
-            thumbnailRepository.save(Thumbnail.create(url, pub));
-        });
+        thumbnailRepository.saveAll(newThumbnails);
     }
 
     private void manageMenus(PubManageRequest request, Pub pub) {
