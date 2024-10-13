@@ -12,5 +12,5 @@ public interface ThumbnailRepository extends JpaRepository<Thumbnail, Long> {
     @Query("SELECT t.url FROM thumbnail t WHERE t.pub = :pub")
     List<String> findUrlsByPub(Pub pub);
 
-    List<Thumbnail> findAllByPub(Pub pub);
+    void deleteAllByPub(Pub pub);
 }
