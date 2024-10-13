@@ -2,6 +2,7 @@ package site.gachontable.gachontablebe.domain.waiting.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
@@ -18,6 +19,7 @@ public class GetStatusByBiztalkImpl implements GetStatusByBiztalk {
 
     private final WaitingRepository waitingRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public StatusResponse execute(UUID waitingId) {
         Waiting waiting = waitingRepository.findById(waitingId)

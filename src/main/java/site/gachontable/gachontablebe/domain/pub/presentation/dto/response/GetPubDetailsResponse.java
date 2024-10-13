@@ -9,11 +9,11 @@ public record GetPubDetailsResponse(
         PubInfo pub,
         List<MenuInfo> menu) {
 
-    public static GetPubDetailsResponse of(Pub pub, List<Menu> menuList) {
+    public static GetPubDetailsResponse of(Pub pub, List<String> thumbnails, List<Menu> menus) {
 
         return new GetPubDetailsResponse(
-                PubInfo.from(pub),
-                menuList.stream()
+                PubInfo.of(pub, thumbnails),
+                menus.stream()
                         .map(MenuInfo::from)
                         .toList());
     }
@@ -29,11 +29,11 @@ public record GetPubDetailsResponse(
             Boolean openStatus,
             Boolean waitingStatus) {
 
-        public static PubInfo from(Pub pub) {
+        public static PubInfo of(Pub pub, List<String> thumbnails) {
 
             return new PubInfo(
                     pub.getPubId(),
-                    pub.getThumbnails(),
+                    thumbnails,
                     pub.getPubName(),
                     pub.getOneLiner(),
                     pub.getInstagramUrl(),

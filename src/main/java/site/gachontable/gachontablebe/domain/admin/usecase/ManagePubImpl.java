@@ -9,8 +9,9 @@ import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.menu.domain.repository.MenuRepository;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
+import site.gachontable.gachontablebe.domain.pub.domain.Thumbnail;
 import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.PubManageRequest;
+import site.gachontable.gachontablebe.domain.pub.domain.repository.ThumbnailRepository;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class ManagePubImpl implements ManagePub {
 
     private final AdminRepository adminRepository;
     private final MenuRepository menuRepository;
-    private final PubRepository pubRepository;
+    private final ThumbnailRepository thumbnailRepository;
 
     @Override
     @Transactional
@@ -32,19 +33,27 @@ public class ManagePubImpl implements ManagePub {
                 .orElseThrow(AdminNotFoundException::new)
                 .getPub();
 
-        List<Menu> menus = manageMenus(request, pub);
-
-        pub.updatePubInfo(request.thumbnails(), menus);
-        pubRepository.save(pub);
+        replaceThumbnails(request.thumbnails(), pub);
+        replaceMenus(request.menuRequests(), pub);
 
         return SuccessCode.MANAGE_PUB_SUCCESS.getMessage();
     }
 
-    private List<Menu> manageMenus(PubManageRequest request, Pub pub) {
+    private void replaceThumbnails(List<String> thumbnails, Pub pub) {
+        thumbnailRepository.deleteAllByPub(pub);
+
+        List<Thumbnail> newThumbnails = thumbnails.stream()
+                .map(url -> Thumbnail.create(url, pub))
+                .toList();
+
+        thumbnailRepository.saveAll(newThumbnails);
+    }
+
+    private void replaceMenus(List<PubManageRequest.MenuRequest> request, Pub pub) {
         Map<Integer, Menu> existingMenus = menuRepository.findAllByPub(pub).stream()
                 .collect(Collectors.toMap(Menu::getMenuId, menu -> menu));
 
-        List<Menu> updatedMenus = request.menuRequests().stream()
+        List<Menu> updatedMenus = request.stream()
                 .map(menuRequest -> {
                     Menu menu = existingMenus.get(menuRequest.menuId());
                     if (menu != null) {
@@ -53,6 +62,7 @@ public class ManagePubImpl implements ManagePub {
                                 menuRequest.price(),
                                 menuRequest.oneLiner(),
                                 menuRequest.thumbnail());
+                        existingMenus.remove(menuRequest.menuId());
                         return menu;
                     }
                     return Menu.create(
@@ -63,6 +73,7 @@ public class ManagePubImpl implements ManagePub {
                             menuRequest.thumbnail());
                 }).toList();
 
-        return menuRepository.saveAll(updatedMenus);
+        menuRepository.saveAll(updatedMenus);
+        menuRepository.deleteAll(existingMenus.values());
     }
 }

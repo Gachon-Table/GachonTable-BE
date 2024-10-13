@@ -2,13 +2,9 @@ package site.gachontable.gachontablebe.domain.pub.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.pub.exception.EmptyWaitingCountException;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotOpenException;
 import site.gachontable.gachontablebe.domain.waiting.exception.PubClosedForWaitingException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity(name = "pub")
 @Getter
@@ -19,14 +15,6 @@ public class Pub {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pubId;
-
-    @OneToMany
-    @Column(nullable = false)
-    private List<Menu> menus = new ArrayList<>();
-
-    @ElementCollection
-    @Column(nullable = false)
-    private List<String> thumbnails = new ArrayList<>();
 
     @Column(nullable = false)
     private String pubName;
@@ -57,8 +45,6 @@ public class Pub {
                              String instagramUrl,
                              Integer hours,
                              String menuUrl,
-                             List<String> thumbnails,
-                             List<Menu> menus,
                              Boolean openStatus,
                              Boolean waitingStatus,
                              Integer waitingCount) {
@@ -68,8 +54,6 @@ public class Pub {
                 .instagramUrl(instagramUrl)
                 .hours(hours)
                 .menuUrl(menuUrl)
-                .thumbnails(thumbnails)
-                .menus(menus)
                 .openStatus(openStatus)
                 .waitingStatus(waitingStatus)
                 .waitingCount(waitingCount)
@@ -77,13 +61,11 @@ public class Pub {
     }
 
     @Builder
-    public Pub(String pubName,
+    private Pub(String pubName,
                String oneLiner,
                String instagramUrl,
                Integer hours,
                String menuUrl,
-               List<String> thumbnails,
-               List<Menu> menus,
                Boolean openStatus,
                Boolean waitingStatus,
                Integer waitingCount) {
@@ -92,8 +74,6 @@ public class Pub {
         this.instagramUrl = instagramUrl;
         this.hours = hours;
         this.menuUrl = menuUrl;
-        this.thumbnails = thumbnails;
-        this.menus = menus;
         this.openStatus = openStatus;
         this.waitingStatus = waitingStatus;
         this.waitingCount = waitingCount;
@@ -119,11 +99,6 @@ public class Pub {
         if (waitingCount < 1) {
             throw new EmptyWaitingCountException();
         }
-    }
-
-    public void updatePubInfo(List<String> thumbnails, List<Menu> menus) {
-        this.thumbnails = thumbnails;
-        this.menus = menus;
     }
 
     public void updateOpenStatus(Boolean openStatus) {
