@@ -40,7 +40,7 @@ spring:
     redis:
       host: 127.0.0.1
       port: 6379
-      database: 15
+      database: 0
       password: ENC(XqNvLZRYgL+pvlpsHhchME0hUXfIs0bExSjhYiasoQs=)
 
 jwt:
@@ -83,3 +83,12 @@ management:
     metrics:
       export:
         enabled: true
+springdoc:
+  swagger-ui:
+    display-request-duration: true
+    enabled: true
+
+logging:
+  level:
+    org.redisson: INFO
+    org.springframework.cache: INFO

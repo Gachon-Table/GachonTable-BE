@@ -38,9 +38,9 @@ spring:
               - phone_number
   data:
     redis:
-      host: ENC(dPw3pRsyq4YPqQ8qIYU0Gdb/glUKo4OS)
+      host: ENC(ZUk25H7/zynZ8ZAzg/GWlmJLx3F4FHL3AHGTaZiZQ44uHpgmQLmskeghTg0PSrlUFlWmZqksdRhVqbTF0e5IO4ZD6z7n3xOL)
       port: 6379
-      database: 15
+      database: 0
       password: ENC(XqNvLZRYgL+pvlpsHhchME0hUXfIs0bExSjhYiasoQs=)
 
 jwt:
@@ -83,3 +83,12 @@ management:
     metrics:
       export:
         enabled: true
+springdoc:
+  swagger-ui:
+    display-request-duration: true
+    enabled: true
+
+logging:
+  level:
+    org.redisson: INFO
+    org.springframework.cache: INFO
