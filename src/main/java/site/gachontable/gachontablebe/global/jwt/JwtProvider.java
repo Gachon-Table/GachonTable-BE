@@ -114,4 +114,16 @@ public class JwtProvider {
             throw new UnsupportedTokenException();
         }
     }
+
+    public boolean isValidToken(String token) {
+        try {
+            validateToken(token);
+            return true;
+        } catch (InvalidTokenException |
+                 ExpiredTokenException |
+                 MalformedTokenException |
+                 UnsupportedTokenException e) {
+            return false;
+        }
+    }
 }
