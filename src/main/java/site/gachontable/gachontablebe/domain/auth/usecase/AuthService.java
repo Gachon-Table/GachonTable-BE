@@ -101,7 +101,7 @@ public class AuthService {
 
     private String generateRefreshToken(User user) {
         String refreshToken = user.getRefreshToken();
-        if (refreshToken == null || !jwtProvider.isValidToken(refreshToken)) {
+        if (refreshToken == null || jwtProvider.isInvalidToken(refreshToken)) {
             refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUserTel(), Role.ROLE_USER);
             updateRefreshToken(user, refreshToken);
         }

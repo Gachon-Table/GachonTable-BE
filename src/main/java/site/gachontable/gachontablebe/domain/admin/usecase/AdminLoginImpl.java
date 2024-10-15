@@ -39,7 +39,7 @@ public class AdminLoginImpl implements AdminLogin {
 
     private String generateRefreshToken(Admin admin) {
         String refreshToken = admin.getRefreshToken();
-        if (refreshToken == null || !jwtProvider.isValidToken(refreshToken)) {
+        if (refreshToken == null || jwtProvider.isInvalidToken(refreshToken)) {
             refreshToken = jwtProvider.generateRefreshToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
             updateAdminRefreshToken(admin, refreshToken);
         }
