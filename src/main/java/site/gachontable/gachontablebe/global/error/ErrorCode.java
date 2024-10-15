@@ -10,6 +10,8 @@ public enum ErrorCode {
     INVALID_KEY(401, "INVALID_KEY", "유효하지 않은 키입니다."),
     INVALID_TOKEN(401, "INVALID_TOKEN", "유효하지 않은 토큰입니다."),
     EXPIRED_TOKEN(401, "EXPIRED_TOKEN", "만료된 토큰입니다."),
+    MALFORMED_TOKEN(401, "MALFORMED_TOKEN", "위/변조된 토큰입니다."),
+    UNSUPPORTED_TOKEN(401, "UNSUPPORTED_TOKEN", "지원하지 않는 토큰입니다."),
     EMPTY_AUTHENTICATION(401, "EMPTY_AUTHENTICATION", "인증정보가 존재하지 않습니다."),
     ROLE_FORBIDDEN(403, "ROLE_FORBIDDEN", "액세스할 수 있는 권한이 아닙니다."),
     PASSWORD_NOT_MATCH(403, "PASSWORD_NOT_MATCH", "비밀번호가 일치하지 않습니다."),
