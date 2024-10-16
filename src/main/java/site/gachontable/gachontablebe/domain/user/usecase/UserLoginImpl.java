@@ -24,7 +24,7 @@ public class UserLoginImpl implements UserLogin{
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         validatePassword(password, user);
 
-        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
+        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUserTel(), Role.ROLE_USER);
         String refreshToken = generateRefreshToken(user);
 
         return new JwtResponse(accessToken, refreshToken);
