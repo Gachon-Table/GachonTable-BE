@@ -87,12 +87,15 @@ public class Pub {
     private void checkMaxWaitingCount() {
         if (this.waitingCount >= MAX_WAITING_COUNT) {
             this.waitingStatus = false;
+            return;
         }
+        this.waitingStatus = true;
     }
 
     public void decreaseWaitingCount() {
         validateWaitingCount();
         this.waitingCount -= 1;
+        checkMaxWaitingCount();
     }
 
     private void validateWaitingCount() {

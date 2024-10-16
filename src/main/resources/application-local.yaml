@@ -40,8 +40,8 @@ spring:
     redis:
       host: 127.0.0.1
       port: 6379
-      database: 15
-      password: ENC(XqNvLZRYgL+pvlpsHhchME0hUXfIs0bExSjhYiasoQs=)
+      database: 0
+      password: ENC(DURHuRsSmaDEKcx7C9kllvKrNnthDcNZNcPCI7l+0bk=)
 
 jwt:
   secret_key: ENC(CJzB4FyuHQrRdJ9V+3J0GhZbhxevmxah4rJItf5dM0GJj6Rmq2AsaVHFfSuSBPNmOsckPdYUjSxhheiOR3kJGm1i2+zpO4JdiN8GAv6i1zc=)
@@ -55,8 +55,8 @@ biztalk:
     call: ENC(CGOu3LjBj919zkRKkEf86epBCWUZ3TJJhVXnl7QfKnyRiUJA1/5CfUiWyJcjTOjt)
     cancel: ENC(LQRVbWO+DLV2jWam066LfZ+SynyQeSGmGNS4pfcLP4vqSFpLaFYT3otPohV8pUAm)
     forceCancel: ENC(yEIJoeLcbFwRqdPjOy0W5+4uwSIHUhbHDpWG98jOorBqc98td/mVpoD88ELUNwab)
-    ready: ENC(zybEFNnDo6FVcQA+LEtmuQOEf29IzPpZIvg05785hZ6GAr9u5qbuNk4ROd2lsMvj)
-    waiting: ENC(WF8cdPQOkFbebfrWuDfjl3ncRr0CoBve4Xg+zPu2A/MwH6Gh1zfyPQ+0fQrn6AVm)
+    ready: ENC(FquVHugagxaoGrTmagapeIFhF/g/0ZKDBCB76kBBV29d/iXqxH9RFMuqkLRW+wuW)
+    waiting: ENC(Wxlr4G0k37PAuVwMNnoTQm8rCgVMjLmHb5ifQJf8sKLQOT3KzlIUUf4DYjlh8P1e)
 
 management:
   server:
@@ -83,3 +83,12 @@ management:
     metrics:
       export:
         enabled: true
+springdoc:
+  swagger-ui:
+    display-request-duration: true
+    enabled: true
+
+logging:
+  level:
+    org.redisson: INFO
+    org.springframework.cache: INFO

@@ -10,14 +10,12 @@ import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.Adm
 import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.domain.shared.exception.PasswordNotMatchException;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
-import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
-import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
 
 @Service
 @RequiredArgsConstructor
 public class AdminLoginImpl implements AdminLogin {
 
-    private final JwtProvider tokenProvider;
+    private final JwtProvider jwtProvider;
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -26,7 +24,7 @@ public class AdminLoginImpl implements AdminLogin {
         Admin admin = adminRepository.findByUsername(username).orElseThrow(AdminNotFoundException::new);
         validatePassword(password, admin);
 
-        String accessToken = tokenProvider.generateAccessToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
+        String accessToken = jwtProvider.generateAccessToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
         String refreshToken = generateRefreshToken(admin);
         Integer pubId = admin.getPub().getPubId();
 
@@ -41,20 +39,11 @@ public class AdminLoginImpl implements AdminLogin {
 
     private String generateRefreshToken(Admin admin) {
         String refreshToken = admin.getRefreshToken();
-        if (refreshToken == null || !isValidToken(refreshToken)) {
-            refreshToken = tokenProvider.generateRefreshToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
+        if (refreshToken == null || jwtProvider.isInvalidToken(refreshToken)) {
+            refreshToken = jwtProvider.generateRefreshToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
             updateAdminRefreshToken(admin, refreshToken);
         }
         return refreshToken;
-    }
-
-    private boolean isValidToken(String token) {
-        try {
-            tokenProvider.validateToken(token);
-            return true;
-        } catch (InvalidTokenException | ExpiredTokenException e) {
-            return false;
-        }
     }
 
     private void updateAdminRefreshToken(Admin admin, String refreshToken) {

@@ -6,6 +6,7 @@ import net.minidev.json.JSONObject;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -30,7 +31,8 @@ public class AopForLogging {
     private void publicMethodsFromService() {
     }
 
-    @Pointcut("execution(public * site.gachontable.gachontablebe.domain..presentation.*Controller.*(..))")
+    @Pointcut("execution(public * site.gachontable.gachontablebe.domain..presentation.*Controller.*(..)) && " +
+            "!execution(* site.gachontable.gachontablebe.domain.auth.presentation.*Controller.checkHealthStatus(..))")
     private void publicMethodsFromController() {
     }
 
@@ -98,6 +100,10 @@ public class AopForLogging {
     public void logAfterController(JoinPoint joinPoint, Object result) {
         String methodName = joinPoint.getSignature().getDeclaringType().getSimpleName();
 
+        if (result instanceof ResponseEntity<?> response) {
+            log.info("✅End: {}() - {}", methodName, response.getStatusCode());
+            return;
+        }
         log.info("✅End: {}() - {}", methodName, result);
     }
 

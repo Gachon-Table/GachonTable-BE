@@ -9,8 +9,6 @@ import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterRespons
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
-import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
-import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
 
 @Service
 @RequiredArgsConstructor
@@ -35,21 +33,9 @@ public class UserRegisterImpl implements UserRegister {
     }
 
     public void generateRefreshToken(User user) {
-        String refreshToken = user.getRefreshToken();
-
-        if (refreshToken == null || !isValidToken(refreshToken)) {
-            refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
-            updateUserRefreshToken(user, refreshToken);
-        }
-    }
-
-    public Boolean isValidToken(String token) {
-        try {
-            jwtProvider.validateToken(token);
-            return true;
-        } catch (InvalidTokenException | ExpiredTokenException e) {
-            return false;
-        }
+        String refreshToken =
+                jwtProvider.generateRefreshToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
+        updateUserRefreshToken(user, refreshToken);
     }
 
     private void updateUserRefreshToken(User user, String refreshToken) {

@@ -22,7 +22,7 @@ public class RedissonConfig {
     @Value("${spring.data.redis.password}")
     private String redisPassword;
 
-    private static final String REDISSON_HOST_PREFIX = "redis://";
+    private static final String REDISSON_HOST_PREFIX = "rediss://";
 
     @Bean
     public RedissonClient redissonClient() {
