@@ -13,6 +13,7 @@ import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRe
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.StatusResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -31,8 +32,8 @@ public class GetStatusImpl implements GetStatus {
         return getPubsFromWaitings(user).stream()
                 .flatMap(pub -> {
                     List<Waiting> waitings = waitingRepository
-                            .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(
-                                    pub, Status.WAITING, Status.AVAILABLE);
+                            .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
+                                    pub, Arrays.asList(Status.WAITING, Status.AVAILABLE));
 
                     return getStatusResponse(user, pub, waitings);
                 })

@@ -9,6 +9,7 @@ import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRe
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import site.gachontable.gachontablebe.global.biztalk.SendBiztalk;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +25,8 @@ public class ReadyUser {
 
     public void execute(Pub pub) {
         List<Waiting> waitings = waitingRepository
-                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
+                .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
+                        pub, Arrays.asList(Status.WAITING, Status.AVAILABLE));
 
         if (waitings.size() < 3) {
             return;

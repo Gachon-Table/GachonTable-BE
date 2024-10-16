@@ -16,6 +16,7 @@ import site.gachontable.gachontablebe.global.biztalk.SendBiztalk;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,7 +56,8 @@ public class CancelWaitingImpl implements CancelWaiting {
 
     private List<Waiting> getLimitedWaitings(Pub pub) {
         return waitingRepository
-                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE)
+                .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
+                        pub, Arrays.asList(Status.WAITING, Status.AVAILABLE))
                 .stream()
                 .limit(3)
                 .toList();

@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.seating.domain.respository.SeatingRepository;
 import site.gachontable.gachontablebe.domain.seating.exception.SeatingNotFoundException;
-import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
@@ -15,6 +14,7 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.W
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -27,11 +27,12 @@ public class GetWaitingHistory {
 
     @Transactional(readOnly = true)
     public List<WaitingHistoryResponse> execute(AuthDetails authDetails) {
-        User user = userRepository.findById(authDetails.getUuid())
-                .orElseThrow(UserNotFoundException::new);
+        String tel = userRepository.findById(authDetails.getUuid())
+                .orElseThrow(UserNotFoundException::new)
+                .getUserTel();
 
-        List<Waiting> waitings = waitingRepository
-                .findAllByUserAndWaitingStatusOrWaitingStatus(user, Status.ENTERED, Status.CANCELED);
+        List<Waiting> waitings = waitingRepository.findAllByTelAndWaitingStatusInOrderByCreatedAtDesc(
+                tel, Arrays.asList(Status.ENTERED, Status.CANCELED));
 
         return waitings.stream()
                 .map(waiting -> {

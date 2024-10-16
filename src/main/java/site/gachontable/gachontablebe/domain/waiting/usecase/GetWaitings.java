@@ -12,6 +12,7 @@ import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -28,8 +29,8 @@ public class GetWaitings {
                 .getPub();
 
         List<Waiting> waitings = waitingRepository
-                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(
-                        pub, Status.WAITING, Status.AVAILABLE);
+                .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
+                        pub, Arrays.asList(Status.WAITING, Status.AVAILABLE));
 
         return new WaitingInfosResponse(
                 waitings.size(),
