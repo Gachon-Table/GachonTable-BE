@@ -116,9 +116,14 @@ public class JwtProvider {
     }
 
     public boolean isInvalidToken(String token) {
-        if (validateToken(token) == null) {
+        try {
+            validateToken(token);
+            return false;
+        } catch (InvalidTokenException |
+                 ExpiredTokenException |
+                 MalformedTokenException |
+                 UnsupportedTokenException e) {
             return true;
         }
-        return false;
     }
 }
