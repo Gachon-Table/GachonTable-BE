@@ -10,6 +10,7 @@ import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundEx
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.StatusResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +39,8 @@ public class GetStatusByBiztalkImpl implements GetStatusByBiztalk {
         }
 
         List<Waiting> waitings = waitingRepository
-                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE);
+                .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
+                        pub, Arrays.asList(Status.WAITING, Status.AVAILABLE));
 
         return waitings.indexOf(waiting) + 1;
     }

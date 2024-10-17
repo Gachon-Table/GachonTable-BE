@@ -21,7 +21,7 @@ public class RedissonCacheConfig {
     public CacheManager thumbnailsCacheManager(RedissonClient redissonClient) {
         Map<String, CacheConfig> config = new HashMap<>();
 
-        config.put("thumbnailsCache", new CacheConfig(24 * 60 * 1000, 24 * 60 * 1000));
+        config.put("thumbnailsCache", new CacheConfig(5 * 60 * 60 * 1000, 2 * 60 * 60 * 1000));
         return new RedissonSpringCacheManager(redissonClient, config);
     }
 
@@ -29,7 +29,7 @@ public class RedissonCacheConfig {
     public CacheManager menuCacheManager(RedissonClient redissonClient) {
         Map<String, CacheConfig> config = new HashMap<>();
 
-        config.put("menuCache", new CacheConfig(24 * 60 * 1000, 24 * 60 * 1000));
+        config.put("menuCache", new CacheConfig(5 * 60 * 60 * 1000, 2 * 60 * 60 * 1000));
         return new RedissonSpringCacheManager(redissonClient, config);
     }
 }

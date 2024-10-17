@@ -22,6 +22,7 @@ import site.gachontable.gachontablebe.global.biztalk.SendBiztalk;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 @Service
@@ -78,8 +79,8 @@ public class CreateWaitingImpl implements CreateWaiting {
 
     private void checkDuplicatePubWaiting(Pub pub, User user) {
         boolean duplicatePubWaitingExists = waitingRepository
-                .existsByTelAndPubAndWaitingStatusOrWaitingStatus(
-                        user.getUserTel(), pub, Status.WAITING, Status.AVAILABLE);
+                .existsByTelAndPubAndWaitingStatusIn(
+                        user.getUserTel(), pub, Arrays.asList(Status.WAITING, Status.AVAILABLE));
 
         if (duplicatePubWaitingExists) {
             throw new WaitingAlreadyExistsException();

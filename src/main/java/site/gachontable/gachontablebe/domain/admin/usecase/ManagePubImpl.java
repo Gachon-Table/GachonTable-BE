@@ -1,6 +1,8 @@
 package site.gachontable.gachontablebe.domain.admin.usecase;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
@@ -15,8 +17,6 @@ import site.gachontable.gachontablebe.domain.pub.domain.repository.ThumbnailRepo
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +26,14 @@ public class ManagePubImpl implements ManagePub {
     private final MenuRepository menuRepository;
     private final ThumbnailRepository thumbnailRepository;
 
-    @Override
+    @Caching(
+            evict = {
+                    @CacheEvict(value = "menuCache", cacheManager = "menuCacheManager", allEntries = true),
+                    @CacheEvict(value = "thumbnailsCache", cacheManager = "thumbnailsCacheManager", allEntries = true)
+            }
+    )
     @Transactional
+    @Override
     public String execute(AuthDetails authDetails, PubManageRequest request) {
         Pub pub = adminRepository.findById(authDetails.getUuid())
                 .orElseThrow(AdminNotFoundException::new)
@@ -50,30 +56,17 @@ public class ManagePubImpl implements ManagePub {
     }
 
     private void replaceMenus(List<PubManageRequest.MenuRequest> request, Pub pub) {
-        Map<Integer, Menu> existingMenus = menuRepository.findAllByPub(pub).stream()
-                .collect(Collectors.toMap(Menu::getMenuId, menu -> menu));
+        menuRepository.deleteAllByPub(pub);
 
         List<Menu> updatedMenus = request.stream()
-                .map(menuRequest -> {
-                    Menu menu = existingMenus.get(menuRequest.menuId());
-                    if (menu != null) {
-                        menu.update(
-                                menuRequest.menuName(),
-                                menuRequest.price(),
-                                menuRequest.oneLiner(),
-                                menuRequest.thumbnail());
-                        existingMenus.remove(menuRequest.menuId());
-                        return menu;
-                    }
-                    return Menu.create(
-                            pub,
-                            menuRequest.menuName(),
-                            menuRequest.price(),
-                            menuRequest.oneLiner(),
-                            menuRequest.thumbnail());
-                }).toList();
+                .map(menuRequest -> Menu.create(
+                        pub,
+                        menuRequest.menuName(),
+                        menuRequest.price(),
+                        menuRequest.oneLiner(),
+                        menuRequest.thumbnail()))
+                .toList();
 
         menuRepository.saveAll(updatedMenus);
-        menuRepository.deleteAll(existingMenus.values());
     }
 }

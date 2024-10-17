@@ -16,6 +16,7 @@ import site.gachontable.gachontablebe.global.biztalk.SendBiztalk;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,7 +38,6 @@ public class CancelWaitingImpl implements CancelWaiting {
                 orElseThrow(WaitingNotFoundException::new);
 
         Pub pub = waiting.getPub();
-        List<Waiting> limitedWaitings = getLimitedWaitings(pub);
 
         waiting.cancel();
         waiting.getPub().decreaseWaitingCount();
@@ -46,22 +46,20 @@ public class CancelWaitingImpl implements CancelWaiting {
         variables.put("#{pub}", pub.getPubName());
         sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), variables);
 
-        if (isWaitingContains(waiting, limitedWaitings)) {
+        if (isWaitingIn(waiting, getTop3Waitings(pub))) {
             readyUser.execute(pub);
         }
 
         return new WaitingResponse(true, SuccessCode.WAITING_CANCEL_SUCCESS.getMessage());
     }
 
-    private List<Waiting> getLimitedWaitings(Pub pub) {
+    private List<Waiting> getTop3Waitings(Pub pub) {
         return waitingRepository
-                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE)
-                .stream()
-                .limit(3)
-                .toList();
+                .findTop3ByPubAndWaitingStatusInOrderByCreatedAtAsc(
+                        pub, Arrays.asList(Status.WAITING, Status.AVAILABLE));
     }
 
-    private boolean isWaitingContains(Waiting waiting, List<Waiting> limitedWaitings) {
+    private boolean isWaitingIn(Waiting waiting, List<Waiting> limitedWaitings) {
         return limitedWaitings.contains(waiting);
     }
 }
