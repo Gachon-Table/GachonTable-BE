@@ -19,6 +19,8 @@ import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
 import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
 import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
+import site.gachontable.gachontablebe.global.jwt.exception.MalformedTokenException;
+import site.gachontable.gachontablebe.global.jwt.exception.UnsupportedTokenException;
 
 import javax.crypto.SecretKey;
 import java.time.Duration;
@@ -48,9 +50,7 @@ public class JwtProvider {
 
     @Transactional
     public JwtResponse refreshAccessToken(String refreshToken) {
-        validateToken(refreshToken);
-
-        Claims claims = parseClaims(refreshToken);
+        Claims claims = validateToken(refreshToken);
         UUID uuid = UUID.fromString(claims.get("uid", String.class));
         String role = claims.get("role", String.class);
 
@@ -80,7 +80,7 @@ public class JwtProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        Claims claims = parseClaims(token);
+        Claims claims = validateToken(token);
         Collection<? extends GrantedAuthority> authorities = Collections.singletonList(
                 new SimpleGrantedAuthority(claims.get("role").toString()));
 
@@ -94,24 +94,36 @@ public class JwtProvider {
         return this.userAuthDetailsService.loadUserByUsername(claims.getSubject());
     }
 
-    public Claims parseClaims(String token) {
-        try {
-            return Jwts.parser()
-                    .verifyWith(secretKey).build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims();
-        }
+    private Claims parseClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey).build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
-    public void validateToken(String token) {
+    public Claims validateToken(String token) {
         try {
-            parseClaims(token);
-        } catch (UnsupportedJwtException | IllegalArgumentException | MalformedJwtException e) {
+            return parseClaims(token);
+        } catch (IllegalArgumentException e) {
             throw new InvalidTokenException();
         } catch (ExpiredJwtException e) {
             throw new ExpiredTokenException();
+        } catch (MalformedJwtException e) {
+            throw new MalformedTokenException();
+        } catch (UnsupportedJwtException e) {
+            throw new UnsupportedTokenException();
+        }
+    }
+
+    public boolean isInvalidToken(String token) {
+        try {
+            validateToken(token);
+            return false;
+        } catch (InvalidTokenException |
+                 ExpiredTokenException |
+                 MalformedTokenException |
+                 UnsupportedTokenException e) {
+            return true;
         }
     }
 }

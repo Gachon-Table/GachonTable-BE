@@ -2,6 +2,7 @@ package site.gachontable.gachontablebe.domain.pub.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.menu.domain.Menu;
 import site.gachontable.gachontablebe.domain.menu.domain.repository.MenuRepository;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
@@ -25,6 +26,7 @@ public class PubService {
     private final MenuRepository menuRepository;
     private final ThumbnailRepository thumbnailRepository;
 
+    @Transactional(readOnly = true)
     public List<GetPubsResponse> findAllPubs() {
         List<Pub> pubs = pubRepository.findAll();
 
@@ -36,6 +38,7 @@ public class PubService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public GetPubDetailsResponse findPubDetail(Integer pubId) {
         Pub pub = pubRepository.findById(pubId)
                 .orElseThrow(PubNotFoundException::new);

@@ -14,6 +14,8 @@ import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRe
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
+import java.util.Arrays;
+
 @Service
 @RequiredArgsConstructor
 public class UpdateStatusImpl implements UpdateStatus{
@@ -31,7 +33,8 @@ public class UpdateStatusImpl implements UpdateStatus{
         pub.updateOpenStatus(request.status());
 
         waitingRepository
-                .findAllByPubAndWaitingStatusOrWaitingStatusOrderByCreatedAtAsc(pub, Status.WAITING, Status.AVAILABLE)
+                .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
+                        pub, Arrays.asList(Status.WAITING, Status.AVAILABLE))
                 .forEach(Waiting::cancel);
 
         return new RegisterResponse(true, SuccessCode.MANAGE_PUB_SUCCESS.getMessage());

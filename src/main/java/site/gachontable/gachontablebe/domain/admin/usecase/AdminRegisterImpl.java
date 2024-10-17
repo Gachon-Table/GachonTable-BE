@@ -12,8 +12,6 @@ import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
 import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
-import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
-import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
 
 @Service
 @RequiredArgsConstructor
@@ -37,20 +35,8 @@ public class AdminRegisterImpl implements AdminRegister {
     }
 
     public void generateRefreshToken(Admin admin) {
-        String refreshToken = admin.getRefreshToken();
-        if (refreshToken == null || !isValidToken(refreshToken)) {
-            refreshToken = jwtProvider.generateRefreshToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
-            updateRefreshToken(admin, refreshToken);
-        }
-    }
-
-    public Boolean isValidToken(String token) {
-        try {
-            jwtProvider.validateToken(token);
-            return true;
-        } catch (InvalidTokenException | ExpiredTokenException e) {
-            return false;
-        }
+        String refreshToken = jwtProvider.generateRefreshToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
+        updateRefreshToken(admin, refreshToken);
     }
 
     private void updateRefreshToken(Admin admin, String refreshToken) {

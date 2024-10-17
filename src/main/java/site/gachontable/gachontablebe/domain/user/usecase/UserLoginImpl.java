@@ -10,8 +10,6 @@ import site.gachontable.gachontablebe.domain.user.domain.repository.UserReposito
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
 import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
-import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
-import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class UserLoginImpl implements UserLogin{
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         validatePassword(password, user);
 
-        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
+        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUserTel(), Role.ROLE_USER);
         String refreshToken = generateRefreshToken(user);
 
         return new JwtResponse(accessToken, refreshToken);
@@ -40,20 +38,11 @@ public class UserLoginImpl implements UserLogin{
 
     private String generateRefreshToken(User user) {
         String refreshToken = user.getRefreshToken();
-        if (refreshToken == null || !isValidToken(refreshToken)) {
+        if (refreshToken == null || jwtProvider.isInvalidToken(refreshToken)) {
             refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
             updateRefreshToken(user, refreshToken);
         }
         return refreshToken;
-    }
-
-    private boolean isValidToken(String token) {
-        try {
-            jwtProvider.validateToken(token);
-            return true;
-        } catch (InvalidTokenException | ExpiredTokenException e) {
-            return false;
-        }
     }
 
     private void updateRefreshToken(User user, String refreshToken) {

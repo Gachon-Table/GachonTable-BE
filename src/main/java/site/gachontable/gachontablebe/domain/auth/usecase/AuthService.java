@@ -17,9 +17,6 @@ import site.gachontable.gachontablebe.domain.shared.Role;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
 import site.gachontable.gachontablebe.global.jwt.JwtProvider;
-import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
-import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
-
 
 @Service
 @RequiredArgsConstructor
@@ -89,12 +86,12 @@ public class AuthService {
         String tel = kakaoTel.replace("+82 ", "0");
         String username = kakaoProfile.username();
 
-        return userRepository.findByUsername(username)
+        return userRepository.findByUserTel(tel)
                 .orElseGet(() -> userRepository.save(User.create(username, tel)));
     }
 
     private AuthResponse createToken(User user) {
-        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
+        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUserTel(), Role.ROLE_USER);
         String refreshToken = generateRefreshToken(user);
 
         userRepository.save(user);
@@ -104,20 +101,11 @@ public class AuthService {
 
     private String generateRefreshToken(User user) {
         String refreshToken = user.getRefreshToken();
-        if (refreshToken == null || !isValidToken(refreshToken)) {
-            refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUsername(), Role.ROLE_USER);
+        if (refreshToken == null || jwtProvider.isInvalidToken(refreshToken)) {
+            refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUserTel(), Role.ROLE_USER);
             updateRefreshToken(user, refreshToken);
         }
         return refreshToken;
-    }
-
-    private boolean isValidToken(String token) {
-        try {
-            jwtProvider.validateToken(token);
-            return true;
-        } catch (InvalidTokenException | ExpiredTokenException e) {
-            return false;
-        }
     }
 
     private void updateRefreshToken(User user, String refreshToken) {
