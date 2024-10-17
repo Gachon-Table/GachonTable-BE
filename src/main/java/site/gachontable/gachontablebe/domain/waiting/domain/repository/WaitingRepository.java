@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
@@ -30,6 +29,6 @@ public interface WaitingRepository extends JpaRepository<Waiting, UUID> {
 
     List<Waiting> findTop3ByPubAndWaitingStatusInOrderByCreatedAtAsc(Pub pub, List<Status> statuses);
 
-    List<Waiting> findAllByPubAndUserAndWaitingStatusInOrderByCreatedAtAsc(Pub pub, User user, List<Status> statuses);
+    List<Waiting> findAllByPubAndTelAndWaitingStatusInOrderByCreatedAtAsc(Pub pub, String tel, List<Status> statuses);
 
 }
