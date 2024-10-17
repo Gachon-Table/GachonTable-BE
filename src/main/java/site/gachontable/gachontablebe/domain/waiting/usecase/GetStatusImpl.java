@@ -32,17 +32,16 @@ public class GetStatusImpl implements GetStatus {
         return getPubsFromWaitings(user).stream()
                 .flatMap(pub -> {
                     List<Waiting> waitings = waitingRepository
-                            .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
-                                    pub, Arrays.asList(Status.WAITING, Status.AVAILABLE));
+                            .findAllByPubAndUserAndWaitingStatusInOrderByCreatedAtAsc(
+                                    pub, user, Arrays.asList(Status.WAITING, Status.AVAILABLE));
 
-                    return getStatusResponse(user, pub, waitings);
+                    return getStatusResponse(pub, waitings);
                 })
                 .toList();
     }
 
-    private Stream<StatusResponse> getStatusResponse(User user, Pub pub, List<Waiting> waitings) {
+    private Stream<StatusResponse> getStatusResponse(Pub pub, List<Waiting> waitings) {
         return waitings.stream()
-                .filter(waiting -> waiting.matchesUser(user))
                 .map(waiting -> StatusResponse.of(waiting, pub, waitings.indexOf(waiting) + 1));
     }
 
