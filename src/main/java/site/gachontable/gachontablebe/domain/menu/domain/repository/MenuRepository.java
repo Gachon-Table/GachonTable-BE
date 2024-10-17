@@ -11,4 +11,6 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
     @Cacheable(key = "#pub.pubName", value = "menuCache", cacheManager = "menuCacheManager")
     List<Menu> findAllByPub(Pub pub);
+
+    void deleteAllByPub(Pub pub);
 }
