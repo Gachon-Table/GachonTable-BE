@@ -3,16 +3,17 @@ package site.gachontable.gachontablebe.domain.waiting.usecase;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.admin.usecase.ReadyUser;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
+import site.gachontable.gachontablebe.domain.shared.event.SentBiztalkEvent;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.CancelRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
-import site.gachontable.gachontablebe.global.biztalk.SendBiztalk;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
@@ -26,7 +27,7 @@ public class CancelWaitingImpl implements CancelWaiting {
 
     private final WaitingRepository waitingRepository;
     private final ReadyUser readyUser;
-    private final SendBiztalk sendBiztalk;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Value("${biztalk.templateId.cancel}")
     private String TEMPLATE_CODE;
@@ -44,7 +45,8 @@ public class CancelWaitingImpl implements CancelWaiting {
 
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{pub}", pub.getPubName());
-        sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), variables);
+        eventPublisher.publishEvent(
+                SentBiztalkEvent.of(TEMPLATE_CODE, waiting.getTel(), variables));
 
         if (isWaitingIn(waiting, getTop3Waitings(pub))) {
             readyUser.execute(pub);
