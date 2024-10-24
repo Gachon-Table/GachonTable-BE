@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.StatusResponse;
@@ -12,7 +11,6 @@ import site.gachontable.gachontablebe.domain.waiting.type.Status;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -25,23 +23,23 @@ public class GetStatusImpl implements GetStatus {
     public List<StatusResponse> execute(AuthDetails authDetails) {
         String tel = authDetails.getTel();
 
-        return getPubsFromWaitings(tel).stream()
-                .flatMap(pub -> {
-                    List<Waiting> waitings = waitingRepository
-                            .findAllByPubAndTelAndWaitingStatusInOrderByCreatedAtAsc(
-                                    pub, tel, Arrays.asList(Status.WAITING, Status.AVAILABLE));
+        List<Waiting> waitings = waitingRepository
+                .findAllByTelAndWaitingStatusInOrderByCreatedAtDesc(
+                        tel, Arrays.asList(Status.WAITING, Status.AVAILABLE));
 
-                    return getStatusResponse(pub, waitings);
-                })
+        return waitings.stream()
+                .map(waiting ->
+                        getStatusResponse(waiting, getWaitingsInPubFrom(waiting)))
                 .toList();
     }
 
-    private Stream<StatusResponse> getStatusResponse(Pub pub, List<Waiting> waitings) {
-        return waitings.stream()
-                .map(waiting -> StatusResponse.of(waiting, pub, waitings.indexOf(waiting) + 1));
+    private List<Waiting> getWaitingsInPubFrom(Waiting waiting) {
+        return waitingRepository
+                .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
+                        waiting.getPub(), Arrays.asList(Status.WAITING, Status.AVAILABLE));
     }
 
-    private List<Pub> getPubsFromWaitings(String tel) {
-        return waitingRepository.findDistinctPubsByTel(tel);
+    private StatusResponse getStatusResponse(Waiting waiting, List<Waiting> waitings) {
+        return StatusResponse.of(waiting, waiting.getPub(), waitings.indexOf(waiting) + 1);
     }
 }
