@@ -25,6 +25,7 @@ public enum ErrorCode {
     WAITING_ALREADY_EXIST(412, "WAITING_ALREADY_EXIST", "이미 웨이팅이 존재합니다."),
     SEATING_ALREADY_EXIST(412, "SEATING_ALREADY_EXIST", "현재 이용 중인 주점이 존재합니다."),
     SEATING_NUM_ALREADY_EXIST(412, "SEATING_NUM_ALREADY_EXIST", "이미 이용중인 테이블 번호입니다."),
+    WAITING_CANCELED(412, "WAITING_CANCELED", "이미 취소된 웨이팅입니다."),
     INTERNAL_SERVER_ERROR(500, "INTERNAL_SERVER_ERROR", "서버 오류가 발생했습니다."),
     BIZTALK_SEND_FAIL(503, "BIZTALK_SEND_FAIL", "카카오 알림톡 전송에 실패했습니다."),
     PUB_NOT_OPEN(503, "PUB_NOT_OPEN", "현재 오픈되어 있지 않은 주점입니다."),

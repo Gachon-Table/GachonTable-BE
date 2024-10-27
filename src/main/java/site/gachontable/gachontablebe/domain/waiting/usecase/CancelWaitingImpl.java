@@ -35,10 +35,11 @@ public class CancelWaitingImpl implements CancelWaiting {
     @RedissonLock(key = "#lockKey")
     @Override
     public WaitingResponse execute(CancelRequest request, String lockKey) {
-        Waiting waiting = waitingRepository.findById(request.waitingId()).
-                orElseThrow(WaitingNotFoundException::new);
-
+        Waiting waiting = waitingRepository.findById(request.waitingId())
+                .orElseThrow(WaitingNotFoundException::new);
         Pub pub = waiting.getPub();
+
+        List<Waiting> top3Waitings = getTop3Waitings(pub);
 
         waiting.cancel();
         waiting.getPub().decreaseWaitingCount();
@@ -48,7 +49,7 @@ public class CancelWaitingImpl implements CancelWaiting {
         eventPublisher.publishEvent(
                 SentBiztalkEvent.of(TEMPLATE_CODE, waiting.getTel(), variables));
 
-        if (isWaitingIn(waiting, getTop3Waitings(pub))) {
+        if (isWaitingIn(waiting, top3Waitings)) {
             readyUser.execute(pub);
         }
 
