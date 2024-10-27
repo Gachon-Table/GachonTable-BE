@@ -3,16 +3,17 @@ package site.gachontable.gachontablebe.domain.waiting.usecase;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.admin.usecase.ReadyUser;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
+import site.gachontable.gachontablebe.domain.shared.event.SentBiztalkEvent;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
 import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.CancelRequest;
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
-import site.gachontable.gachontablebe.global.biztalk.SendBiztalk;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
@@ -26,7 +27,7 @@ public class CancelWaitingImpl implements CancelWaiting {
 
     private final WaitingRepository waitingRepository;
     private final ReadyUser readyUser;
-    private final SendBiztalk sendBiztalk;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Value("${biztalk.templateId.cancel}")
     private String TEMPLATE_CODE;
@@ -34,19 +35,21 @@ public class CancelWaitingImpl implements CancelWaiting {
     @RedissonLock(key = "#lockKey")
     @Override
     public WaitingResponse execute(CancelRequest request, String lockKey) {
-        Waiting waiting = waitingRepository.findById(request.waitingId()).
-                orElseThrow(WaitingNotFoundException::new);
-
+        Waiting waiting = waitingRepository.findById(request.waitingId())
+                .orElseThrow(WaitingNotFoundException::new);
         Pub pub = waiting.getPub();
+
+        List<Waiting> top3Waitings = getTop3Waitings(pub);
 
         waiting.cancel();
         waiting.getPub().decreaseWaitingCount();
 
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{pub}", pub.getPubName());
-        sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), variables);
+        eventPublisher.publishEvent(
+                SentBiztalkEvent.of(TEMPLATE_CODE, waiting.getTel(), variables));
 
-        if (isWaitingIn(waiting, getTop3Waitings(pub))) {
+        if (isWaitingIn(waiting, top3Waitings)) {
             readyUser.execute(pub);
         }
 

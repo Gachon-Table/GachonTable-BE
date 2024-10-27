@@ -20,15 +20,9 @@ public interface WaitingRepository extends JpaRepository<Waiting, UUID> {
                                      @Param("waiting") Status waiting,
                                      @Param("available") Status available);
 
-    @Query("SELECT DISTINCT w.pub FROM waiting w WHERE w.user.userTel = :tel")
-    List<Pub> findDistinctPubsByTel(@Param("tel") String tel);
-
     List<Waiting> findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(Pub pub, List<Status> statuses);
 
     List<Waiting> findAllByTelAndWaitingStatusInOrderByCreatedAtDesc(String tel, List<Status> statuses);
 
     List<Waiting> findTop3ByPubAndWaitingStatusInOrderByCreatedAtAsc(Pub pub, List<Status> statuses);
-
-    List<Waiting> findAllByPubAndTelAndWaitingStatusInOrderByCreatedAtAsc(Pub pub, String tel, List<Status> statuses);
-
 }

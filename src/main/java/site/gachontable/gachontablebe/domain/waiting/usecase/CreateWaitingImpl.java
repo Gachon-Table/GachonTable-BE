@@ -2,11 +2,13 @@ package site.gachontable.gachontablebe.domain.waiting.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
 import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
+import site.gachontable.gachontablebe.domain.shared.event.SentBiztalkEvent;
 import site.gachontable.gachontablebe.domain.user.domain.User;
 import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
 import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
@@ -18,7 +20,6 @@ import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.Re
 import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
-import site.gachontable.gachontablebe.global.biztalk.SendBiztalk;
 import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
 import site.gachontable.gachontablebe.global.success.SuccessCode;
 
@@ -34,7 +35,7 @@ public class CreateWaitingImpl implements CreateWaiting {
     private final PubRepository pubRepository;
     private final WaitingRepository waitingRepository;
     private final UserRepository userRepository;
-    private final SendBiztalk sendBiztalk;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Value("${biztalk.templateId.waiting}")
     private String TEMPLATE_CODE;
@@ -54,7 +55,12 @@ public class CreateWaitingImpl implements CreateWaiting {
 
         pub.increaseWaitingCount();
 
-        sendBiztalk.execute(TEMPLATE_CODE, user.getUserTel(), createVariables(user.getUsername(), pub, waiting, request.tableType().getNameKo()));
+        eventPublisher.publishEvent(
+                SentBiztalkEvent.of(
+                        TEMPLATE_CODE,
+                        user.getUserTel(),
+                        createVariables(user.getUsername(), pub, waiting, request.tableType().getNameKo())
+                ));
 
         return new WaitingResponse(true, SuccessCode.REMOTE_WAITING_SUCCESS.getMessage());
     }

@@ -88,7 +88,7 @@ management:
 springdoc:
   swagger-ui:
     display-request-duration: true
-    enabled: true
+    enabled: false
 
 logging:
   level:

@@ -23,12 +23,12 @@ public class SendBiztalk {
     private final String senderPhoneNumber;
 
     public SendBiztalk(
-            @Value("${biztalk.app_key}") String appkey,
+            @Value("${biztalk.app_key}") String appKey,
             @Value("${biztalk.secret_key}") String secretKey,
             @Value("${biztalk.pfId}") String pfId,
             @Value("${biztalk.sender_phoneNumber}") String senderPhoneNumber
     ) {
-        this.defaultMessageService = NurigoApp.INSTANCE.initialize(appkey, secretKey, "https://api.solapi.com");
+        this.defaultMessageService = NurigoApp.INSTANCE.initialize(appKey, secretKey, "https://api.solapi.com");
         this.pfId = pfId;
         this.senderPhoneNumber = senderPhoneNumber;
     }

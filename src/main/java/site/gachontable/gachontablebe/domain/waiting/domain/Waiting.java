@@ -6,11 +6,11 @@ import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.Wai
 import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.shared.BaseTimeEntity;
 import site.gachontable.gachontablebe.domain.user.domain.User;
+import site.gachontable.gachontablebe.domain.waiting.exception.WaitingCanceledException;
 import site.gachontable.gachontablebe.domain.waiting.type.Position;
 import site.gachontable.gachontablebe.domain.waiting.type.Status;
 import site.gachontable.gachontablebe.domain.shared.Table;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "waiting")
@@ -73,6 +73,7 @@ public class Waiting extends BaseTimeEntity {
     }
 
     public void enter() {
+        checkCanceled();
         this.waitingStatus = Status.ENTERED;
     }
 
@@ -81,10 +82,13 @@ public class Waiting extends BaseTimeEntity {
     }
 
     public void toAvailable() {
+        checkCanceled();
         this.waitingStatus = Status.AVAILABLE;
     }
 
-    public boolean matchesUser(User user) {
-        return Objects.equals(this.user, user);
+    private void checkCanceled() {
+        if (this.waitingStatus == Status.CANCELED) {
+            throw new WaitingCanceledException();
+        }
     }
 }
