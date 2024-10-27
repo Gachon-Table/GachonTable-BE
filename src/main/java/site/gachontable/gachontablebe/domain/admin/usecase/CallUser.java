@@ -50,15 +50,15 @@ public class CallUser {
         variables.put("#{pub}", pub.getPubName());
         sendBiztalk.execute(CALL_TEMPLATE_CODE, waiting.getTel(), variables);
 
-        scheduleAutoCancel(request.waitingId(), pub, variables);
+        scheduleAutoCancel(request.waitingId(), variables);
 
         return SuccessCode.USER_CALL_SUCCESS.getMessage();
     }
 
 
-    private void scheduleAutoCancel(UUID waitingId, Pub pub, HashMap<String, String> variables) {
+    private void scheduleAutoCancel(UUID waitingId, HashMap<String, String> variables) {
         executorService.schedule(() ->
-                autoCancelUser.execute(waitingId, pub, variables), 5, TimeUnit.MINUTES);
+                autoCancelUser.execute(waitingId, variables), 5, TimeUnit.MINUTES);
     }
 
     private void checkPubMatches(AuthDetails authDetails, Pub pub) {
