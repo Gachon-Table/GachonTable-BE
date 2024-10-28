@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
 import site.gachontable.gachontablebe.domain.shared.event.SentBiztalkEvent;
 import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
 import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
@@ -26,20 +25,19 @@ public class AutoCancelUser {
     @Value("${biztalk.templateId.forceCancel}")
     private String FORCE_CANCEL_TEMPLATE_CODE;
 
-    // TODO: LockKey 수정 필요
-    @RedissonLock(key = "#waitingId")
-    public void execute(UUID waitingId, Pub pub, HashMap<String, String> variables) {
+    @RedissonLock(key = "#lockKey")
+    public void execute(UUID waitingId, HashMap<String, String> variables, String lockKey) {
         Waiting waiting = waitingRepository.findById(waitingId)
                 .orElseThrow(WaitingNotFoundException::new);
 
         if (waiting.getWaitingStatus().equals(Status.AVAILABLE)) {
             waiting.cancel();
+            waiting.getPub().decreaseWaitingCount();
 
-            pub.decreaseWaitingCount();
             eventPublisher.publishEvent(
                     SentBiztalkEvent.of(FORCE_CANCEL_TEMPLATE_CODE, waiting.getTel(), variables));
 
-            readyUser.execute(pub);
+            readyUser.execute(waiting.getPub());
         }
     }
 }
