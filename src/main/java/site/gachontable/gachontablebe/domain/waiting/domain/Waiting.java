@@ -78,6 +78,7 @@ public class Waiting extends BaseTimeEntity {
     }
 
     public void cancel() {
+        checkCanceled();
         this.waitingStatus = Status.CANCELED;
     }
 

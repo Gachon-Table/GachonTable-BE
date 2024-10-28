@@ -113,7 +113,8 @@ public class SecurityConfig {
                 "http://localhost:3000",
                 "https://api.lupg.me",
                 "https://lupg.me",
-                "https://www.lupg.me"));
+                "https://www.lupg.me",
+                "https://test.lupg.me"));
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(List.of("*"));
