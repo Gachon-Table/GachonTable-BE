@@ -20,8 +20,6 @@ import java.lang.reflect.Method;
 @Slf4j
 public class RedissonLockAop {
 
-    private static final String REDISSON_LOCK_PREFIX = "LOCK:";
-
     private final RedissonClient redissonClient;
     private final AopForTransaction aopForTransaction;
 
@@ -31,7 +29,7 @@ public class RedissonLockAop {
         Method method = signature.getMethod();
         RedissonLock redissonLock = method.getAnnotation(RedissonLock.class);
 
-        String key = REDISSON_LOCK_PREFIX + CustomSpringELParser
+        String key = (String) CustomSpringELParser
                 .getDynamicValue(signature.getParameterNames(), joinPoint.getArgs(), redissonLock.key());
         RLock rLock = redissonClient.getLock(key);
 

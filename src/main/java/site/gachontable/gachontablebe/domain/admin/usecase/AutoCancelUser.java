@@ -25,9 +25,8 @@ public class AutoCancelUser {
     @Value("${biztalk.templateId.forceCancel}")
     private String FORCE_CANCEL_TEMPLATE_CODE;
 
-    // TODO: LockKey 수정 필요
-    @RedissonLock(key = "#waitingId")
-    public void execute(UUID waitingId, HashMap<String, String> variables) {
+    @RedissonLock(key = "#lockKey")
+    public void execute(UUID waitingId, HashMap<String, String> variables, String lockKey) {
         Waiting waiting = waitingRepository.findById(waitingId)
                 .orElseThrow(WaitingNotFoundException::new);
 
