@@ -9,4 +9,5 @@ public class CustomRoutingDataSource extends AbstractRoutingDataSource {
     protected Object determineCurrentLookupKey() {
         return TransactionSynchronizationManager.isCurrentTransactionReadOnly() ? "slave" : "master";
     }
+
 }
