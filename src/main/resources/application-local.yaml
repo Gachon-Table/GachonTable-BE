@@ -1,9 +1,17 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/gachontable
-    username: root
-    password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    master:
+      hikari:
+        jdbc-url: jdbc:mysql://localhost:3306/gachontable
+        username: root
+        password:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    slave:
+      hikari:
+        jdbc-url: jdbc:mysql://localhost:3306/gachontable
+        username: root
+        password:
+        driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: false
     hibernate:
@@ -43,6 +51,8 @@ spring:
       port: 6379
       database: 0
       password: ENC(DURHuRsSmaDEKcx7C9kllvKrNnthDcNZNcPCI7l+0bk=)
+      repositories:
+        enabled: false
 
 jwt:
   secret_key: ENC(CJzB4FyuHQrRdJ9V+3J0GhZbhxevmxah4rJItf5dM0GJj6Rmq2AsaVHFfSuSBPNmOsckPdYUjSxhheiOR3kJGm1i2+zpO4JdiN8GAv6i1zc=)
@@ -54,10 +64,10 @@ biztalk:
   sender_phoneNumber: ENC(oUI8aODxdLXMsFy8AdNSXMnyWXqzj0/1)
   templateId:
     call: ENC(CGOu3LjBj919zkRKkEf86epBCWUZ3TJJhVXnl7QfKnyRiUJA1/5CfUiWyJcjTOjt)
-    cancel: ENC(LQRVbWO+DLV2jWam066LfZ+SynyQeSGmGNS4pfcLP4vqSFpLaFYT3otPohV8pUAm)
+    cancel: ENC(Ff2tfrLsxsZ9LJpJpGtQgy1hsB4l9cymj6zczjjw4/jzQKDOslxJn+2VvQ5QZg4/)
     forceCancel: ENC(yEIJoeLcbFwRqdPjOy0W5+4uwSIHUhbHDpWG98jOorBqc98td/mVpoD88ELUNwab)
     ready: ENC(FquVHugagxaoGrTmagapeIFhF/g/0ZKDBCB76kBBV29d/iXqxH9RFMuqkLRW+wuW)
-    waiting: ENC(Wxlr4G0k37PAuVwMNnoTQm8rCgVMjLmHb5ifQJf8sKLQOT3KzlIUUf4DYjlh8P1e)
+    waiting: ENC(DQuBlQzz4/Lo1dXfTWtwthICNLzAS44GtpaTHaa3k8mnJ3zq1BtdvMo9Ak/TYcKn)
 
 management:
   server:
