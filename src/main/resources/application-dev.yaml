@@ -62,7 +62,7 @@ spring:
               - phone_number
   data:
     redis:
-      host: ENC(8V9FWFc5sMk4GNVNXLsvqr7JCyCH55iFGBOALlPq7u5W7NIpK6dym8ZSS5DkKGwkjtyM9cOjl69TVrQ33MIUIg==)
+      host: ENC(nsPLWjIX5Q5FBTaBMqK5bCos+m2K8hv+qWFYxAj269ql+2WWeKXExEA8VAVteqotW2FZyTNgbRU=)
       port: 6379
       database: 0
       password: ENC(DURHuRsSmaDEKcx7C9kllvKrNnthDcNZNcPCI7l+0bk=)
