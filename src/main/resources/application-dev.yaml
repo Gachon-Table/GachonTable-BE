@@ -1,11 +1,11 @@
 spring:
   datasource:
     master:
-      jdbc-url: ENC(TbbwHW/iKWvTDNKvD7UPzUaxK5FawIMJra0lQ6HEKLq4Ee2YYhX/H4lRkGxYfeYgbBX3v/PkUBQA4LQru2mUA9FxHc9RVRZmGrKhJ00PrMdjacYWedTb/lNZHcegR37ec2edN3hsJ9UDrRwKqIZlqH9iEzwI/00w5fASRA7Zi4JeLqBEJNgDhZpHb1vRB5sOxUfS+7n6NkJnWydN0llUSvTGna0JObbUafqEtxao/0DocHvJ9Jlr1UE/rByyc/tdvXBNOGSgxFA=)
-      username: ENC(Z89GsautuOl2p6BefL146A==)
-      password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
-      driver-class-name: com.mysql.cj.jdbc.Driver
       hikari:
+        jdbc-url: ENC(2HeMB9z5gdgdMvunGQaAJ8Zxl/B6oWTLLhH4BlyhvnpRf9UoowL3dutYW1FcDRz5vt+LU69/Dnt9T3xjJ4oWaiK5fMvbJiC2DqSMpUrYQjuZIc5aA45/IOfiUrMOlXGHjHmcbLqQPzpdfYGoSFy7fMAZEJHHEbYJzarDEF/sujk2GbCmW1JN5qPq9AXYkNOMUULDJilD2hlvoO09qMUOOyaDJiMMB8SxzZlv18gG5ts2tPQvMU8DFly60x1ay8VbhpFqiQrskFI=)
+        username: ENC(Z89GsautuOl2p6BefL146A==)
+        password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
+        driver-class-name: com.mysql.cj.jdbc.Driver
         maximum-pool-size: 10
         connection-timeout: 5000
         connection-init-sql: SELECT 1
@@ -13,13 +13,12 @@ spring:
         minimum-idle: 10
         idle-timeout: 600000
         max-lifetime: 1800000
-
     slave:
-      jdbc-url: ENC(ycp3HMrdb+UBuUnQLOw3i6Ml2o76lsg+XUUVmRUSU5wyxD3QKr/1gRKmBXP+4fIgnmhza+MNO8Buw9YQG0ebdPYgJuOwzlxm+K+zIneeFgtkkR7dUU/UZPVQaZhilvJsTxtHrErRaZhGSn0TE9sVpFjvro60ixvmIbhhxegqlNbfyMvnohwb7ooLsbK0H4CM/k/Qw2OQurPQ7Hm99UDoVy6Ed+VQXr0oVt2eeUQGp9x3Cd10zDOuog==)
-      username: ENC(Z89GsautuOl2p6BefL146A==)
-      password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
-      driver-class-name: com.mysql.cj.jdbc.Driver
       hikari:
+        jdbc-url: ENC(xZaFqSkKkTPP3Ph7GgmqEwoqq4lmn+Me25G2IOIVCA1M1j/6o6VJuwX+/zPx6XHQFFjqAhIuICQQPpgWS/fr2sTYWbfXveGMHDjxxOcZ67ygeAM8+Ee+Vy3LIpOm6nL2zJLwADmdq8zBKu5nQZxlKNotvbSfG4lDME+45lbU9FKX5n/0ysGkc6RIFpO8gWsdzqp3eCkd7NpZGTwXfvgwyWzwV2SCI0ROS7JiDgGd8fV08kmWK8asHg==)
+        username: ENC(Z89GsautuOl2p6BefL146A==)
+        password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
+        driver-class-name: com.mysql.cj.jdbc.Driver
         maximum-pool-size: 10
         connection-timeout: 5000
         connection-init-sql: SELECT 1
