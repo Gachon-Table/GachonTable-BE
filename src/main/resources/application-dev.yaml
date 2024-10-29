@@ -1,9 +1,32 @@
 spring:
   datasource:
-    url: ENC(rXVivRZ2+Z7AZQnwYxYVsXbLr2e4fifb/REZbpxgSoGW2Vm6u0Gj0/VJOfO1E+emfwXeCoU9N8H0cVuqYuoEWbdPU7kekYIIUG/nL1G4RmxrUPPttsPZGM2WrYG6sWy0)
-    username: ENC(QTTusIQmcVUiM+fDY8kvubSWvMLTmNCa)
-    password: ENC(7QKbd+ZODf/6SLG+D+Q15Or6EBw55I6KKYF0UnTqie8=)
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    master:
+      hikari:
+        jdbc-url: ENC(2HeMB9z5gdgdMvunGQaAJ8Zxl/B6oWTLLhH4BlyhvnpRf9UoowL3dutYW1FcDRz5vt+LU69/Dnt9T3xjJ4oWaiK5fMvbJiC2DqSMpUrYQjuZIc5aA45/IOfiUrMOlXGHjHmcbLqQPzpdfYGoSFy7fMAZEJHHEbYJzarDEF/sujk2GbCmW1JN5qPq9AXYkNOMUULDJilD2hlvoO09qMUOOyaDJiMMB8SxzZlv18gG5ts2tPQvMU8DFly60x1ay8VbhpFqiQrskFI=)
+        username: ENC(Z89GsautuOl2p6BefL146A==)
+        password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        connection-timeout: 5000
+        connection-init-sql: SELECT 1
+        validation-timeout: 2000
+        minimum-idle: 10
+        idle-timeout: 600000
+        max-lifetime: 1800000
+    slave:
+      hikari:
+        jdbc-url: ENC(xZaFqSkKkTPP3Ph7GgmqEwoqq4lmn+Me25G2IOIVCA1M1j/6o6VJuwX+/zPx6XHQFFjqAhIuICQQPpgWS/fr2sTYWbfXveGMHDjxxOcZ67ygeAM8+Ee+Vy3LIpOm6nL2zJLwADmdq8zBKu5nQZxlKNotvbSfG4lDME+45lbU9FKX5n/0ysGkc6RIFpO8gWsdzqp3eCkd7NpZGTwXfvgwyWzwV2SCI0ROS7JiDgGd8fV08kmWK8asHg==)
+        username: ENC(Z89GsautuOl2p6BefL146A==)
+        password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        connection-timeout: 5000
+        connection-init-sql: SELECT 1
+        validation-timeout: 2000
+        minimum-idle: 10
+        idle-timeout: 600000
+        max-lifetime: 1800000
+
   jpa:
     show-sql: false
     hibernate:
@@ -16,6 +39,7 @@ spring:
         jdbc:
           time_zone: Asia/Seoul
     open-in-view: false
+
   security:
     oauth2:
       client:
