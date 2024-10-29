@@ -2,7 +2,7 @@ spring:
   datasource:
     master:
       hikari:
-        jdbc-url: ENC(4NxbpIej/VthVQ9JfP3wP2X875XjwyN+a1n1GomVxS7y0nZKzxSNhoiQ0eR4jU5NUtSHIpoMniZlXTnx3uxYy7yS/qBK85fdz/3qrIzwlGlS4osfDrH1Vq+cx2Q17dc5biiLkW1Dy3LWoRxEBKJh68RocS6MsUZSAhPkaw2ZISzf3/QvHZQVcaDbdSAaqwm5Ca7kDmzEWWnH5rJy1xj2wSPwvtdF/n0U)
+        jdbc-url: ENC(UBwDdqjtpGYI5nBcVxr+jMKOhjJgdWyoJBGt8hH4E95UXWs93q60Al73o3vRb3q5Lcn1umXgQrOAQgXhHWosaiRefbsikg8OqXNlB3vDje42qkKmWK2r5goGg3U5ifzv7LLvntIc0jKL2rXESAG9ABMwG6ka27f4GcuPR0yLJ4xsDuvat/GOllZVdNNOsmA0Sv5Of9vNgqn2N08c+uDgqmYbeNEYwyHBieJ5wovqLT09T2mK4sAQFQ==)
         username: ENC(Z89GsautuOl2p6BefL146A==)
         password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,7 +15,7 @@ spring:
         max-lifetime: 1800000
     slave:
       hikari:
-        jdbc-url: ENC(rP3CCMfhjJOxnbFNHue/d0oAZ9XfJq8/yJzgA79C7u1WIWjYKwEoxtZX1HhB95m5oJXCBrSn2juZSkSNT3ukP1lZLhcdQ3ywZiZK6V/KSjpj+KnhmWjViYSsELAIZ7QWk8T5AH9/U3Skx9nZxhuxBANuTdBgF1gZCVMB+b+anv1qzTuUWeD+y6p1lB42MOYwo1efxHrXIdQOcCYtNrd+P2HIXIsqlp+iG+NTteejFrA=)
+        jdbc-url: ENC(Ux6HWzhKveQtR3WOyTmA/qad//VpWjpNRpFLSdL7Rh1Y7uO7u3jBwLND6IyjI+HTaoLbXqGj/qX7830f1oBRiDndgHIxzOz9ftCwWHc4TioG9MsIEmGrxKGo7ylSyAW3z0VcUGjLQsVAZRyk9s6kKOdQnEZeZfWO+ACPHcPlG/KOfaqWlz3kl/N13hRNKaiIW8I/vo5aV8KDbrNkJhKT8PN5GDu9+TkYKS0iSt9TzrcseBW96MzgYg==)
         username: ENC(Z89GsautuOl2p6BefL146A==)
         password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
         driver-class-name: com.mysql.cj.jdbc.Driver
