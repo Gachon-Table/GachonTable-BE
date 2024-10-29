@@ -15,7 +15,6 @@ import site.gachontable.gachontablebe.global.error.exception.ServiceException;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +48,7 @@ public class AopForLogging {
             String className = joinPoint.getSignature().getDeclaringType().getSimpleName();
             String method = joinPoint.getSignature().getName();
 
-            log.info("{}.{} | time = {}ms", className, method, duration);
+            log.info("⏰{}.{} | time = {}ms", className, method, duration);
         }
     }
 
@@ -77,9 +76,12 @@ public class AopForLogging {
             log.error("LogAspect Error", e);
         }
 
-        log.info("[{}] {}", params.get("http_method"), params.get("request_uri"));
-        log.info("method: {}.{}", params.get("controller"), params.get("method"));
-        log.info("params: {}", params.get("params"));
+        log.info("🛫[{}] {}\nmethod: {}.{}\nparams: {}",
+                params.get("http_method"),
+                params.get("request_uri"),
+                params.get("controller"),
+                params.get("method"),
+                params.get("params"));
     }
 
     private JSONObject getParams(HttpServletRequest request) {
@@ -105,23 +107,6 @@ public class AopForLogging {
             return;
         }
         log.info("✅End: {}() - {}", methodName, result);
-    }
-
-    // Before 어드바이스를 통한 서비스 메서드 시작 로깅
-    @Before(value = "publicMethodsFromService()")
-    public void logBeforeService(JoinPoint joinPoint) {
-        Object[] args = joinPoint.getArgs();
-        String methodName = joinPoint.getSignature().getDeclaringType().getSimpleName();
-
-        log.info("⚠️Start: {}() - {}", methodName, Arrays.toString(args));
-    }
-
-    // After 어드바이스를 통한 서비스 메서드 종료 로깅
-    @AfterReturning(value = "publicMethodsFromService()")
-    public void logAfterService(JoinPoint joinPoint) {
-        String methodName = joinPoint.getSignature().getDeclaringType().getSimpleName();
-
-        log.info("✅End: {}()", methodName);
     }
 
     // AfterThrowing 어드바이스를 통한 오류 로깅

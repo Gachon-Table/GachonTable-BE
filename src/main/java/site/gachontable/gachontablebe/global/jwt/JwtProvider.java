@@ -33,7 +33,7 @@ import java.util.UUID;
 public class JwtProvider {
 
     public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14);
-    public static final Duration ACCESS_TOKEN_DURATION = Duration.ofHours(6);
+    public static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(6);
 
     private final SecretKey secretKey;
     private final AdminAuthDetailsService adminAuthDetailsService;

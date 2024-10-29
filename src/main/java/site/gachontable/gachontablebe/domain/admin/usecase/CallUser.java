@@ -31,7 +31,7 @@ public class CallUser {
     private final AdminRepository adminRepository;
     private final SendBiztalk sendBiztalk;
     private final AutoCancelUser autoCancelUser;
-    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);
+    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(8);
 
     @Value("${biztalk.templateId.call}")
     private String CALL_TEMPLATE_CODE;
@@ -58,7 +58,7 @@ public class CallUser {
 
     private void scheduleAutoCancel(UUID waitingId, HashMap<String, String> variables) {
         executorService.schedule(() ->
-                autoCancelUser.execute(waitingId, variables, "자동 취소"), 1, TimeUnit.MINUTES);
+                autoCancelUser.execute(waitingId, variables, "자동 취소"), 5, TimeUnit.MINUTES);
     }
 
     private void checkPubMatches(AuthDetails authDetails, Pub pub) {
