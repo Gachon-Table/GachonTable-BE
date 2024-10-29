@@ -1,3 +1,122 @@
 spring:
-  application:
-    name: GachonTable-BE
+  datasource:
+    master:
+      hikari:
+        jdbc-url: ENC(UBwDdqjtpGYI5nBcVxr+jMKOhjJgdWyoJBGt8hH4E95UXWs93q60Al73o3vRb3q5Lcn1umXgQrOAQgXhHWosaiRefbsikg8OqXNlB3vDje42qkKmWK2r5goGg3U5ifzv7LLvntIc0jKL2rXESAG9ABMwG6ka27f4GcuPR0yLJ4xsDuvat/GOllZVdNNOsmA0Sv5Of9vNgqn2N08c+uDgqmYbeNEYwyHBieJ5wovqLT09T2mK4sAQFQ==)
+        username: ENC(Z89GsautuOl2p6BefL146A==)
+        password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        connection-timeout: 5000
+        connection-init-sql: SELECT 1
+        validation-timeout: 2000
+        minimum-idle: 10
+        idle-timeout: 600000
+        max-lifetime: 1800000
+    slave:
+      hikari:
+        jdbc-url: ENC(Ux6HWzhKveQtR3WOyTmA/qad//VpWjpNRpFLSdL7Rh1Y7uO7u3jBwLND6IyjI+HTaoLbXqGj/qX7830f1oBRiDndgHIxzOz9ftCwWHc4TioG9MsIEmGrxKGo7ylSyAW3z0VcUGjLQsVAZRyk9s6kKOdQnEZeZfWO+ACPHcPlG/KOfaqWlz3kl/N13hRNKaiIW8I/vo5aV8KDbrNkJhKT8PN5GDu9+TkYKS0iSt9TzrcseBW96MzgYg==)
+        username: ENC(Z89GsautuOl2p6BefL146A==)
+        password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        connection-timeout: 5000
+        connection-init-sql: SELECT 1
+        validation-timeout: 2000
+        minimum-idle: 10
+        idle-timeout: 600000
+        max-lifetime: 1800000
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: Asia/Seoul
+    open-in-view: false
+
+  security:
+    oauth2:
+      client:
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+        registration:
+          kakao:
+            client-name: kakao
+            client-secret: ENC(/yGYpmJCRdCtBsFF6gbcP9Ysn5J3AzHRCMQFxQFh7XTxS6qFOJ+SzxorkKbpFDDZ)
+            client-authentication-method: client_secret_post
+            client-id: ENC(W7XxEXUIYHJ3SdOUrnElMFjczI/UqT2blR8PiDg8mNLJ9ZmGv4ICIGy9CGqa1ifT)
+            redirect-uri: https://www.lupg.me/oauth
+            authorization-grant-type: authorization_code
+            scope:
+              - name
+              - phone_number
+  data:
+    redis:
+      host: ENC(nsPLWjIX5Q5FBTaBMqK5bCos+m2K8hv+qWFYxAj269ql+2WWeKXExEA8VAVteqotW2FZyTNgbRU=)
+      port: 6379
+      database: 0
+      password: ENC(DURHuRsSmaDEKcx7C9kllvKrNnthDcNZNcPCI7l+0bk=)
+      ssl:
+        enabled: true
+      repositories:
+        enabled: false
+
+jwt:
+  secret_key: ENC(CJzB4FyuHQrRdJ9V+3J0GhZbhxevmxah4rJItf5dM0GJj6Rmq2AsaVHFfSuSBPNmOsckPdYUjSxhheiOR3kJGm1i2+zpO4JdiN8GAv6i1zc=)
+
+biztalk:
+  app_key: ENC(0ICRmKzOLkG/IpjvTio1+R+eOswJtOgcL8y0rQ9BmDc=)
+  secret_key: ENC(Bcr1J5xzQKefOfe+chqJ0M+P4Yfb4F3lrIExy4W2VI+d7sacNw0G1LPbKYnsDXvl)
+  pfId: ENC(NDFFA17+qF4c7EpyBdlV2e2679atMVd9Gv06OkLSh+gAIOuW5uTmEVZOj3mVsgER)
+  sender_phoneNumber: ENC(oUI8aODxdLXMsFy8AdNSXMnyWXqzj0/1)
+  templateId:
+    call: ENC(CGOu3LjBj919zkRKkEf86epBCWUZ3TJJhVXnl7QfKnyRiUJA1/5CfUiWyJcjTOjt)
+    cancel: ENC(Ff2tfrLsxsZ9LJpJpGtQgy1hsB4l9cymj6zczjjw4/jzQKDOslxJn+2VvQ5QZg4/)
+    forceCancel: ENC(yEIJoeLcbFwRqdPjOy0W5+4uwSIHUhbHDpWG98jOorBqc98td/mVpoD88ELUNwab)
+    ready: ENC(FquVHugagxaoGrTmagapeIFhF/g/0ZKDBCB76kBBV29d/iXqxH9RFMuqkLRW+wuW)
+    waiting: ENC(DQuBlQzz4/Lo1dXfTWtwthICNLzAS44GtpaTHaa3k8mnJ3zq1BtdvMo9Ak/TYcKn)
+
+management:
+  server:
+    port: 63544
+  endpoints:
+    enabled-by-default: false
+    jmx:
+      exposure:
+        exclude: "*"
+    web:
+      exposure:
+        include: info, health, prometheus, metrics
+      base-path: ENC(djCq5yP+wuQcOpBaOgZYbubHDHG8KwWN4eLyukWl46+Y6xz7fDUGRH0/lwVLqhDL)
+  endpoint:
+    health:
+      enabled: true
+    info:
+      enabled: true
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+springdoc:
+  swagger-ui:
+    display-request-duration: true
+    enabled: false
+
+logging:
+  level:
+    org.redisson: INFO
+    org.springframework.cache: INFO
