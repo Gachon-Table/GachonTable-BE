@@ -52,6 +52,4 @@ public class TransactionConfig {
     public DataSource dataSource(CustomRoutingDataSource routingDataSource) {
         return new LazyConnectionDataSourceProxy(routingDataSource);
     }
-
 }
-
