@@ -6,26 +6,26 @@ spring:
         username: ENC(Z89GsautuOl2p6BefL146A==)
         password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
         driver-class-name: com.mysql.cj.jdbc.Driver
-        maximum-pool-size: 10
-        connection-timeout: 5000
+        maximum-pool-size: 33
+        connection-timeout: 3000
         connection-init-sql: SELECT 1
         validation-timeout: 2000
         minimum-idle: 10
-        idle-timeout: 600000
-        max-lifetime: 1800000
+        idle-timeout: 300000
+        max-lifetime: 1200000
     slave:
       hikari:
         jdbc-url: ENC(Ux6HWzhKveQtR3WOyTmA/qad//VpWjpNRpFLSdL7Rh1Y7uO7u3jBwLND6IyjI+HTaoLbXqGj/qX7830f1oBRiDndgHIxzOz9ftCwWHc4TioG9MsIEmGrxKGo7ylSyAW3z0VcUGjLQsVAZRyk9s6kKOdQnEZeZfWO+ACPHcPlG/KOfaqWlz3kl/N13hRNKaiIW8I/vo5aV8KDbrNkJhKT8PN5GDu9+TkYKS0iSt9TzrcseBW96MzgYg==)
         username: ENC(Z89GsautuOl2p6BefL146A==)
         password: ENC(4IWCgJuGPqbikO4xgN8jZRekUWDhUoyuafdh60pKN5M=)
         driver-class-name: com.mysql.cj.jdbc.Driver
-        maximum-pool-size: 10
-        connection-timeout: 5000
+        maximum-pool-size: 33
+        connection-timeout: 3000
         connection-init-sql: SELECT 1
         validation-timeout: 2000
         minimum-idle: 10
-        idle-timeout: 600000
-        max-lifetime: 1800000
+        idle-timeout: 300000
+        max-lifetime: 1200000
 
   jpa:
     show-sql: false
