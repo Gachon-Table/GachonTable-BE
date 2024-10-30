@@ -101,7 +101,7 @@ public class Pub {
     }
 
     private void validateCanUpdateWaitingStatusToTrue() {
-        if (this.autoDisabled && !this.waitingStatus && this.waitingCount < MAX_WAITING_COUNT) {
+        if (this.autoDisabled && !this.waitingStatus && this.waitingCount <= MAX_WAITING_COUNT) {
             this.waitingStatus = true;
         }
     }
