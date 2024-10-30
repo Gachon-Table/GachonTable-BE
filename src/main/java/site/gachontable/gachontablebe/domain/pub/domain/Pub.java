@@ -40,6 +40,9 @@ public class Pub {
     @Column(nullable = false)
     private Integer waitingCount;
 
+    @Column(nullable = false)
+    private Boolean autoDisabled;
+
     public static Pub create(String pubName,
                              String oneLiner,
                              String instagramUrl,
@@ -87,15 +90,20 @@ public class Pub {
     private void checkMaxWaitingCount() {
         if (this.waitingCount >= MAX_WAITING_COUNT) {
             this.waitingStatus = false;
-            return;
+            this.autoDisabled = true;
         }
-        this.waitingStatus = true;
     }
 
     public void decreaseWaitingCount() {
         validateWaitingCount();
+        validateCanUpdateWaitingStatusToTrue();
         this.waitingCount -= 1;
-        checkMaxWaitingCount();
+    }
+
+    private void validateCanUpdateWaitingStatusToTrue() {
+        if (this.autoDisabled && !this.waitingStatus && this.waitingCount < MAX_WAITING_COUNT) {
+            this.waitingStatus = true;
+        }
     }
 
     private void validateWaitingCount() {
@@ -112,6 +120,7 @@ public class Pub {
 
     public void updateWaitingStatus(Boolean waitingStatus) {
         this.waitingStatus = waitingStatus;
+        this.autoDisabled = false;
     }
 
     public void checkStatus() {
