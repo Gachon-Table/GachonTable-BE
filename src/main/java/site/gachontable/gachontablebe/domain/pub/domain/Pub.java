@@ -26,7 +26,7 @@ public class Pub {
     private String instagramUrl;
 
     @Column(nullable = false)
-    private Integer hours;
+    private Integer minutes;
 
     @Column(nullable = false)
     private String menuUrl;
@@ -46,7 +46,7 @@ public class Pub {
     public static Pub create(String pubName,
                              String oneLiner,
                              String instagramUrl,
-                             Integer hours,
+                             Integer minutes,
                              String menuUrl,
                              Boolean openStatus,
                              Boolean waitingStatus,
@@ -55,7 +55,7 @@ public class Pub {
                 .pubName(pubName)
                 .oneLiner(oneLiner)
                 .instagramUrl(instagramUrl)
-                .hours(hours)
+                .minutes(minutes)
                 .menuUrl(menuUrl)
                 .openStatus(openStatus)
                 .waitingStatus(waitingStatus)
@@ -67,7 +67,7 @@ public class Pub {
     private Pub(String pubName,
                String oneLiner,
                String instagramUrl,
-               Integer hours,
+               Integer minutes,
                String menuUrl,
                Boolean openStatus,
                Boolean waitingStatus,
@@ -75,7 +75,7 @@ public class Pub {
         this.pubName = pubName;
         this.oneLiner = oneLiner;
         this.instagramUrl = instagramUrl;
-        this.hours = hours;
+        this.minutes = minutes;
         this.menuUrl = menuUrl;
         this.openStatus = openStatus;
         this.waitingStatus = waitingStatus;
