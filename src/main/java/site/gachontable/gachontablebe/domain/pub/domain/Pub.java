@@ -10,7 +10,7 @@ import site.gachontable.gachontablebe.domain.waiting.exception.PubClosedForWaiti
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Pub {
-    private static final Integer MAX_WAITING_COUNT = 30;
+    private static final Integer MAX_WAITING_COUNT = 50;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
