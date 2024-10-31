@@ -10,7 +10,7 @@ import site.gachontable.gachontablebe.domain.waiting.exception.PubClosedForWaiti
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Pub {
-    private static final Integer MAX_WAITING_COUNT = 30;
+    private static final Integer MAX_WAITING_COUNT = 50;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Pub {
     private String instagramUrl;
 
     @Column(nullable = false)
-    private Integer hours;
+    private Integer minutes;
 
     @Column(nullable = false)
     private String menuUrl;
@@ -40,10 +40,13 @@ public class Pub {
     @Column(nullable = false)
     private Integer waitingCount;
 
+    @Column(nullable = false)
+    private Boolean autoDisabled;
+
     public static Pub create(String pubName,
                              String oneLiner,
                              String instagramUrl,
-                             Integer hours,
+                             Integer minutes,
                              String menuUrl,
                              Boolean openStatus,
                              Boolean waitingStatus,
@@ -52,7 +55,7 @@ public class Pub {
                 .pubName(pubName)
                 .oneLiner(oneLiner)
                 .instagramUrl(instagramUrl)
-                .hours(hours)
+                .minutes(minutes)
                 .menuUrl(menuUrl)
                 .openStatus(openStatus)
                 .waitingStatus(waitingStatus)
@@ -64,7 +67,7 @@ public class Pub {
     private Pub(String pubName,
                String oneLiner,
                String instagramUrl,
-               Integer hours,
+               Integer minutes,
                String menuUrl,
                Boolean openStatus,
                Boolean waitingStatus,
@@ -72,7 +75,7 @@ public class Pub {
         this.pubName = pubName;
         this.oneLiner = oneLiner;
         this.instagramUrl = instagramUrl;
-        this.hours = hours;
+        this.minutes = minutes;
         this.menuUrl = menuUrl;
         this.openStatus = openStatus;
         this.waitingStatus = waitingStatus;
@@ -87,15 +90,20 @@ public class Pub {
     private void checkMaxWaitingCount() {
         if (this.waitingCount >= MAX_WAITING_COUNT) {
             this.waitingStatus = false;
-            return;
+            this.autoDisabled = true;
         }
-        this.waitingStatus = true;
     }
 
     public void decreaseWaitingCount() {
         validateWaitingCount();
+        validateCanUpdateWaitingStatusToTrue();
         this.waitingCount -= 1;
-        checkMaxWaitingCount();
+    }
+
+    private void validateCanUpdateWaitingStatusToTrue() {
+        if (this.autoDisabled && !this.waitingStatus && this.waitingCount <= MAX_WAITING_COUNT) {
+            this.waitingStatus = true;
+        }
     }
 
     private void validateWaitingCount() {
@@ -112,6 +120,7 @@ public class Pub {
 
     public void updateWaitingStatus(Boolean waitingStatus) {
         this.waitingStatus = waitingStatus;
+        this.autoDisabled = false;
     }
 
     public void checkStatus() {

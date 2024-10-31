@@ -59,7 +59,7 @@ public class PubService {
         return Pub.create(request.pubName(),
                 request.oneLiner(),
                 request.instagramUrl(),
-                request.hours(),
+                request.minutes(),
                 request.menuUrl(),
                 request.openStatus(),
                 request.waitingStatus(),
