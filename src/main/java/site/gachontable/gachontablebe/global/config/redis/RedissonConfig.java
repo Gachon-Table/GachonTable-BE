@@ -25,8 +25,6 @@ public class RedissonConfig {
     private static final String REDISSON_HOST_PREFIX = "rediss://";
     private static final String REDISSON_PRIMARY_PREFIX = "gachontable-001.";
     private static final String REDISSON_REPLICA_1_PREFIX = "gachontable-002.";
-    private static final String REDISSON_REPLICA_2_PREFIX = "gachontable-003.";
-    private static final String REDISSON_REPLICA_3_PREFIX = "gachontable-004.";
 
     @Bean
     public RedissonClient redissonClient() {
@@ -34,9 +32,7 @@ public class RedissonConfig {
         config.useReplicatedServers()
                 .addNodeAddress(
                         REDISSON_HOST_PREFIX + REDISSON_PRIMARY_PREFIX + redisHost + ":" + redisPort + "/" + redisDatabase,
-                        REDISSON_HOST_PREFIX + REDISSON_REPLICA_1_PREFIX + redisHost + ":" + redisPort + "/" + redisDatabase,
-                        REDISSON_HOST_PREFIX + REDISSON_REPLICA_2_PREFIX + redisHost + ":" + redisPort + "/" + redisDatabase,
-                        REDISSON_HOST_PREFIX + REDISSON_REPLICA_3_PREFIX + redisHost + ":" + redisPort + "/" + redisDatabase
+                        REDISSON_HOST_PREFIX + REDISSON_REPLICA_1_PREFIX + redisHost + ":" + redisPort + "/" + redisDatabase
                 )
                 .setPassword(redisPassword);
         return Redisson.create(config);
