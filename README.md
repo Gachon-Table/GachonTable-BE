@@ -21,36 +21,22 @@
 <img src="https://img.shields.io/badge/Spring Data JPA-6DB33F?style=flat-square&logo=Databricks&logoColor=white" alt="Spring Data JPA">
 
 ### 인증/인가
-<img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat-square&logo=springsecurity&logoColor=white" alt="Spring Security">  
-<img src="https://img.shields.io/badge/JSON Web Tokens-000000?style=flat-square&logo=JSON Web Tokens&logoColor=white" alt="JWT">
+<img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat-square&logo=springsecurity&logoColor=white" alt="Spring Security"> <img src="https://img.shields.io/badge/JSON Web Tokens-000000?style=flat-square&logo=JSON Web Tokens&logoColor=white" alt="JWT">
 
 ### 동시성 처리
 <img src="https://img.shields.io/badge/Redisson-FF4438?style=flat-square&logo=redis&logoColor=white" alt="Redisson">
 
 ### AWS
-<img src ="https://img.shields.io/badge/AWS EC2-FF9900?style=flat-square&logo=amazonec2&logoColor=white" alt="EC@">
-<img src ="https://img.shields.io/badge/AWS S3-69A31?style=flat-square&logo=amazons3&logoColor=white" alt="S3">
-<img src="https://img.shields.io/badge/Aurora RDS-527FFF?style=flat-square&logo=amazonrds&logoColor=white" alt="Aurora">
-<img src="https://img.shields.io/badge/ElastiCache-C925D1?style=flat-square&logo=amazonelasticache&logoColor=white" alt="ElastiCache">
-<img src="https://img.shields.io/badge/Elastic Load Balancing-8C4FFF?style=flat-square&logo=awselasticloadbalancing&logoColor=white" alt="ELB">
+<img src ="https://img.shields.io/badge/AWS EC2-FF9900?style=flat-square&logo=amazonec2&logoColor=white" alt="EC@"> <img src ="https://img.shields.io/badge/AWS S3-69A31?style=flat-square&logo=amazons3&logoColor=white" alt="S3"> <img src="https://img.shields.io/badge/Aurora RDS-527FFF?style=flat-square&logo=amazonrds&logoColor=white" alt="Aurora"> <img src="https://img.shields.io/badge/ElastiCache-C925D1?style=flat-square&logo=amazonelasticache&logoColor=white" alt="ElastiCache"> <img src="https://img.shields.io/badge/Elastic Load Balancing-8C4FFF?style=flat-square&logo=awselasticloadbalancing&logoColor=white" alt="ELB">
 
 ### 성능 테스트
-<img src="https://img.shields.io/badge/Apache JMeter-D22128?style=flat-square&logo=Apache JMeter&logoColor=white" alt="JMeter">
-<img src="https://img.shields.io/badge/K6-7D64FF?style=flat-square&logo=K6&logoColor=white" alt="K6">
+<img src="https://img.shields.io/badge/Apache JMeter-D22128?style=flat-square&logo=Apache JMeter&logoColor=white" alt="JMeter"> <img src="https://img.shields.io/badge/K6-7D64FF?style=flat-square&logo=K6&logoColor=white" alt="K6">
 
 ### 모니터링
-<img src="https://github.com/pinpoint-apm/pinpoint/raw/master/web/psd/logo.png" alt="Pinpoint">
-<img src="https://img.shields.io/badge/Sentry-362D59?style=flat-square&logo=sentry&logoColor=white" alt="Sentry">
-<img src="https://img.shields.io/badge/Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white" alt="Prometheus">
-<img src="https://img.shields.io/badge/Grafana-F46800?style=flat-square&logo=grafana&logoColor=white" alt="Grafana">
+<img src="https://github.com/pinpoint-apm/pinpoint/raw/master/web/psd/logo.png" alt="Pinpoint"> <img src="https://img.shields.io/badge/Sentry-362D59?style=flat-square&logo=sentry&logoColor=white" alt="Sentry"> <img src="https://img.shields.io/badge/Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white" alt="Prometheus"> <img src="https://img.shields.io/badge/Grafana-F46800?style=flat-square&logo=grafana&logoColor=white" alt="Grafana">
 
 ### 협업 툴
-<img src="https://img.shields.io/badge/Jira-0052CC?style=flat-square&logo=jira&logoColor=white" alt="Jira">
-<img src="https://img.shields.io/badge/Slack-4A154B?style=flat-square&logo=slack&logoColor=white" alt="Slack">
-<img src="https://img.shields.io/badge/Notion-000000?style=flat-square&logo=notion&logoColor=white" alt="Notion">
-
-
-
+<img src="https://img.shields.io/badge/Jira-0052CC?style=flat-square&logo=jira&logoColor=white" alt="Jira"> <img src="https://img.shields.io/badge/Slack-4A154B?style=flat-square&logo=slack&logoColor=white" alt="Slack"> <img src="https://img.shields.io/badge/Notion-000000?style=flat-square&logo=notion&logoColor=white" alt="Notion">
 
 ## 💪 백엔드 팀
 
