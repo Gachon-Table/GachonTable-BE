@@ -14,8 +14,8 @@ import site.gachontable.domain.auth.domain.AccessToken;
 import site.gachontable.domain.auth.domain.KakaoProfile;
 import site.gachontable.presentation.auth.dto.response.AuthResponse;
 import site.gachontable.domain.shared.Role;
-import site.gachontable.domain.user.domain.User;
-import site.gachontable.domain.user.port.out.UserRepository;
+import site.gachontable.domain.member.domain.User;
+import site.gachontable.domain.member.port.out.UserRepository;
 import site.gachontable.infra.security.jwt.JwtProvider;
 
 @Service

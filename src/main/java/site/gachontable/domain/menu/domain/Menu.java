@@ -1,8 +1,8 @@
-package site.gachontable.gachontablebe.domain.menu.domain;
+package site.gachontable.domain.menu.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
+import site.gachontable.domain.pub.domain.Pub;
 
 @Entity(name = "menu")
 @Getter

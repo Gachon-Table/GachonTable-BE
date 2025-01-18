@@ -1,9 +1,9 @@
-package site.gachontable.gachontablebe.domain.menu.domain.repository;
+package site.gachontable.domain.menu.port.out;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import site.gachontable.gachontablebe.domain.menu.domain.Menu;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
+import site.gachontable.domain.menu.domain.Menu;
+import site.gachontable.domain.pub.domain.Pub;
 
 import java.util.List;
 

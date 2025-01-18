@@ -1,10 +1,10 @@
-package site.gachontable.gachontablebe.domain.seating.domain.respository;
+package site.gachontable.domain.seating.port.out;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.seating.domain.Seating;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.seating.domain.Seating;
+import site.gachontable.domain.waiting.domain.Waiting;
 
 import java.time.LocalDateTime;
 import java.util.List;

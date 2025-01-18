@@ -1,15 +1,15 @@
-package site.gachontable.gachontablebe.domain.seating.domain;
+package site.gachontable.domain.seating.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.SeatingsResponse;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.user.domain.User;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
-import site.gachontable.gachontablebe.domain.shared.Table;
+import site.gachontable.presentation.admin.dto.response.SeatingsResponse;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.member.domain.User;
+import site.gachontable.domain.waiting.domain.Waiting;
+import site.gachontable.domain.shared.Table;
 
 import java.time.LocalDateTime;
 
