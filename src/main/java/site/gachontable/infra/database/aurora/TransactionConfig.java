@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config.aurora;
+package site.gachontable.infra.database.aurora;
 
 import com.zaxxer.hikari.HikariDataSource;
 import java.util.HashMap;

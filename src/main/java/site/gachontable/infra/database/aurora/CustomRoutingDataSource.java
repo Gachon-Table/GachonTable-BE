@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config.aurora;
+package site.gachontable.infra.database.aurora;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
