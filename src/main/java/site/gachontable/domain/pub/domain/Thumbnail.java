@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.pub.domain;
+package site.gachontable.domain.pub.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

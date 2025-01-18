@@ -1,10 +1,10 @@
-package site.gachontable.gachontablebe.domain.pub.domain.repository;
+package site.gachontable.domain.pub.domain.repository;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.pub.domain.Thumbnail;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.pub.domain.Thumbnail;
 
 import java.util.List;
 

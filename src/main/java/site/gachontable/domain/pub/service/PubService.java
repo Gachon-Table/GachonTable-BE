@@ -1,18 +1,18 @@
-package site.gachontable.gachontablebe.domain.pub.usecase;
+package site.gachontable.domain.pub.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.gachontablebe.domain.menu.domain.Menu;
-import site.gachontable.gachontablebe.domain.menu.domain.repository.MenuRepository;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
-import site.gachontable.gachontablebe.domain.pub.domain.repository.ThumbnailRepository;
-import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.request.PubRegisterRequest;
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubDetailsResponse;
-import site.gachontable.gachontablebe.domain.pub.presentation.dto.response.GetPubsResponse;
-import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
+import site.gachontable.domain.menu.domain.Menu;
+import site.gachontable.domain.menu.port.out.MenuRepository;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.pub.domain.repository.PubRepository;
+import site.gachontable.domain.pub.domain.repository.ThumbnailRepository;
+import site.gachontable.domain.pub.exception.PubNotFoundException;
+import site.gachontable.presentation.pub.dto.request.PubRegisterRequest;
+import site.gachontable.presentation.pub.dto.response.GetPubDetailsResponse;
+import site.gachontable.presentation.pub.dto.response.GetPubsResponse;
+import site.gachontable.domain.shared.dto.response.RegisterResponse;
 
 import java.util.List;
 

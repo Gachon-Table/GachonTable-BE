@@ -1,10 +1,10 @@
-package site.gachontable.gachontablebe.domain.pub.domain;
+package site.gachontable.domain.pub.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.gachontable.gachontablebe.domain.pub.exception.EmptyWaitingCountException;
-import site.gachontable.gachontablebe.domain.pub.exception.PubNotOpenException;
-import site.gachontable.gachontablebe.domain.waiting.exception.PubClosedForWaitingException;
+import site.gachontable.domain.pub.exception.EmptyWaitingCountException;
+import site.gachontable.domain.pub.exception.PubNotOpenException;
+import site.gachontable.domain.waiting.exception.PubClosedForWaitingException;
 
 @Entity(name = "pub")
 @Getter

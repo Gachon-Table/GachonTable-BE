@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import site.gachontable.presentation.pub.dto.request.PubRegisterRequest;
 import site.gachontable.presentation.pub.dto.response.GetPubDetailsResponse;
 import site.gachontable.presentation.pub.dto.response.GetPubsResponse;
-import site.gachontable.domain.pub.usecase.PubService;
+import site.gachontable.domain.pub.service.PubService;
 import site.gachontable.domain.shared.dto.response.RegisterResponse;
-import site.gachontable.global.error.ErrorResponse;
+import site.gachontable.independent.error.ErrorResponse;
 
 import java.util.List;
 
