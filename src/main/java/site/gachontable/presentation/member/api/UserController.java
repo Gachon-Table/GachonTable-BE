@@ -15,11 +15,11 @@ import site.gachontable.domain.shared.dto.request.RefreshRequest;
 import site.gachontable.domain.shared.dto.request.TestRegisterRequest;
 import site.gachontable.domain.shared.dto.response.RegisterResponse;
 import site.gachontable.presentation.member.dto.request.UserLoginRequest;
-import site.gachontable.domain.user.usecase.UserLogin;
-import site.gachontable.domain.user.usecase.UserRegister;
-import site.gachontable.global.error.ErrorResponse;
-import site.gachontable.global.jwt.JwtProvider;
-import site.gachontable.global.jwt.dto.JwtResponse;
+import site.gachontable.domain.member.port.in.UserLogin;
+import site.gachontable.domain.member.port.in.UserRegister;
+import site.gachontable.independent.error.ErrorResponse;
+import site.gachontable.infra.security.jwt.JwtProvider;
+import site.gachontable.infra.security.jwt.dto.JwtResponse;
 
 @RestController
 @RequiredArgsConstructor

@@ -1,8 +1,8 @@
-package site.gachontable.gachontablebe.domain.user.domain;
+package site.gachontable.domain.member.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.gachontable.gachontablebe.domain.shared.BaseTimeEntity;
+import site.gachontable.domain.shared.BaseTimeEntity;
 
 import java.util.UUID;
 

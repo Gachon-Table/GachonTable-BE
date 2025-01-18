@@ -1,14 +1,15 @@
-package site.gachontable.gachontablebe.domain.user.usecase;
+package site.gachontable.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.gachontablebe.domain.shared.Role;
-import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
-import site.gachontable.gachontablebe.domain.user.domain.User;
-import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
-import site.gachontable.gachontablebe.global.jwt.JwtProvider;
+import site.gachontable.domain.shared.Role;
+import site.gachontable.domain.shared.dto.response.RegisterResponse;
+import site.gachontable.domain.member.domain.User;
+import site.gachontable.domain.member.port.out.UserRepository;
+import site.gachontable.domain.member.port.in.UserRegister;
+import site.gachontable.infra.security.jwt.JwtProvider;
 
 @Service
 @RequiredArgsConstructor

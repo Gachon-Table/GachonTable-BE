@@ -1,19 +1,20 @@
-package site.gachontable.gachontablebe.domain.user.usecase;
+package site.gachontable.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import site.gachontable.gachontablebe.domain.shared.Role;
-import site.gachontable.gachontablebe.domain.shared.exception.PasswordNotMatchException;
-import site.gachontable.gachontablebe.domain.user.domain.User;
-import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
-import site.gachontable.gachontablebe.domain.user.exception.UserNotFoundException;
-import site.gachontable.gachontablebe.global.jwt.JwtProvider;
-import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
+import site.gachontable.domain.shared.Role;
+import site.gachontable.domain.shared.exception.PasswordNotMatchException;
+import site.gachontable.domain.member.domain.User;
+import site.gachontable.domain.member.port.out.UserRepository;
+import site.gachontable.domain.member.exception.UserNotFoundException;
+import site.gachontable.domain.member.port.in.UserLogin;
+import site.gachontable.infra.security.jwt.JwtProvider;
+import site.gachontable.infra.security.jwt.dto.JwtResponse;
 
 @Service
 @RequiredArgsConstructor
-public class UserLoginImpl implements UserLogin{
+public class UserLoginImpl implements UserLogin {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
