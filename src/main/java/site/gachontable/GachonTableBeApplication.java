@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe;
+package site.gachontable;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

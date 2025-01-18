@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe;
+package site.gachontable;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
