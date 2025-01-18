@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import site.gachontable.domain.shared.Role;
+import site.gachontable.presentation.shared.Role;
 import site.gachontable.domain.member.domain.User;
 import site.gachontable.domain.member.port.out.UserRepository;
 import site.gachontable.domain.member.exception.UserNotFoundException;

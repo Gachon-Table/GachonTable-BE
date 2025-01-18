@@ -2,7 +2,7 @@ package site.gachontable.domain.member.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.gachontable.domain.shared.BaseTimeEntity;
+import site.gachontable.infra.database.basetime.BaseTimeEntity;
 
 import java.util.UUID;
 

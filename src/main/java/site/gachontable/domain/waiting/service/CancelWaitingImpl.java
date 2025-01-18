@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import site.gachontable.domain.admin.service.ReadyUser;
 import site.gachontable.domain.pub.domain.Pub;
-import site.gachontable.domain.shared.event.SentBiztalkEvent;
+import site.gachontable.infra.biztalk.event.SentBiztalkEvent;
 import site.gachontable.domain.waiting.domain.Waiting;
 import site.gachontable.domain.waiting.port.in.CancelWaiting;
 import site.gachontable.domain.waiting.port.out.WaitingRepository;

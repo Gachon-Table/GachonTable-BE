@@ -12,7 +12,7 @@ import site.gachontable.presentation.pub.dto.request.PubRegisterRequest;
 import site.gachontable.presentation.pub.dto.response.GetPubDetailsResponse;
 import site.gachontable.presentation.pub.dto.response.GetPubsResponse;
 import site.gachontable.domain.pub.service.PubService;
-import site.gachontable.domain.shared.dto.response.RegisterResponse;
+import site.gachontable.presentation.shared.dto.response.RegisterResponse;
 import site.gachontable.independent.error.ErrorResponse;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package site.gachontable.domain.member.port.in;
 
-import site.gachontable.domain.shared.dto.response.RegisterResponse;
+import site.gachontable.presentation.shared.dto.response.RegisterResponse;
 
 public interface UserRegister {
 

@@ -1,10 +1,10 @@
-package site.gachontable.gachontablebe.domain.shared.event;
+package site.gachontable.infra.biztalk.event;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
-import site.gachontable.gachontablebe.global.biztalk.SendBiztalk;
+import site.gachontable.infra.biztalk.SendBiztalk;
 
 @Component
 @RequiredArgsConstructor

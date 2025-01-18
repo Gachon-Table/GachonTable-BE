@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.shared;
+package site.gachontable.presentation.shared;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;

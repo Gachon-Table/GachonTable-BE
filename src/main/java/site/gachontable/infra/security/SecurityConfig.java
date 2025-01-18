@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import site.gachontable.domain.shared.Role;
+import site.gachontable.presentation.shared.Role;
 import site.gachontable.infra.security.jwt.CustomAccessDeniedHandler;
 import site.gachontable.infra.security.jwt.filter.ExceptionHandleFilter;
 import site.gachontable.infra.security.jwt.filter.JwtAuthenticationEntryPoint;

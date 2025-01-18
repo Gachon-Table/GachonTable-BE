@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import site.gachontable.domain.shared.event.SentBiztalkEvent;
+import site.gachontable.infra.biztalk.event.SentBiztalkEvent;
 import site.gachontable.domain.waiting.domain.Waiting;
 import site.gachontable.domain.waiting.port.out.WaitingRepository;
 import site.gachontable.domain.waiting.exception.WaitingNotFoundException;

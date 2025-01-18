@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import site.gachontable.infra.security.principal.AuthDetails;
 import site.gachontable.infra.security.principal.AdminAuthDetailsService;
 import site.gachontable.infra.security.principal.UserAuthDetailsService;
-import site.gachontable.domain.shared.Role;
+import site.gachontable.presentation.shared.Role;
 import site.gachontable.infra.security.jwt.dto.JwtResponse;
 import site.gachontable.infra.security.jwt.exception.ExpiredTokenException;
 import site.gachontable.infra.security.jwt.exception.InvalidTokenException;

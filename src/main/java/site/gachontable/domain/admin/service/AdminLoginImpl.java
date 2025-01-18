@@ -8,8 +8,8 @@ import site.gachontable.domain.admin.port.out.AdminRepository;
 import site.gachontable.domain.admin.exception.AdminNotFoundException;
 import site.gachontable.domain.admin.port.in.AdminLogin;
 import site.gachontable.presentation.admin.dto.response.AdminLoginResponse;
-import site.gachontable.domain.shared.Role;
-import site.gachontable.domain.shared.exception.PasswordNotMatchException;
+import site.gachontable.presentation.shared.Role;
+import site.gachontable.presentation.shared.exception.PasswordNotMatchException;
 import site.gachontable.infra.security.jwt.JwtProvider;
 
 @Service

@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.shared;
+package site.gachontable.infra.database.basetime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

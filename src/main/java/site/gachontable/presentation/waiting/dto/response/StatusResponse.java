@@ -2,12 +2,12 @@ package site.gachontable.presentation.waiting.dto.response;
 
 import lombok.Builder;
 import site.gachontable.domain.pub.domain.Pub;
-import site.gachontable.domain.shared.Table;
+import site.gachontable.presentation.shared.Table;
 import site.gachontable.domain.waiting.domain.Waiting;
 
 import java.util.UUID;
 
-import static site.gachontable.domain.shared.DateTimeFormatters.WITH_WEEKDAY;
+import static site.gachontable.presentation.shared.DateTimeFormatters.WITH_WEEKDAY;
 
 @Builder
 public record StatusResponse(UUID waitingId,

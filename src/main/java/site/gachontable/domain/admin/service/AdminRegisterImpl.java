@@ -10,8 +10,8 @@ import site.gachontable.presentation.admin.dto.request.AdminRegisterRequest;
 import site.gachontable.domain.pub.domain.Pub;
 import site.gachontable.domain.pub.domain.repository.PubRepository;
 import site.gachontable.domain.pub.exception.PubNotFoundException;
-import site.gachontable.domain.shared.Role;
-import site.gachontable.domain.shared.dto.response.RegisterResponse;
+import site.gachontable.presentation.shared.Role;
+import site.gachontable.presentation.shared.dto.response.RegisterResponse;
 import site.gachontable.infra.security.jwt.JwtProvider;
 
 @Service

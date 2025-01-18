@@ -7,7 +7,7 @@ import site.gachontable.domain.waiting.type.Status;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static site.gachontable.domain.shared.DateTimeFormatters.WITH_WEEKDAY;
+import static site.gachontable.presentation.shared.DateTimeFormatters.WITH_WEEKDAY;
 
 @Builder
 public record WaitingHistoryResponse(

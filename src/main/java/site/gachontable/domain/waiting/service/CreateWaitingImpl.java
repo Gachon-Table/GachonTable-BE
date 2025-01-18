@@ -9,7 +9,7 @@ import site.gachontable.infra.security.principal.AuthDetails;
 import site.gachontable.domain.pub.domain.Pub;
 import site.gachontable.domain.pub.domain.repository.PubRepository;
 import site.gachontable.domain.pub.exception.PubNotFoundException;
-import site.gachontable.domain.shared.event.SentBiztalkEvent;
+import site.gachontable.infra.biztalk.event.SentBiztalkEvent;
 import site.gachontable.domain.member.domain.User;
 import site.gachontable.domain.member.port.out.UserRepository;
 import site.gachontable.domain.member.exception.UserNotFoundException;

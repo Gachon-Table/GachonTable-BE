@@ -9,7 +9,7 @@ import site.gachontable.domain.admin.port.in.UpdateStatus;
 import site.gachontable.presentation.admin.dto.request.UpdateStatusRequest;
 import site.gachontable.infra.security.principal.AuthDetails;
 import site.gachontable.domain.pub.domain.Pub;
-import site.gachontable.domain.shared.dto.response.RegisterResponse;
+import site.gachontable.presentation.shared.dto.response.RegisterResponse;
 import site.gachontable.domain.waiting.domain.Waiting;
 import site.gachontable.domain.waiting.port.out.WaitingRepository;
 import site.gachontable.domain.waiting.type.Status;

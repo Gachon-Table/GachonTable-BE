@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import site.gachontable.presentation.admin.dto.response.WaitingInfosResponse;
 import site.gachontable.domain.pub.domain.Pub;
-import site.gachontable.domain.shared.BaseTimeEntity;
+import site.gachontable.infra.database.basetime.BaseTimeEntity;
 import site.gachontable.domain.member.domain.User;
 import site.gachontable.domain.waiting.exception.WaitingCanceledException;
 import site.gachontable.domain.waiting.type.Position;
 import site.gachontable.domain.waiting.type.Status;
-import site.gachontable.domain.shared.Table;
+import site.gachontable.presentation.shared.Table;
 
 import java.util.UUID;
 

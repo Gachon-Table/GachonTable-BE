@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.shared.dto.response;
+package site.gachontable.presentation.shared.dto.response;
 
 public record RegisterResponse(Boolean status,
                                String message) {

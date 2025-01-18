@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import site.gachontable.domain.admin.domain.Admin;
 import site.gachontable.domain.admin.port.out.AdminRepository;
 import site.gachontable.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.domain.shared.Role;
+import site.gachontable.presentation.shared.Role;
 
 @Service
 @RequiredArgsConstructor

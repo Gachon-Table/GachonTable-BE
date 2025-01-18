@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.shared;
+package site.gachontable.presentation.shared;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

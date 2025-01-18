@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import site.gachontable.domain.shared.Role;
+import site.gachontable.presentation.shared.Role;
 
 import java.util.Collection;
 import java.util.Collections;

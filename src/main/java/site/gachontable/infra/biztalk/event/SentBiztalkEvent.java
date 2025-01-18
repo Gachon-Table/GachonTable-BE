@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.shared.event;
+package site.gachontable.infra.biztalk.event;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

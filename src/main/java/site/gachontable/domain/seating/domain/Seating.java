@@ -9,7 +9,7 @@ import site.gachontable.presentation.admin.dto.response.SeatingsResponse;
 import site.gachontable.domain.pub.domain.Pub;
 import site.gachontable.domain.member.domain.User;
 import site.gachontable.domain.waiting.domain.Waiting;
-import site.gachontable.domain.shared.Table;
+import site.gachontable.presentation.shared.Table;
 
 import java.time.LocalDateTime;
 

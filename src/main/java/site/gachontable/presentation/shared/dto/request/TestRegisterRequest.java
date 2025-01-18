@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.shared.dto.request;
+package site.gachontable.presentation.shared.dto.request;
 
 public record TestRegisterRequest(String username,
                                   String password,

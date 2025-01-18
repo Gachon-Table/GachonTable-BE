@@ -1,7 +1,7 @@
 package site.gachontable.presentation.admin.dto.response;
 
 import lombok.Builder;
-import site.gachontable.domain.shared.Table;
+import site.gachontable.presentation.shared.Table;
 import site.gachontable.domain.waiting.domain.Waiting;
 import site.gachontable.domain.waiting.type.Status;
 
