@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.biztalk;
+package site.gachontable.infra.biztalk;
 
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
@@ -9,7 +9,7 @@ import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import site.gachontable.gachontablebe.global.biztalk.exception.BiztalkSendFailException;
+import site.gachontable.infra.biztalk.exception.BiztalkSendFailException;
 
 import java.util.HashMap;
 import java.util.Objects;
