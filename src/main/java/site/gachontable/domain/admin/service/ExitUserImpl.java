@@ -1,22 +1,23 @@
-package site.gachontable.gachontablebe.domain.admin.usecase;
+package site.gachontable.domain.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
-import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.ExitUserRequest;
-import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.pub.exception.PubMismatchException;
-import site.gachontable.gachontablebe.domain.seating.domain.Seating;
-import site.gachontable.gachontablebe.domain.seating.domain.respository.SeatingRepository;
-import site.gachontable.gachontablebe.domain.seating.exception.SeatingNotFoundException;
-import site.gachontable.gachontablebe.global.success.SuccessCode;
+import site.gachontable.domain.admin.port.out.AdminRepository;
+import site.gachontable.domain.admin.exception.AdminNotFoundException;
+import site.gachontable.domain.admin.port.in.ExitUser;
+import site.gachontable.presentation.admin.dto.request.ExitUserRequest;
+import site.gachontable.infra.security.principal.AuthDetails;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.pub.exception.PubMismatchException;
+import site.gachontable.domain.seating.domain.Seating;
+import site.gachontable.domain.seating.port.out.SeatingRepository;
+import site.gachontable.domain.seating.exception.SeatingNotFoundException;
+import site.gachontable.independent.type.SuccessCode;
 
 @Service
 @RequiredArgsConstructor
-public class ExitUserImpl implements ExitUser{
+public class ExitUserImpl implements ExitUser {
 
     private final SeatingRepository seatingRepository;
     private final AdminRepository adminRepository;

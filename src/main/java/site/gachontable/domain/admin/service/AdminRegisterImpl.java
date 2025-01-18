@@ -1,17 +1,18 @@
-package site.gachontable.gachontablebe.domain.admin.usecase;
+package site.gachontable.domain.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import site.gachontable.gachontablebe.domain.admin.domain.Admin;
-import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.AdminRegisterRequest;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.pub.domain.repository.PubRepository;
-import site.gachontable.gachontablebe.domain.pub.exception.PubNotFoundException;
-import site.gachontable.gachontablebe.domain.shared.Role;
-import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
-import site.gachontable.gachontablebe.global.jwt.JwtProvider;
+import site.gachontable.domain.admin.domain.Admin;
+import site.gachontable.domain.admin.port.out.AdminRepository;
+import site.gachontable.domain.admin.port.in.AdminRegister;
+import site.gachontable.presentation.admin.dto.request.AdminRegisterRequest;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.pub.domain.repository.PubRepository;
+import site.gachontable.domain.pub.exception.PubNotFoundException;
+import site.gachontable.domain.shared.Role;
+import site.gachontable.domain.shared.dto.response.RegisterResponse;
+import site.gachontable.infra.security.jwt.JwtProvider;
 
 @Service
 @RequiredArgsConstructor

@@ -1,20 +1,21 @@
-package site.gachontable.gachontablebe.domain.admin.usecase;
+package site.gachontable.domain.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
-import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
-import site.gachontable.gachontablebe.domain.menu.domain.Menu;
-import site.gachontable.gachontablebe.domain.menu.domain.repository.MenuRepository;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.pub.domain.Thumbnail;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.PubManageRequest;
-import site.gachontable.gachontablebe.domain.pub.domain.repository.ThumbnailRepository;
-import site.gachontable.gachontablebe.global.success.SuccessCode;
+import site.gachontable.domain.admin.port.out.AdminRepository;
+import site.gachontable.domain.admin.exception.AdminNotFoundException;
+import site.gachontable.domain.admin.port.in.ManagePub;
+import site.gachontable.infra.security.principal.AuthDetails;
+import site.gachontable.domain.menu.domain.Menu;
+import site.gachontable.domain.menu.port.out.MenuRepository;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.pub.domain.Thumbnail;
+import site.gachontable.presentation.admin.dto.request.PubManageRequest;
+import site.gachontable.domain.pub.domain.repository.ThumbnailRepository;
+import site.gachontable.independent.type.SuccessCode;
 
 import java.util.List;
 

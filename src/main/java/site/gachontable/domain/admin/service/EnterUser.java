@@ -1,22 +1,22 @@
-package site.gachontable.gachontablebe.domain.admin.usecase;
+package site.gachontable.domain.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import site.gachontable.gachontablebe.domain.admin.domain.Admin;
-import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
-import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.gachontablebe.domain.admin.exception.SeatingNumAlreadyExistsException;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.EnterUserRequest;
-import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.pub.exception.PubMismatchException;
-import site.gachontable.gachontablebe.domain.seating.domain.Seating;
-import site.gachontable.gachontablebe.domain.seating.domain.respository.SeatingRepository;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
-import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
-import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
-import site.gachontable.gachontablebe.global.success.SuccessCode;
+import site.gachontable.domain.admin.domain.Admin;
+import site.gachontable.domain.admin.port.out.AdminRepository;
+import site.gachontable.domain.admin.exception.AdminNotFoundException;
+import site.gachontable.domain.admin.exception.SeatingNumAlreadyExistsException;
+import site.gachontable.presentation.admin.dto.request.EnterUserRequest;
+import site.gachontable.infra.security.principal.AuthDetails;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.pub.exception.PubMismatchException;
+import site.gachontable.domain.seating.domain.Seating;
+import site.gachontable.domain.seating.port.out.SeatingRepository;
+import site.gachontable.domain.waiting.domain.Waiting;
+import site.gachontable.domain.waiting.port.out.WaitingRepository;
+import site.gachontable.domain.waiting.exception.WaitingNotFoundException;
+import site.gachontable.infra.redis.RedissonLock;
+import site.gachontable.independent.type.SuccessCode;
 
 import java.time.LocalDateTime;
 

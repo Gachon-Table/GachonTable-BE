@@ -1,15 +1,16 @@
-package site.gachontable.gachontablebe.domain.admin.usecase;
+package site.gachontable.domain.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import site.gachontable.gachontablebe.domain.admin.domain.Admin;
-import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
-import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.AdminLoginResponse;
-import site.gachontable.gachontablebe.domain.shared.Role;
-import site.gachontable.gachontablebe.domain.shared.exception.PasswordNotMatchException;
-import site.gachontable.gachontablebe.global.jwt.JwtProvider;
+import site.gachontable.domain.admin.domain.Admin;
+import site.gachontable.domain.admin.port.out.AdminRepository;
+import site.gachontable.domain.admin.exception.AdminNotFoundException;
+import site.gachontable.domain.admin.port.in.AdminLogin;
+import site.gachontable.presentation.admin.dto.response.AdminLoginResponse;
+import site.gachontable.domain.shared.Role;
+import site.gachontable.domain.shared.exception.PasswordNotMatchException;
+import site.gachontable.infra.security.jwt.JwtProvider;
 
 @Service
 @RequiredArgsConstructor

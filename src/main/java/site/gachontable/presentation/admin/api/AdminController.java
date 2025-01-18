@@ -9,20 +9,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import site.gachontable.domain.admin.port.in.*;
+import site.gachontable.domain.admin.service.CallUser;
+import site.gachontable.domain.admin.service.EnterUser;
 import site.gachontable.presentation.admin.dto.request.*;
 import site.gachontable.presentation.admin.dto.response.AdminLoginResponse;
 import site.gachontable.presentation.admin.dto.response.SeatingsResponse;
 import site.gachontable.presentation.admin.dto.response.WaitingInfosResponse;
 import site.gachontable.domain.admin.type.Status;
-import site.gachontable.domain.admin.usecase.*;
-import site.gachontable.domain.auth.domain.AuthDetails;
+import site.gachontable.infra.security.principal.AuthDetails;
 import site.gachontable.presentation.admin.dto.request.PubManageRequest;
 import site.gachontable.domain.shared.dto.request.RefreshRequest;
 import site.gachontable.domain.shared.dto.response.RegisterResponse;
-import site.gachontable.domain.waiting.usecase.GetWaitings;
-import site.gachontable.global.error.ErrorResponse;
-import site.gachontable.global.jwt.JwtProvider;
-import site.gachontable.global.jwt.dto.JwtResponse;
+import site.gachontable.domain.waiting.service.GetWaitings;
+import site.gachontable.independent.error.ErrorResponse;
+import site.gachontable.infra.security.jwt.JwtProvider;
+import site.gachontable.infra.security.jwt.dto.JwtResponse;
 
 @RestController
 @RequestMapping("/admin")

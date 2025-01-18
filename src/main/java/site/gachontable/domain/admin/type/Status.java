@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.admin.type;
+package site.gachontable.domain.admin.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

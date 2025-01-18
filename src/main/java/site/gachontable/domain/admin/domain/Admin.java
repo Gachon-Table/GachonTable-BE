@@ -1,8 +1,8 @@
-package site.gachontable.gachontablebe.domain.admin.domain;
+package site.gachontable.domain.admin.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
+import site.gachontable.domain.pub.domain.Pub;
 
 import java.util.UUID;
 

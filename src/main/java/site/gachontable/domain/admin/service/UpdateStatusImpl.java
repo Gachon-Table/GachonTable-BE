@@ -1,24 +1,25 @@
-package site.gachontable.gachontablebe.domain.admin.usecase;
+package site.gachontable.domain.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
-import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.request.UpdateStatusRequest;
-import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.shared.dto.response.RegisterResponse;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
-import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.domain.waiting.type.Status;
-import site.gachontable.gachontablebe.global.success.SuccessCode;
+import site.gachontable.domain.admin.port.out.AdminRepository;
+import site.gachontable.domain.admin.exception.AdminNotFoundException;
+import site.gachontable.domain.admin.port.in.UpdateStatus;
+import site.gachontable.presentation.admin.dto.request.UpdateStatusRequest;
+import site.gachontable.infra.security.principal.AuthDetails;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.shared.dto.response.RegisterResponse;
+import site.gachontable.domain.waiting.domain.Waiting;
+import site.gachontable.domain.waiting.port.out.WaitingRepository;
+import site.gachontable.domain.waiting.type.Status;
+import site.gachontable.independent.type.SuccessCode;
 
 import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
-public class UpdateStatusImpl implements UpdateStatus{
+public class UpdateStatusImpl implements UpdateStatus {
 
     private final AdminRepository adminRepository;
     private final WaitingRepository waitingRepository;

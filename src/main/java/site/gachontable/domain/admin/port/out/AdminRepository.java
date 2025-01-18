@@ -1,7 +1,7 @@
-package site.gachontable.gachontablebe.domain.admin.domain.repository;
+package site.gachontable.domain.admin.port.out;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import site.gachontable.gachontablebe.domain.admin.domain.Admin;
+import site.gachontable.domain.admin.domain.Admin;
 
 import java.util.Optional;
 import java.util.UUID;

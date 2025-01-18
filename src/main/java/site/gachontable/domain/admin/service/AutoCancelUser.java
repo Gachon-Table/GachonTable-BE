@@ -1,15 +1,15 @@
-package site.gachontable.gachontablebe.domain.admin.usecase;
+package site.gachontable.domain.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import site.gachontable.gachontablebe.domain.shared.event.SentBiztalkEvent;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
-import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
-import site.gachontable.gachontablebe.domain.waiting.type.Status;
-import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
+import site.gachontable.domain.shared.event.SentBiztalkEvent;
+import site.gachontable.domain.waiting.domain.Waiting;
+import site.gachontable.domain.waiting.port.out.WaitingRepository;
+import site.gachontable.domain.waiting.exception.WaitingNotFoundException;
+import site.gachontable.domain.waiting.type.Status;
+import site.gachontable.infra.redis.RedissonLock;
 
 import java.util.HashMap;
 import java.util.UUID;
