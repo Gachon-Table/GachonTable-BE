@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.auth.domain;
+package site.gachontable.domain.auth.domain;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

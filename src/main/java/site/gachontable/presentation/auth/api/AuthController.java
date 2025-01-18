@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import site.gachontable.presentation.auth.dto.response.AuthResponse;
-import site.gachontable.domain.auth.usecase.AuthService;
-import site.gachontable.global.error.ErrorResponse;
+import site.gachontable.domain.auth.service.AuthService;
+import site.gachontable.independent.error.ErrorResponse;
 
 @RestController
 @RequiredArgsConstructor

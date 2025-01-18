@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.auth.usecase;
+package site.gachontable.domain.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import site.gachontable.gachontablebe.domain.auth.domain.AccessToken;
-import site.gachontable.gachontablebe.domain.auth.domain.KakaoProfile;
-import site.gachontable.gachontablebe.domain.auth.presentation.dto.response.AuthResponse;
-import site.gachontable.gachontablebe.domain.shared.Role;
-import site.gachontable.gachontablebe.domain.user.domain.User;
-import site.gachontable.gachontablebe.domain.user.domain.repository.UserRepository;
-import site.gachontable.gachontablebe.global.jwt.JwtProvider;
+import site.gachontable.domain.auth.domain.AccessToken;
+import site.gachontable.domain.auth.domain.KakaoProfile;
+import site.gachontable.presentation.auth.dto.response.AuthResponse;
+import site.gachontable.domain.shared.Role;
+import site.gachontable.domain.user.domain.User;
+import site.gachontable.domain.user.port.out.UserRepository;
+import site.gachontable.infra.security.jwt.JwtProvider;
 
 @Service
 @RequiredArgsConstructor
