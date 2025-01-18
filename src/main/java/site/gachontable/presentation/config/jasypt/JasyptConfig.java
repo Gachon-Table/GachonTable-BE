@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config.jasypt;
+package site.gachontable.presentation.config.jasypt;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;

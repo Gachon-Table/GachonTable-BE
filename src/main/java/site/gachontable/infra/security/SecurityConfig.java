@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config;
+package site.gachontable.infra.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,12 +16,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import site.gachontable.gachontablebe.domain.shared.Role;
-import site.gachontable.gachontablebe.global.error.exception.CustomAccessDeniedHandler;
-import site.gachontable.gachontablebe.global.filter.ExceptionHandleFilter;
-import site.gachontable.gachontablebe.global.jwt.JwtAuthenticationEntryPoint;
-import site.gachontable.gachontablebe.global.jwt.JwtProvider;
-import site.gachontable.gachontablebe.global.jwt.TokenAuthenticationFilter;
+import site.gachontable.domain.shared.Role;
+import site.gachontable.infra.security.jwt.CustomAccessDeniedHandler;
+import site.gachontable.infra.security.jwt.filter.ExceptionHandleFilter;
+import site.gachontable.infra.security.jwt.filter.JwtAuthenticationEntryPoint;
+import site.gachontable.infra.security.jwt.JwtProvider;
+import site.gachontable.infra.security.jwt.filter.TokenAuthenticationFilter;
 
 import java.util.Arrays;
 import java.util.List;

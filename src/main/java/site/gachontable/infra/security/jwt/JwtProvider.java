@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.jwt;
+package site.gachontable.infra.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -12,15 +12,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
-import site.gachontable.gachontablebe.domain.auth.usecase.AdminAuthDetailsService;
-import site.gachontable.gachontablebe.domain.auth.usecase.UserAuthDetailsService;
-import site.gachontable.gachontablebe.domain.shared.Role;
-import site.gachontable.gachontablebe.global.jwt.dto.JwtResponse;
-import site.gachontable.gachontablebe.global.jwt.exception.ExpiredTokenException;
-import site.gachontable.gachontablebe.global.jwt.exception.InvalidTokenException;
-import site.gachontable.gachontablebe.global.jwt.exception.MalformedTokenException;
-import site.gachontable.gachontablebe.global.jwt.exception.UnsupportedTokenException;
+import site.gachontable.domain.auth.domain.AuthDetails;
+import site.gachontable.domain.auth.usecase.AdminAuthDetailsService;
+import site.gachontable.domain.auth.usecase.UserAuthDetailsService;
+import site.gachontable.domain.shared.Role;
+import site.gachontable.infra.security.jwt.dto.JwtResponse;
+import site.gachontable.infra.security.jwt.exception.ExpiredTokenException;
+import site.gachontable.infra.security.jwt.exception.InvalidTokenException;
+import site.gachontable.infra.security.jwt.exception.MalformedTokenException;
+import site.gachontable.infra.security.jwt.exception.UnsupportedTokenException;
 
 import javax.crypto.SecretKey;
 import java.time.Duration;

@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config.swagger;
+package site.gachontable.presentation.config.swagger;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;

@@ -1,11 +1,12 @@
-package site.gachontable.gachontablebe.global.error.exception;
+package site.gachontable.presentation.config.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import site.gachontable.gachontablebe.global.error.ErrorCode;
-import site.gachontable.gachontablebe.global.error.ErrorResponse;
+import site.gachontable.independent.error.exception.ServiceException;
+import site.gachontable.independent.type.ErrorCode;
+import site.gachontable.independent.error.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.jwt;
+package site.gachontable.infra.security.jwt.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import site.gachontable.infra.security.jwt.JwtProvider;
 
 import java.io.IOException;
 

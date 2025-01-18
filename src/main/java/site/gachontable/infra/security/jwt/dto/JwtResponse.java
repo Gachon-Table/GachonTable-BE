@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.jwt.dto;
+package site.gachontable.infra.security.jwt.dto;
 
 public record JwtResponse(String accessToken,
                           String refreshToken) {

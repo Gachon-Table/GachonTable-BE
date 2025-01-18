@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.error.exception;
+package site.gachontable.infra.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -7,8 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-import site.gachontable.gachontablebe.global.error.ErrorCode;
-import site.gachontable.gachontablebe.global.error.ErrorResponse;
+import site.gachontable.independent.type.ErrorCode;
+import site.gachontable.independent.error.ErrorResponse;
 
 import java.io.IOException;
 

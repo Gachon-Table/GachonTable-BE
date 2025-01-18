@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.filter;
+package site.gachontable.infra.security.jwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.filter.OncePerRequestFilter;
-import site.gachontable.gachontablebe.global.error.ErrorCode;
-import site.gachontable.gachontablebe.global.error.ErrorResponse;
-import site.gachontable.gachontablebe.global.error.exception.ServiceException;
+import site.gachontable.independent.type.ErrorCode;
+import site.gachontable.independent.error.ErrorResponse;
+import site.gachontable.independent.error.exception.ServiceException;
 
 import java.io.IOException;
 import java.util.HashMap;
