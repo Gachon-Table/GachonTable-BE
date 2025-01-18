@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.success;
+package site.gachontable.independent.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

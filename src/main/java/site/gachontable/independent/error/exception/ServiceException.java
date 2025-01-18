@@ -1,8 +1,8 @@
-package site.gachontable.gachontablebe.global.error.exception;
+package site.gachontable.independent.error.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import site.gachontable.gachontablebe.global.error.ErrorCode;
+import site.gachontable.independent.type.ErrorCode;
 
 @Getter
 @AllArgsConstructor

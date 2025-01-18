@@ -1,6 +1,7 @@
-package site.gachontable.gachontablebe.global.error;
+package site.gachontable.independent.error;
 
 import lombok.Getter;
+import site.gachontable.independent.type.ErrorCode;
 
 @Getter
 public class ErrorResponse {

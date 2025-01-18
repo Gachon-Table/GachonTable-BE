@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config.parser;
+package site.gachontable.independent.parser;
 
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
