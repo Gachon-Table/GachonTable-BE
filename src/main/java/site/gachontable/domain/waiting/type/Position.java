@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.domain.waiting.type;
+package site.gachontable.domain.waiting.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

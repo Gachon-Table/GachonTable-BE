@@ -1,15 +1,15 @@
-package site.gachontable.gachontablebe.domain.waiting.usecase;
+package site.gachontable.domain.waiting.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
-import site.gachontable.gachontablebe.domain.seating.domain.respository.SeatingRepository;
-import site.gachontable.gachontablebe.domain.seating.exception.SeatingNotFoundException;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
-import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingHistoryResponse;
-import site.gachontable.gachontablebe.domain.waiting.type.Status;
+import site.gachontable.infra.security.principal.AuthDetails;
+import site.gachontable.domain.seating.port.out.SeatingRepository;
+import site.gachontable.domain.seating.exception.SeatingNotFoundException;
+import site.gachontable.domain.waiting.domain.Waiting;
+import site.gachontable.domain.waiting.port.out.WaitingRepository;
+import site.gachontable.presentation.waiting.dto.response.WaitingHistoryResponse;
+import site.gachontable.domain.waiting.type.Status;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

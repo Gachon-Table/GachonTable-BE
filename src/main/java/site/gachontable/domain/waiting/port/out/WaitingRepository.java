@@ -1,11 +1,11 @@
-package site.gachontable.gachontablebe.domain.waiting.domain.repository;
+package site.gachontable.domain.waiting.port.out;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
-import site.gachontable.gachontablebe.domain.waiting.type.Status;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.waiting.domain.Waiting;
+import site.gachontable.domain.waiting.type.Status;
 
 import java.util.List;
 import java.util.UUID;

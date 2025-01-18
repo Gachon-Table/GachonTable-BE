@@ -1,16 +1,16 @@
-package site.gachontable.gachontablebe.domain.waiting.usecase;
+package site.gachontable.domain.waiting.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.gachontablebe.domain.admin.domain.repository.AdminRepository;
-import site.gachontable.gachontablebe.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.WaitingInfosResponse;
-import site.gachontable.gachontablebe.domain.auth.domain.AuthDetails;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
-import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.domain.waiting.type.Status;
+import site.gachontable.domain.admin.port.out.AdminRepository;
+import site.gachontable.domain.admin.exception.AdminNotFoundException;
+import site.gachontable.presentation.admin.dto.response.WaitingInfosResponse;
+import site.gachontable.infra.security.principal.AuthDetails;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.waiting.domain.Waiting;
+import site.gachontable.domain.waiting.port.out.WaitingRepository;
+import site.gachontable.domain.waiting.type.Status;
 
 import java.util.Arrays;
 import java.util.List;

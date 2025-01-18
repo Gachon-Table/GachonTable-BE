@@ -1,15 +1,15 @@
-package site.gachontable.gachontablebe.domain.waiting.domain;
+package site.gachontable.domain.waiting.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import site.gachontable.gachontablebe.domain.admin.presentation.dto.response.WaitingInfosResponse;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.shared.BaseTimeEntity;
-import site.gachontable.gachontablebe.domain.user.domain.User;
-import site.gachontable.gachontablebe.domain.waiting.exception.WaitingCanceledException;
-import site.gachontable.gachontablebe.domain.waiting.type.Position;
-import site.gachontable.gachontablebe.domain.waiting.type.Status;
-import site.gachontable.gachontablebe.domain.shared.Table;
+import site.gachontable.presentation.admin.dto.response.WaitingInfosResponse;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.shared.BaseTimeEntity;
+import site.gachontable.domain.member.domain.User;
+import site.gachontable.domain.waiting.exception.WaitingCanceledException;
+import site.gachontable.domain.waiting.type.Position;
+import site.gachontable.domain.waiting.type.Status;
+import site.gachontable.domain.shared.Table;
 
 import java.util.UUID;
 

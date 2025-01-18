@@ -1,21 +1,22 @@
-package site.gachontable.gachontablebe.domain.waiting.usecase;
+package site.gachontable.domain.waiting.service;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import site.gachontable.gachontablebe.domain.admin.usecase.ReadyUser;
-import site.gachontable.gachontablebe.domain.pub.domain.Pub;
-import site.gachontable.gachontablebe.domain.shared.event.SentBiztalkEvent;
-import site.gachontable.gachontablebe.domain.waiting.domain.Waiting;
-import site.gachontable.gachontablebe.domain.waiting.domain.repository.WaitingRepository;
-import site.gachontable.gachontablebe.domain.waiting.exception.WaitingNotFoundException;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.request.CancelRequest;
-import site.gachontable.gachontablebe.domain.waiting.presentation.dto.response.WaitingResponse;
-import site.gachontable.gachontablebe.domain.waiting.type.Status;
-import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
-import site.gachontable.gachontablebe.global.success.SuccessCode;
+import site.gachontable.domain.admin.service.ReadyUser;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.shared.event.SentBiztalkEvent;
+import site.gachontable.domain.waiting.domain.Waiting;
+import site.gachontable.domain.waiting.port.in.CancelWaiting;
+import site.gachontable.domain.waiting.port.out.WaitingRepository;
+import site.gachontable.domain.waiting.exception.WaitingNotFoundException;
+import site.gachontable.presentation.waiting.dto.request.CancelRequest;
+import site.gachontable.presentation.waiting.dto.response.WaitingResponse;
+import site.gachontable.domain.waiting.type.Status;
+import site.gachontable.infra.redis.RedissonLock;
+import site.gachontable.independent.type.SuccessCode;
 
 import java.util.Arrays;
 import java.util.HashMap;
