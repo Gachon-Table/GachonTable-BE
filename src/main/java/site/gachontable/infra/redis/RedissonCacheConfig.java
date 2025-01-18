@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config.redis;
+package site.gachontable.infra.redis;
 
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.cache.CacheConfig;

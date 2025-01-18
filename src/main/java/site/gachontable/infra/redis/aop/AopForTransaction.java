@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config.aop;
+package site.gachontable.infra.redis.aop;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

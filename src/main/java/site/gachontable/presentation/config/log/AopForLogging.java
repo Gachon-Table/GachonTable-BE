@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config.aop;
+package site.gachontable.presentation.config.log;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import site.gachontable.gachontablebe.global.error.ErrorCode;
-import site.gachontable.gachontablebe.global.error.exception.ServiceException;
+import site.gachontable.independent.type.ErrorCode;
+import site.gachontable.independent.error.exception.ServiceException;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -24,14 +24,14 @@ import java.util.Map;
 @Component
 public class AopForLogging {
 
-    @Pointcut("execution(public * site.gachontable.gachontablebe..*.*(..)) && " +
-            "!execution(* site.gachontable.gachontablebe.global..*.*(..)) && " +
-            "!execution(public * site.gachontable.gachontablebe.domain..presentation.*Controller.*(..))")
+    @Pointcut("execution(public * site.gachontable.domain..*.*(..)) && " +
+            "!execution(* site.gachontable.infra..*(..)) && " +
+            "!execution(public * site.gachontable.presentation..*Controller.*(..))")
     private void publicMethodsFromService() {
     }
 
-    @Pointcut("execution(public * site.gachontable.gachontablebe.domain..presentation.*Controller.*(..)) && " +
-            "!execution(* site.gachontable.gachontablebe.domain.auth.presentation.*Controller.checkHealthStatus(..))")
+    @Pointcut("execution(public * site.gachontable.presentation..*Controller.*(..)) && " +
+            "!execution(* site.gachontable.presentation.auth.api.AuthController.checkHealthStatus(..))")
     private void publicMethodsFromController() {
     }
 

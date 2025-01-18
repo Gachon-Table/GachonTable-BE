@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config.async;
+package site.gachontable.infra.async;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

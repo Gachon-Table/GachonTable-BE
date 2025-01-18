@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config.redis;
+package site.gachontable.infra.redis;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

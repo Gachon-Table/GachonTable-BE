@@ -1,4 +1,4 @@
-package site.gachontable.gachontablebe.global.config.aop;
+package site.gachontable.infra.redis.aop;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,8 +9,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
-import site.gachontable.gachontablebe.global.config.parser.CustomSpringELParser;
-import site.gachontable.gachontablebe.global.config.redis.RedissonLock;
+import site.gachontable.independent.parser.CustomSpringELParser;
+import site.gachontable.infra.redis.RedissonLock;
 
 import java.lang.reflect.Method;
 
@@ -23,7 +23,7 @@ public class RedissonLockAop {
     private final RedissonClient redissonClient;
     private final AopForTransaction aopForTransaction;
 
-    @Around("@annotation(site.gachontable.gachontablebe.global.config.redis.RedissonLock)")
+    @Around("@annotation(site.gachontable.infra.redis.RedissonLock)")
     public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
