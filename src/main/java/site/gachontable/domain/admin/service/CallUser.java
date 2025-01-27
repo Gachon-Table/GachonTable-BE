@@ -1,0 +1,72 @@
+package site.gachontable.domain.admin.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import site.gachontable.domain.admin.domain.Admin;
+import site.gachontable.domain.admin.port.out.AdminRepository;
+import site.gachontable.domain.admin.exception.AdminNotFoundException;
+import site.gachontable.presentation.admin.dto.request.CallUserRequest;
+import site.gachontable.infra.security.principal.AuthDetails;
+import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.pub.exception.PubMismatchException;
+import site.gachontable.domain.waiting.domain.Waiting;
+import site.gachontable.domain.waiting.port.out.WaitingRepository;
+import site.gachontable.domain.waiting.exception.WaitingNotFoundException;
+import site.gachontable.infra.biztalk.SendBiztalk;
+import site.gachontable.infra.redis.RedissonLock;
+import site.gachontable.independent.type.SuccessCode;
+
+import java.util.HashMap;
+import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+@Service
+@RequiredArgsConstructor
+public class CallUser {
+
+    private final WaitingRepository waitingRepository;
+    private final AdminRepository adminRepository;
+    private final SendBiztalk sendBiztalk;
+    private final AutoCancelUser autoCancelUser;
+    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(8);
+
+    @Value("${biztalk.templateId.call}")
+    private String CALL_TEMPLATE_CODE;
+
+    @RedissonLock(key = "#lockKey")
+    public String execute(AuthDetails authDetails, CallUserRequest request, String lockKey) {
+        Waiting waiting = waitingRepository.findById(request.waitingId())
+                .orElseThrow(WaitingNotFoundException::new);
+        Pub pub = waiting.getPub();
+
+        checkPubMatches(authDetails, pub);
+
+        waiting.toAvailable();
+
+        HashMap<String, String> variables = new HashMap<>();
+        variables.put("#{pub}", pub.getPubName());
+        sendBiztalk.execute(CALL_TEMPLATE_CODE, waiting.getTel(), variables);
+
+        scheduleAutoCancel(request.waitingId(), variables);
+
+        return SuccessCode.USER_CALL_SUCCESS.getMessage();
+    }
+
+
+    private void scheduleAutoCancel(UUID waitingId, HashMap<String, String> variables) {
+        executorService.schedule(() ->
+                autoCancelUser.execute(waitingId, variables, "자동 취소"), 7, TimeUnit.MINUTES);
+    }
+
+    private void checkPubMatches(AuthDetails authDetails, Pub pub) {
+        Admin admin = adminRepository.findById(authDetails.getUuid()).
+                orElseThrow(AdminNotFoundException::new);
+
+        if (!pub.equals(admin.getPub())) {
+            throw new PubMismatchException();
+        }
+    }
+}

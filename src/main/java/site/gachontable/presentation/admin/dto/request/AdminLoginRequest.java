@@ -1,0 +1,5 @@
+package site.gachontable.presentation.admin.dto.request;
+
+public record AdminLoginRequest(String id,
+                                String password) {
+}
