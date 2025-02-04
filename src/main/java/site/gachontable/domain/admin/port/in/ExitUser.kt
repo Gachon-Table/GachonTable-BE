@@ -1,9 +1,8 @@
-package site.gachontable.domain.admin.port.in;
+package site.gachontable.domain.admin.port.`in`
 
-import site.gachontable.presentation.admin.dto.request.ExitUserRequest;
-import site.gachontable.infra.security.principal.AuthDetails;
+import site.gachontable.infra.security.principal.AuthDetails
+import site.gachontable.presentation.admin.dto.request.ExitUserRequest
 
-public interface ExitUser {
-
-    String execute(AuthDetails authDetails, ExitUserRequest request);
+interface ExitUser {
+    fun execute(authDetails: AuthDetails, request: ExitUserRequest): String
 }

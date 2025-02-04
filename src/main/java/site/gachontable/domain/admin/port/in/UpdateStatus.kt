@@ -1,12 +1,11 @@
-package site.gachontable.domain.admin.port.in;
+package site.gachontable.domain.admin.port.`in`
 
-import site.gachontable.presentation.admin.dto.request.UpdateStatusRequest;
-import site.gachontable.infra.security.principal.AuthDetails;
-import site.gachontable.presentation.shared.dto.response.RegisterResponse;
+import site.gachontable.infra.security.principal.AuthDetails
+import site.gachontable.presentation.admin.dto.request.UpdateStatusRequest
+import site.gachontable.presentation.shared.dto.response.RegisterResponse
 
-public interface UpdateStatus {
+interface UpdateStatus {
+    fun executeForOpenStatus(authDetails: AuthDetails, request: UpdateStatusRequest): RegisterResponse
 
-    RegisterResponse executeForOpenStatus(AuthDetails authDetails, UpdateStatusRequest request);
-
-    RegisterResponse executeForWaitingStatus(AuthDetails authDetails, UpdateStatusRequest request);
+    fun executeForWaitingStatus(authDetails: AuthDetails, request: UpdateStatusRequest): RegisterResponse
 }

@@ -1,9 +1,8 @@
-package site.gachontable.domain.admin.port.in;
+package site.gachontable.domain.admin.port.`in`
 
-import site.gachontable.presentation.admin.dto.response.SeatingsResponse;
-import site.gachontable.infra.security.principal.AuthDetails;
+import site.gachontable.infra.security.principal.AuthDetails
+import site.gachontable.presentation.admin.dto.response.SeatingsResponse
 
-public interface GetSeatings {
-
-    SeatingsResponse execute(AuthDetails authDetails);
+interface GetSeatings {
+    fun execute(authDetails: AuthDetails): SeatingsResponse
 }

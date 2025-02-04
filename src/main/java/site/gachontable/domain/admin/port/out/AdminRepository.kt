@@ -1,12 +1,9 @@
-package site.gachontable.domain.admin.port.out;
+package site.gachontable.domain.admin.port.out
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import site.gachontable.domain.admin.domain.Admin;
+import org.springframework.data.jpa.repository.JpaRepository
+import site.gachontable.domain.admin.domain.Admin
+import java.util.*
 
-import java.util.Optional;
-import java.util.UUID;
-
-public interface AdminRepository extends JpaRepository<Admin, UUID> {
-
-    Optional<Admin> findByUsername(String username);
+interface AdminRepository : JpaRepository<Admin, UUID> {
+    fun findByUsername(username: String): Admin?
 }
