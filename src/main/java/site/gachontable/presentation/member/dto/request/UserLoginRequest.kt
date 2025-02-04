@@ -1,5 +1,6 @@
-package site.gachontable.presentation.member.dto.request;
+package site.gachontable.presentation.member.dto.request
 
-public record UserLoginRequest(String id,
-                               String password) {
-}
+data class UserLoginRequest(
+    val id: String,
+    val password: String,
+)
