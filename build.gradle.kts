@@ -1,7 +1,9 @@
 plugins {
-	java
-	id("org.springframework.boot") version "3.2.4"
-	id("io.spring.dependency-management") version "1.1.4"
+	kotlin("jvm") version "2.1.10"
+	kotlin("plugin.spring") version "2.1.10"
+	kotlin("plugin.jpa") version "2.1.10"
+	id("org.springframework.boot") version "3.4.1"
+	id("io.spring.dependency-management") version "1.1.7"
 	id("org.sonarqube") version "6.0.1.5171"
 }
 
@@ -9,7 +11,9 @@ group = "site.gachontable"
 version = "1.0.5-SNAPSHOT"
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_17
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
 }
 
 configurations {
@@ -73,6 +77,12 @@ tasks.named<Test>("test") {
 
 tasks.withType<JavaCompile> {
 	options.compilerArgs.add("-parameters")
+}
+
+kotlin {
+	compilerOptions {
+		freeCompilerArgs.addAll("-Xjsr305=strict")
+	}
 }
 
 tasks.register("installGitHooks") {
