@@ -1,47 +1,43 @@
-package site.gachontable.domain.admin.service;
+package site.gachontable.domain.admin.service
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.domain.admin.port.out.AdminRepository;
-import site.gachontable.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.domain.admin.port.in.ExitUser;
-import site.gachontable.presentation.admin.dto.request.ExitUserRequest;
-import site.gachontable.infra.security.principal.AuthDetails;
-import site.gachontable.domain.pub.domain.Pub;
-import site.gachontable.domain.pub.exception.PubMismatchException;
-import site.gachontable.domain.seating.domain.Seating;
-import site.gachontable.domain.seating.port.out.SeatingRepository;
-import site.gachontable.domain.seating.exception.SeatingNotFoundException;
-import site.gachontable.independent.type.SuccessCode;
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import site.gachontable.domain.admin.port.`in`.ExitUser
+import site.gachontable.domain.admin.port.out.AdminRepository
+import site.gachontable.domain.pub.domain.Pub
+import site.gachontable.domain.pub.exception.PubMismatchException
+import site.gachontable.domain.pub.exception.PubNotFoundException
+import site.gachontable.domain.seating.domain.Seating
+import site.gachontable.domain.seating.exception.SeatingNotFoundException
+import site.gachontable.domain.seating.port.out.SeatingRepository
+import site.gachontable.independent.type.SuccessCode
+import site.gachontable.infra.security.principal.AuthDetails
+import site.gachontable.presentation.admin.dto.request.ExitUserRequest
 
 @Service
-@RequiredArgsConstructor
-public class ExitUserImpl implements ExitUser {
-
-    private final SeatingRepository seatingRepository;
-    private final AdminRepository adminRepository;
-
+class ExitUserImpl(
+    private val seatingRepository: SeatingRepository,
+    private val adminRepository: AdminRepository,
+) : ExitUser {
     @Transactional
-    @Override
-    public String execute(AuthDetails authDetails, ExitUserRequest request) {
-        Seating seating = seatingRepository.findById(request.seatingId())
-                .orElseThrow(SeatingNotFoundException::new);
+    override fun execute(authDetails: AuthDetails, request: ExitUserRequest): String {
+        val seating: Seating = seatingRepository.findById(request.seatingId)
+            .orElse(throw SeatingNotFoundException())
 
-        checkPubMatches(authDetails, seating);
+        checkPubMatches(authDetails, seating)
 
-        seating.updateExitTime();
+        seating.updateExitTime()
 
-        return SuccessCode.EXIT_USER_SUCCESS.getMessage();
+        return SuccessCode.EXIT_USER_SUCCESS.message
     }
 
-    private void checkPubMatches(AuthDetails authDetails, Seating seating) {
-        Pub pub = adminRepository.findById(authDetails.getUuid())
-                .orElseThrow(AdminNotFoundException::new)
-                .getPub();
+    private fun checkPubMatches(authDetails: AuthDetails, seating: Seating) {
+        val pub: Pub = adminRepository.findById(authDetails.uuid)
+            .orElse(throw PubNotFoundException())
+            .pub
 
-        if (!seating.getPub().equals(pub)) {
-            throw new PubMismatchException();
+        if (seating.pub != pub) {
+            throw PubMismatchException()
         }
     }
 }

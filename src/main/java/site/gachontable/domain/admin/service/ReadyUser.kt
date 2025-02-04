@@ -1,44 +1,38 @@
-package site.gachontable.domain.admin.service;
+package site.gachontable.domain.admin.service
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import site.gachontable.domain.pub.domain.Pub;
-import site.gachontable.domain.waiting.domain.Waiting;
-import site.gachontable.domain.waiting.port.out.WaitingRepository;
-import site.gachontable.domain.waiting.type.Status;
-import site.gachontable.infra.biztalk.SendBiztalk;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Service
+import site.gachontable.domain.pub.domain.Pub
+import site.gachontable.domain.waiting.domain.Waiting
+import site.gachontable.domain.waiting.port.out.WaitingRepository
+import site.gachontable.domain.waiting.type.Status
+import site.gachontable.infra.biztalk.SendBiztalk
+import java.util.*
 
 @Service
-@RequiredArgsConstructor
-public class ReadyUser {
+class ReadyUser(
+    private val waitingRepository: WaitingRepository,
+    private val sendBiztalk: SendBiztalk,
 
-    private final WaitingRepository waitingRepository;
-    private final SendBiztalk sendBiztalk;
+    @Value("\${biztalk.templateId.ready}")
+    private val templateCode: String,
+) {
+    fun execute(pub: Pub) {
+        val waitings: MutableList<Waiting> = waitingRepository.findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
+            pub, listOf<Status>(Status.WAITING, Status.AVAILABLE)
+        )
 
-    @Value("${biztalk.templateId.ready}")
-    private String TEMPLATE_CODE;
-
-    public void execute(Pub pub) {
-        List<Waiting> waitings = waitingRepository
-                .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
-                        pub, Arrays.asList(Status.WAITING, Status.AVAILABLE));
-
-        if (waitings.size() < 3) {
-            return;
+        if (waitings.size < 3) {
+            return
         }
 
-        Waiting waiting = waitings.get(2);
+        val waiting: Waiting = waitings[2]
 
-        HashMap<String, String> variables = new HashMap<>();
-        variables.put("#{pub}", pub.getPubName());
-        variables.put("#{username}", waiting.getUser().getUsername());
-        variables.put("#{waitingId}", waiting.getWaitingId().toString());
+        val variables = HashMap<String, String>()
+        variables.put("#{pub}", pub.pubName)
+        variables.put("#{username}", waiting.user.username)
+        variables.put("#{waitingId}", waiting.waitingId.toString())
 
-        sendBiztalk.execute(TEMPLATE_CODE, waiting.getTel(), variables);
+        sendBiztalk.execute(templateCode, waiting.tel, variables)
     }
 }

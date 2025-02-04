@@ -1,13 +1,8 @@
-package site.gachontable.domain.admin.type;
+package site.gachontable.domain.admin.type
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-@AllArgsConstructor
-public enum Status {
+enum class Status(
+    val statusKo: String,
+) {
     ENTER("입장"),
-    CALL("호출");
-
-    private final String statusKo;
+    CALL("호출"),
 }

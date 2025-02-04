@@ -1,54 +1,53 @@
-package site.gachontable.domain.admin.service;
+package site.gachontable.domain.admin.service
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import site.gachontable.domain.admin.domain.Admin;
-import site.gachontable.domain.admin.port.out.AdminRepository;
-import site.gachontable.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.domain.admin.port.in.AdminLogin;
-import site.gachontable.presentation.admin.dto.response.AdminLoginResponse;
-import site.gachontable.presentation.shared.Role;
-import site.gachontable.presentation.shared.exception.PasswordNotMatchException;
-import site.gachontable.infra.security.jwt.JwtProvider;
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Service
+import site.gachontable.domain.admin.domain.Admin
+import site.gachontable.domain.admin.exception.AdminNotFoundException
+import site.gachontable.domain.admin.port.`in`.AdminLogin
+import site.gachontable.domain.admin.port.out.AdminRepository
+import site.gachontable.infra.security.jwt.JwtProvider
+import site.gachontable.presentation.admin.dto.response.AdminLoginResponse
+import site.gachontable.presentation.shared.Role
+import site.gachontable.presentation.shared.exception.PasswordNotMatchException
 
 @Service
-@RequiredArgsConstructor
-public class AdminLoginImpl implements AdminLogin {
+class AdminLoginImpl(
+    private val jwtProvider: JwtProvider,
+    private val adminRepository: AdminRepository,
+    private val passwordEncoder: PasswordEncoder,
+) : AdminLogin {
+    override fun execute(username: String, password: String): AdminLoginResponse {
+        val admin: Admin = adminRepository.findByUsername(username)
+            ?: throw AdminNotFoundException()
+        validatePassword(password, admin)
 
-    private final JwtProvider jwtProvider;
-    private final AdminRepository adminRepository;
-    private final PasswordEncoder passwordEncoder;
+        val accessToken = jwtProvider.generateAccessToken(admin.adminId, admin.username, Role.ROLE_ADMIN)
+        val refreshToken = generateRefreshToken(admin)
+        val pubId = admin.pub.pubId
 
-    @Override
-    public AdminLoginResponse execute(String username, String password) {
-        Admin admin = adminRepository.findByUsername(username).orElseThrow(AdminNotFoundException::new);
-        validatePassword(password, admin);
-
-        String accessToken = jwtProvider.generateAccessToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
-        String refreshToken = generateRefreshToken(admin);
-        Integer pubId = admin.getPub().getPubId();
-
-        return new AdminLoginResponse(accessToken, refreshToken, pubId);
+        return AdminLoginResponse(
+            accessToken, refreshToken, pubId
+        )
     }
 
-    private void validatePassword(String password, Admin admin) {
-        if (!passwordEncoder.matches(password, admin.getAdminPassword())) {
-            throw new PasswordNotMatchException();
+    private fun validatePassword(password: String, admin: Admin) {
+        if (!passwordEncoder.matches(password, admin.adminPassword)) {
+            throw PasswordNotMatchException()
         }
     }
 
-    private String generateRefreshToken(Admin admin) {
-        String refreshToken = admin.getRefreshToken();
+    private fun generateRefreshToken(admin: Admin): String {
+        var refreshToken = admin.refreshToken
         if (refreshToken == null || jwtProvider.isInvalidToken(refreshToken)) {
-            refreshToken = jwtProvider.generateRefreshToken(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
-            updateAdminRefreshToken(admin, refreshToken);
+            refreshToken = jwtProvider.generateRefreshToken(admin.adminId, admin.username, Role.ROLE_ADMIN)
+            updateAdminRefreshToken(admin, refreshToken)
         }
-        return refreshToken;
+        return refreshToken
     }
 
-    private void updateAdminRefreshToken(Admin admin, String refreshToken) {
-        admin.updateRefreshToken(refreshToken);
-        adminRepository.save(admin);
+    private fun updateAdminRefreshToken(admin: Admin, refreshToken: String) {
+        admin.updateRefreshToken(refreshToken)
+        adminRepository.save(admin)
     }
 }
