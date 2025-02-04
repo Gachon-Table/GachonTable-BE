@@ -1,10 +1,6 @@
-package site.gachontable.domain.member.exception;
+package site.gachontable.domain.member.exception
 
-import site.gachontable.independent.type.ErrorCode;
-import site.gachontable.independent.error.exception.ServiceException;
+import site.gachontable.independent.error.exception.ServiceException
+import site.gachontable.independent.type.ErrorCode
 
-public class UserNotFoundException extends ServiceException {
-    public UserNotFoundException() {
-        super(ErrorCode.USER_NOT_FOUND);
-    }
-}
+class UserNotFoundException : ServiceException(ErrorCode.USER_NOT_FOUND)

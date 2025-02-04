@@ -1,11 +1,10 @@
-package site.gachontable.independent.type;
+package site.gachontable.independent.type
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-@AllArgsConstructor
-public enum ErrorCode {
+enum class ErrorCode(
+    val httpStatus: Int,
+    val code: String,
+    val message: String,
+) {
     EMPTY_WAITING_COUNT(400, "EMPTY_WAITING_COUNT", "주점에 대기열이 없습니다."),
     INVALID_TOKEN(401, "INVALID_TOKEN", "유효하지 않은 토큰입니다."),
     EXPIRED_TOKEN(401, "EXPIRED_TOKEN", "만료된 토큰입니다."),
@@ -28,8 +27,4 @@ public enum ErrorCode {
     BIZTALK_SEND_FAIL(503, "BIZTALK_SEND_FAIL", "카카오 알림톡 전송에 실패했습니다."),
     PUB_NOT_OPEN(503, "PUB_NOT_OPEN", "현재 오픈되어 있지 않은 주점입니다."),
     PUB_CLOSED_FOR_WAITING(503, "PUB_CLOSED_FOR_WAITING", "현재 웨이팅을 받지 않는 주점입니다.");
-
-    private final Integer httpStatus;
-    private final String code;
-    private final String message;
 }
