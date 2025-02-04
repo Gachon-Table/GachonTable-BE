@@ -1,4 +1,5 @@
-package site.gachontable.presentation.admin.dto.request;
+package site.gachontable.presentation.admin.dto.request
 
-public record ExitUserRequest(Long seatingId) {
-}
+data class ExitUserRequest(
+    val seatingId: Long,
+)

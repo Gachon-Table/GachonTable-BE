@@ -1,6 +1,7 @@
-package site.gachontable.presentation.admin.dto.request;
+package site.gachontable.presentation.admin.dto.request
 
-import java.util.UUID;
+import java.util.*
 
-public record CallUserRequest(UUID waitingId) {
-}
+data class CallUserRequest(
+    val waitingId: UUID,
+)

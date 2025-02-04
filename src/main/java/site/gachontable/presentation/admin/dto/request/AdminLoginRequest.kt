@@ -1,5 +1,6 @@
-package site.gachontable.presentation.admin.dto.request;
+package site.gachontable.presentation.admin.dto.request
 
-public record AdminLoginRequest(String id,
-                                String password) {
-}
+data class AdminLoginRequest(
+    val id: String,
+    val password: String,
+)

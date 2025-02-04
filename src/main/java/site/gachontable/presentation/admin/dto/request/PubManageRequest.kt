@@ -1,13 +1,14 @@
-package site.gachontable.presentation.admin.dto.request;
+package site.gachontable.presentation.admin.dto.request
 
-import java.util.List;
-
-public record PubManageRequest(List<String> thumbnails,
-                               List<MenuRequest> menuRequests) {
-    public record MenuRequest(Integer menuId,
-                              String thumbnail,
-                              String menuName,
-                              String price,
-                              String oneLiner) {
-    }
+data class PubManageRequest(
+    val thumbnails: MutableList<String>,
+    val menuRequests: MutableList<MenuRequest>,
+) {
+    data class MenuRequest(
+        val menuId: Int,
+        val thumbnail: String,
+        val menuName: String,
+        val price: String,
+        val oneLiner: String,
+    )
 }

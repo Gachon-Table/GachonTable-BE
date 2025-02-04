@@ -1,7 +1,8 @@
-package site.gachontable.presentation.admin.dto.request;
+package site.gachontable.presentation.admin.dto.request
 
-public record AdminRegisterRequest(String username,
-                                   String password,
-                                   String tel,
-                                   Integer pubId) {
-}
+data class AdminRegisterRequest(
+    val username: String,
+    val password: String,
+    val tel: String,
+    val pubId: Int,
+)

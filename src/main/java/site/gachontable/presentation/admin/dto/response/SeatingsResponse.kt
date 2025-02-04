@@ -1,32 +1,28 @@
-package site.gachontable.presentation.admin.dto.response;
+package site.gachontable.presentation.admin.dto.response
 
-import lombok.Builder;
-import site.gachontable.domain.seating.domain.Seating;
-import site.gachontable.presentation.shared.Table;
+import site.gachontable.domain.seating.domain.Seating
+import site.gachontable.presentation.shared.DateTimeFormatters
+import site.gachontable.presentation.shared.Table
+import java.util.*
 
-import java.util.List;
-import java.util.UUID;
-
-import static site.gachontable.presentation.shared.DateTimeFormatters.WITH_WEEKDAY;
-
-public record SeatingsResponse(List<SeatingResponse> seatings) {
-
-    @Builder
-    public record SeatingResponse(Integer seatingId,
-                                  Integer seatingNum,
-                                  Table tableType,
-                                  String exitTime,
-                                  UUID waitingId) {
-
-        public static SeatingResponse from(Seating seating) {
-
-            return SeatingResponse.builder()
-                    .seatingId(seating.getSeatingId())
-                    .seatingNum(seating.getSeatingNum())
-                    .tableType(seating.getTableType())
-                    .exitTime(seating.getExitTime().format(WITH_WEEKDAY))
-                    .waitingId(seating.getWaiting().getWaitingId())
-                    .build();
+data class SeatingsResponse(val seatings: MutableList<SeatingResponse>) {
+    data class SeatingResponse(
+        val seatingId: Int,
+        val seatingNum: Int,
+        val tableType: Table,
+        val exitTime: String,
+        val waitingId: UUID,
+    ) {
+        companion object {
+            fun from(seating: Seating): SeatingResponse {
+                return SeatingResponse(
+                    seatingId = seating.seatingId,
+                    seatingNum = seating.seatingNum,
+                    tableType = seating.tableType,
+                    exitTime = seating.exitTime.format(DateTimeFormatters.WITH_WEEKDAY),
+                    waitingId = seating.waiting.waitingId
+                )
+            }
         }
     }
 }

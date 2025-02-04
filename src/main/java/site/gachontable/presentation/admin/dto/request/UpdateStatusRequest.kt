@@ -1,4 +1,5 @@
-package site.gachontable.presentation.admin.dto.request;
+package site.gachontable.presentation.admin.dto.request
 
-public record UpdateStatusRequest(Boolean status) {
-}
+data class UpdateStatusRequest(
+    val status: Boolean,
+)

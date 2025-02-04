@@ -1,6 +1,7 @@
-package site.gachontable.presentation.admin.dto.response;
+package site.gachontable.presentation.admin.dto.response
 
-public record AdminLoginResponse(String accessToken,
-                                 String refreshToken,
-                                 Integer pubId) {
-}
+data class AdminLoginResponse(
+    val accessToken: String,
+    val refreshToken: String,
+    val pubId: Int,
+)

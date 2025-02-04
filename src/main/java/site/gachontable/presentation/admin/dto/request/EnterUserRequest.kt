@@ -1,7 +1,8 @@
-package site.gachontable.presentation.admin.dto.request;
+package site.gachontable.presentation.admin.dto.request
 
-import java.util.UUID;
+import java.util.*
 
-public record EnterUserRequest(UUID waitingId,
-                               Integer seatingNum) {
-}
+data class EnterUserRequest(
+    val waitingId: UUID,
+    val seatingNum: Int,
+) 
