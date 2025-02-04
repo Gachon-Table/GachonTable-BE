@@ -1,7 +1,15 @@
 #!/bin/sh
 
-# 현재 브랜치 이름 가져오기
+# 리베이스 중인지 확인: .git/rebase-merge 또는 .git/rebase-apply 디렉토리가 존재하면 리베이스 진행 중
+if [ -d "$(git rev-parse --git-dir)/rebase-merge" ] || [ -d "$(git rev-parse --git-dir)/rebase-apply" ]; then
+    exit 0
+fi
+
+# 현재 브랜치 이름 가져오기 (예: feat/LUPG-99, refactor/LUPG-1, fix/LUPG-3)
 branch_name=$(git symbolic-ref --short HEAD)
+
+# 브랜치명에서 LUPG-XX 부분만 추출
+ticket=$(echo "$branch_name" | sed -En 's/.*(LUPG-[0-9]+).*/\1/p')
 
 # 커밋 메시지 파일 경로
 commit_msg_file=$1
@@ -12,8 +20,15 @@ if [ ! -f "$commit_msg_file" ]; then
     exit 1
 fi
 
-# 이미 [브랜치이름] 접두사가 존재하는지 확인
-# 예: [LUPG-77] test: 대학 도메인 단위 테스트 추가
-if ! grep -q "\[$branch_name\]" "$commit_msg_file"; then
-    sed -i '' "1s/^/[$branch_name] /" "$commit_msg_file"
+# 이미 [ticket] 접두사가 커밋 메시지에 존재하는지 확인
+if ! grep -q "\[$ticket\]" "$commit_msg_file"; then
+    # OS 분기 처리
+    OS=$(uname)
+    if [ "$OS" = "Darwin" ]; then
+        # macOS
+        sed -i '' "1s/^/[$ticket] /" "$commit_msg_file"
+    else
+        # Windows
+        sed -i "1s/^/[$ticket] /" "$commit_msg_file"
+    fi
 fi
