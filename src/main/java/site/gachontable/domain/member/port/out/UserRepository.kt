@@ -1,14 +1,11 @@
-package site.gachontable.domain.member.port.out;
+package site.gachontable.domain.member.port.out
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import site.gachontable.domain.member.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository
+import site.gachontable.domain.member.domain.User
+import java.util.UUID
 
-import java.util.Optional;
-import java.util.UUID;
+interface UserRepository : JpaRepository<User, UUID> {
+    fun findByUsername(username: String): User?
 
-public interface UserRepository extends JpaRepository<User, UUID> {
-
-    Optional<User> findByUsername(String username);
-
-    Optional<User> findByUserTel(String tel);
+    fun findByUserTel(tel: String): User?
 }
