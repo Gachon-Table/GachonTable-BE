@@ -1,10 +1,6 @@
-package site.gachontable.domain.waiting.exception;
+package site.gachontable.domain.waiting.exception
 
-import site.gachontable.independent.type.ErrorCode;
-import site.gachontable.independent.error.exception.ServiceException;
+import site.gachontable.independent.error.exception.ServiceException
+import site.gachontable.independent.type.ErrorCode
 
-public class WaitingCanceledException extends ServiceException {
-    public WaitingCanceledException() {
-        super(ErrorCode.WAITING_CANCELED);
-    }
-}
+class WaitingCanceledException : ServiceException(ErrorCode.WAITING_CANCELED)

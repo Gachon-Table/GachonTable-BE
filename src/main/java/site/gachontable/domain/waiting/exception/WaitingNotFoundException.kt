@@ -1,10 +1,6 @@
-package site.gachontable.domain.waiting.exception;
+package site.gachontable.domain.waiting.exception
 
-import site.gachontable.independent.type.ErrorCode;
-import site.gachontable.independent.error.exception.ServiceException;
+import site.gachontable.independent.error.exception.ServiceException
+import site.gachontable.independent.type.ErrorCode
 
-public class WaitingNotFoundException extends ServiceException {
-    public WaitingNotFoundException() {
-        super(ErrorCode.WAITING_NOT_FOUND);
-    }
-}
+class WaitingNotFoundException : ServiceException(ErrorCode.WAITING_NOT_FOUND)

@@ -1,15 +1,10 @@
-package site.gachontable.domain.waiting.type;
+package site.gachontable.domain.waiting.type
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-@AllArgsConstructor
-public enum Status {
+enum class Status(
+    val statusKo: String,
+) {
     ENTERED("입장 완료"),
     CANCELED("취소 완료"),
     WAITING("대기 중"),
-    AVAILABLE("입장 가능");
-
-    private final String statusKo;
+    AVAILABLE("입장 가능"),
 }

@@ -1,10 +1,6 @@
-package site.gachontable.domain.waiting.exception;
+package site.gachontable.domain.waiting.exception
 
-import site.gachontable.independent.type.ErrorCode;
-import site.gachontable.independent.error.exception.ServiceException;
+import site.gachontable.independent.error.exception.ServiceException
+import site.gachontable.independent.type.ErrorCode
 
-public class WaitingAlreadyExistsException extends ServiceException {
-    public WaitingAlreadyExistsException() {
-        super(ErrorCode.WAITING_ALREADY_EXIST);
-    }
-}
+class WaitingAlreadyExistsException : ServiceException(ErrorCode.WAITING_ALREADY_EXIST)
