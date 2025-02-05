@@ -1,10 +1,8 @@
-package site.gachontable.domain.waiting.port.in;
+package site.gachontable.domain.waiting.port.`in`
 
-import site.gachontable.presentation.waiting.dto.response.StatusResponse;
+import site.gachontable.presentation.waiting.dto.response.StatusResponse
+import java.util.*
 
-import java.util.UUID;
-
-public interface GetStatusByBiztalk {
-
-    StatusResponse execute(UUID waitingId);
+interface GetStatusByBiztalk {
+    fun execute(waitingId: UUID): StatusResponse
 }
