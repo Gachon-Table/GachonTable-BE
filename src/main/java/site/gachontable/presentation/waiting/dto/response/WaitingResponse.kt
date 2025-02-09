@@ -1,5 +1,6 @@
-package site.gachontable.presentation.waiting.dto.response;
+package site.gachontable.presentation.waiting.dto.response
 
-public record WaitingResponse(Boolean status,
-                              String message) {
-}
+data class WaitingResponse(
+    val status: Boolean,
+    val message: String,
+)

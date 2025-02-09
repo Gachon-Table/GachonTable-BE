@@ -1,31 +1,28 @@
-package site.gachontable.presentation.waiting.dto.response;
+package site.gachontable.presentation.waiting.dto.response
 
-import lombok.Builder;
-import site.gachontable.domain.pub.domain.Pub;
-import site.gachontable.presentation.shared.Table;
-import site.gachontable.domain.waiting.domain.Waiting;
+import site.gachontable.domain.pub.domain.Pub
+import site.gachontable.domain.waiting.domain.Waiting
+import site.gachontable.presentation.shared.DateTimeFormatters
+import site.gachontable.presentation.shared.Table
+import java.util.*
 
-import java.util.UUID;
-
-import static site.gachontable.presentation.shared.DateTimeFormatters.WITH_WEEKDAY;
-
-@Builder
-public record StatusResponse(UUID waitingId,
-                             String pubName,
-                             String orderStatus,
-                             Integer order,
-                             String createdAt,
-                             Table tableType) {
-
-    public static StatusResponse of(Waiting waiting, Pub pub, Integer order) {
-
-        return StatusResponse.builder()
-                .waitingId(waiting.getWaitingId())
-                .pubName(pub.getPubName())
-                .orderStatus(waiting.getWaitingStatus().getStatusKo())
-                .order(order)
-                .createdAt(waiting.getCreatedAt().format(WITH_WEEKDAY))
-                .tableType(waiting.getTableType())
-                .build();
+data class StatusResponse(
+    val waitingId: UUID,
+    val pubName: String,
+    val orderStatus: String,
+    val order: Int,
+    val createdAt: String,
+    val tableType: Table,
+) {
+    companion object {
+        fun of(waiting: Waiting, pub: Pub, order: Int): StatusResponse =
+            StatusResponse(
+                waitingId = waiting.waitingId,
+                pubName = pub.pubName,
+                orderStatus = waiting.waitingStatus.statusKo,
+                order = order,
+                createdAt = waiting.createdAt.format(DateTimeFormatters.WITH_WEEKDAY),
+                tableType = waiting.tableType
+            )
     }
 }

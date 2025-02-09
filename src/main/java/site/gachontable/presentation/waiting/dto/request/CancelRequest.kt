@@ -1,6 +1,7 @@
-package site.gachontable.presentation.waiting.dto.request;
+package site.gachontable.presentation.waiting.dto.request
 
-import java.util.UUID;
+import java.util.*
 
-public record CancelRequest(UUID waitingId) {
-}
+data class CancelRequest(
+    val waitingId: UUID,
+)
