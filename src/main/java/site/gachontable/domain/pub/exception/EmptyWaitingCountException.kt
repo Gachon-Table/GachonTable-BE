@@ -1,10 +1,6 @@
-package site.gachontable.domain.pub.exception;
+package site.gachontable.domain.pub.exception
 
-import site.gachontable.independent.type.ErrorCode;
-import site.gachontable.independent.error.exception.ServiceException;
+import site.gachontable.independent.error.exception.ServiceException
+import site.gachontable.independent.type.ErrorCode
 
-public class EmptyWaitingCountException extends ServiceException {
-    public EmptyWaitingCountException() {
-        super(ErrorCode.EMPTY_WAITING_COUNT);
-    }
-}
+class EmptyWaitingCountException : ServiceException(ErrorCode.EMPTY_WAITING_COUNT)

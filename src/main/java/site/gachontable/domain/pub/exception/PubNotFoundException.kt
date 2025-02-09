@@ -1,10 +1,6 @@
-package site.gachontable.domain.pub.exception;
+package site.gachontable.domain.pub.exception
 
-import site.gachontable.independent.type.ErrorCode;
-import site.gachontable.independent.error.exception.ServiceException;
+import site.gachontable.independent.error.exception.ServiceException
+import site.gachontable.independent.type.ErrorCode
 
-public class PubNotFoundException extends ServiceException {
-    public PubNotFoundException() {
-        super(ErrorCode.PUB_NOT_FOUND);
-    }
-}
+class PubNotFoundException : ServiceException(ErrorCode.PUB_NOT_FOUND)
