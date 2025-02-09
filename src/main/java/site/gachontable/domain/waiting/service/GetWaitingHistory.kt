@@ -1,6 +1,5 @@
 package site.gachontable.domain.waiting.service
 
-import lombok.RequiredArgsConstructor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import site.gachontable.domain.seating.exception.SeatingNotFoundException
@@ -12,7 +11,6 @@ import site.gachontable.infra.security.principal.AuthDetails
 import site.gachontable.presentation.waiting.dto.response.WaitingHistoryResponse
 
 @Service
-@RequiredArgsConstructor
 class GetWaitingHistory(
     private val waitingRepository: WaitingRepository,
     private val seatingRepository: SeatingRepository,

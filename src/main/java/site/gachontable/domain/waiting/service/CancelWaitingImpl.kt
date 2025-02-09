@@ -1,6 +1,5 @@
 package site.gachontable.domain.waiting.service
 
-import lombok.RequiredArgsConstructor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
@@ -19,7 +18,6 @@ import site.gachontable.presentation.waiting.dto.response.WaitingResponse
 import java.util.*
 
 @Service
-@RequiredArgsConstructor
 class CancelWaitingImpl(
     private val waitingRepository: WaitingRepository,
     private val readyUser: ReadyUser,

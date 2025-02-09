@@ -1,6 +1,5 @@
 package site.gachontable.domain.waiting.service
 
-import lombok.RequiredArgsConstructor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import site.gachontable.domain.admin.exception.AdminNotFoundException
@@ -14,7 +13,6 @@ import site.gachontable.presentation.admin.dto.response.WaitingInfosResponse
 import site.gachontable.presentation.admin.dto.response.WaitingInfosResponse.WaitingInfo
 
 @Service
-@RequiredArgsConstructor
 class GetWaitings(
     private val waitingRepository: WaitingRepository,
     private val adminRepository: AdminRepository,

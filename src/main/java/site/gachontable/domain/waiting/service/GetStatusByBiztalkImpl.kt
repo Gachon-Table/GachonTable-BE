@@ -1,6 +1,5 @@
 package site.gachontable.domain.waiting.service
 
-import lombok.RequiredArgsConstructor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import site.gachontable.domain.pub.domain.Pub
@@ -13,7 +12,6 @@ import site.gachontable.presentation.waiting.dto.response.StatusResponse
 import java.util.*
 
 @Service
-@RequiredArgsConstructor
 class GetStatusByBiztalkImpl(
     private val waitingRepository: WaitingRepository,
 ) : GetStatusByBiztalk {
