@@ -1,25 +1,23 @@
-package site.gachontable.presentation.pub.dto.response;
+package site.gachontable.presentation.pub.dto.response
 
-import lombok.Builder;
-import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.pub.domain.Pub
 
-import java.util.List;
-
-@Builder
-public record GetPubsResponse(
-        Integer pubId,
-        List<String> thumbnails,
-        String pubName,
-        String oneLiner,
-        Integer waitingCount) {
-
-    public static GetPubsResponse from(Pub pub, List<String> thumbnails) {
-
-        return new GetPubsResponse(
-                pub.getPubId(),
+data class GetPubsResponse(
+    val pubId: Int,
+    val thumbnails: MutableList<String>,
+    val pubName: String,
+    val oneLiner: String,
+    val waitingCount: Int,
+) {
+    companion object {
+        fun from(pub: Pub, thumbnails: MutableList<String>): GetPubsResponse {
+            return GetPubsResponse(
+                pub.pubId,
                 thumbnails,
-                pub.getPubName(),
-                pub.getOneLiner(),
-                pub.getWaitingCount());
+                pub.pubName,
+                pub.oneLiner,
+                pub.waitingCount
+            )
+        }
     }
 }

@@ -1,10 +1,11 @@
-package site.gachontable.presentation.pub.dto.request;
+package site.gachontable.presentation.pub.dto.request
 
-public record PubRegisterRequest(String pubName,
-                                 String oneLiner,
-                                 String instagramUrl,
-                                 Integer minutes,
-                                 String menuUrl,
-                                 Boolean openStatus,
-                                 Boolean waitingStatus) {
-}
+data class PubRegisterRequest(
+    val pubName: String,
+    val oneLiner: String,
+    val instagramUrl: String,
+    val minutes: Int,
+    val menuUrl: String,
+    val openStatus: Boolean,
+    val waitingStatus: Boolean,
+)

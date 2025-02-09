@@ -1,64 +1,69 @@
-package site.gachontable.presentation.pub.dto.response;
+package site.gachontable.presentation.pub.dto.response
 
-import site.gachontable.domain.menu.domain.Menu;
-import site.gachontable.domain.pub.domain.Pub;
+import site.gachontable.domain.menu.domain.Menu
+import site.gachontable.domain.pub.domain.Pub
 
-import java.util.List;
-
-public record GetPubDetailsResponse(
-        PubInfo pub,
-        List<MenuInfo> menu) {
-
-    public static GetPubDetailsResponse of(Pub pub, List<String> thumbnails, List<Menu> menus) {
-
-        return new GetPubDetailsResponse(
-                PubInfo.of(pub, thumbnails),
-                menus.stream()
-                        .map(MenuInfo::from)
-                        .toList());
-    }
-
-    public record PubInfo(
-            Integer pubId,
-            List<String> thumbnails,
-            String pubName,
-            String oneLiner,
-            String instagramUrl,
-            String menuUrl,
-            Integer waitingCount,
-            Boolean openStatus,
-            Boolean waitingStatus) {
-
-        public static PubInfo of(Pub pub, List<String> thumbnails) {
-
-            return new PubInfo(
-                    pub.getPubId(),
+data class GetPubDetailsResponse(
+    val pub: PubInfo,
+    val menu: MutableList<MenuInfo>,
+) {
+    data class PubInfo(
+        val pubId: Int,
+        val thumbnails: MutableList<String>,
+        val pubName: String,
+        val oneLiner: String,
+        val instagramUrl: String,
+        val menuUrl: String,
+        val waitingCount: Int,
+        val openStatus: Boolean,
+        val waitingStatus: Boolean,
+    ) {
+        companion object {
+            fun of(pub: Pub, thumbnails: MutableList<String>): PubInfo {
+                return PubInfo(
+                    pub.pubId,
                     thumbnails,
-                    pub.getPubName(),
-                    pub.getOneLiner(),
-                    pub.getInstagramUrl(),
-                    pub.getMenuUrl(),
-                    pub.getWaitingCount(),
-                    pub.getOpenStatus(),
-                    pub.getWaitingStatus());
+                    pub.pubName,
+                    pub.oneLiner,
+                    pub.instagramUrl,
+                    pub.menuUrl,
+                    pub.waitingCount,
+                    pub.openStatus,
+                    pub.waitingStatus
+                )
+            }
         }
     }
 
-    public record MenuInfo(
-            Integer menuId,
-            String menuName,
-            String price,
-            String oneLiner,
-            String thumbnail) {
+    data class MenuInfo(
+        val menuId: Int,
+        val menuName: String,
+        val price: String,
+        val oneLiner: String,
+        val thumbnail: String,
+    ) {
+        companion object {
+            fun from(menu: Menu): MenuInfo {
+                return MenuInfo(
+                    menu.menuId,
+                    menu.menuName,
+                    menu.price,
+                    menu.oneLiner,
+                    menu.thumbnail
+                )
+            }
+        }
+    }
 
-        public static MenuInfo from(Menu menu) {
-
-            return new MenuInfo(
-                    menu.getMenuId(),
-                    menu.getMenuName(),
-                    menu.getPrice(),
-                    menu.getOneLiner(),
-                    menu.getThumbnail());
+    companion object {
+        fun of(pub: Pub, thumbnails: MutableList<String>, menus: MutableList<Menu>): GetPubDetailsResponse {
+            return GetPubDetailsResponse(
+                PubInfo.Companion.of(pub, thumbnails),
+                menus.stream()
+                    .map<MenuInfo> { menu: Menu ->
+                        MenuInfo.from(menu)
+                    }.toList()
+            )
         }
     }
 }
