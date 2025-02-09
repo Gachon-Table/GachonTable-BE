@@ -1,68 +1,68 @@
-package site.gachontable.domain.pub.service;
+package site.gachontable.domain.pub.service
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.domain.menu.domain.Menu;
-import site.gachontable.domain.menu.port.out.MenuRepository;
-import site.gachontable.domain.pub.domain.Pub;
-import site.gachontable.domain.pub.domain.repository.PubRepository;
-import site.gachontable.domain.pub.domain.repository.ThumbnailRepository;
-import site.gachontable.domain.pub.exception.PubNotFoundException;
-import site.gachontable.presentation.pub.dto.request.PubRegisterRequest;
-import site.gachontable.presentation.pub.dto.response.GetPubDetailsResponse;
-import site.gachontable.presentation.pub.dto.response.GetPubsResponse;
-import site.gachontable.presentation.shared.dto.response.RegisterResponse;
-
-import java.util.List;
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import site.gachontable.domain.menu.domain.Menu
+import site.gachontable.domain.menu.port.out.MenuRepository
+import site.gachontable.domain.pub.domain.Pub
+import site.gachontable.domain.pub.domain.repository.PubRepository
+import site.gachontable.domain.pub.domain.repository.ThumbnailRepository
+import site.gachontable.domain.pub.exception.PubNotFoundException
+import site.gachontable.presentation.pub.dto.request.PubRegisterRequest
+import site.gachontable.presentation.pub.dto.response.GetPubDetailsResponse
+import site.gachontable.presentation.pub.dto.response.GetPubsResponse
+import site.gachontable.presentation.shared.dto.response.RegisterResponse
 
 @Service
-@RequiredArgsConstructor
-public class PubService {
-
-    private static final Integer INITIAL_WAITING_COUNT = 0;
-
-    private final PubRepository pubRepository;
-    private final MenuRepository menuRepository;
-    private final ThumbnailRepository thumbnailRepository;
-
+class PubService(
+    private val pubRepository: PubRepository,
+    private val menuRepository: MenuRepository,
+    private val thumbnailRepository: ThumbnailRepository,
+) {
     @Transactional(readOnly = true)
-    public List<GetPubsResponse> findAllPubs() {
-        List<Pub> pubs = pubRepository.findAll();
+    fun findAllPubs(): MutableList<GetPubsResponse> {
+        val pubs = pubRepository.findAll()
 
         return pubs.stream()
-                .map(pub -> {
-                    List<String> thumbnails = thumbnailRepository.findUrlsByPub(pub);
-                    return GetPubsResponse.from(pub, thumbnails);
-                })
-                .toList();
+            .map<GetPubsResponse> { pub: Pub ->
+                val thumbnails: MutableList<String> = thumbnailRepository.findUrlsByPub(pub)
+                GetPubsResponse.from(pub, thumbnails)
+            }.toList()
     }
 
     @Transactional(readOnly = true)
-    public GetPubDetailsResponse findPubDetail(Integer pubId) {
-        Pub pub = pubRepository.findById(pubId)
-                .orElseThrow(PubNotFoundException::new);
+    fun findPubDetail(pubId: Int): GetPubDetailsResponse {
+        val pub = pubRepository.findById(pubId)
+            .orElse(throw PubNotFoundException())
 
-        List<String> thumbnails = thumbnailRepository.findUrlsByPub(pub);
-        List<Menu> menus = menuRepository.findAllByPub(pub);
+        val thumbnails: MutableList<String> = thumbnailRepository.findUrlsByPub(pub)
+        val menus: MutableList<Menu> = menuRepository.findAllByPub(pub)
 
-        return GetPubDetailsResponse.of(pub, thumbnails, menus);
+        return GetPubDetailsResponse.of(
+            pub, thumbnails, menus
+        )
     }
 
-    public RegisterResponse register(PubRegisterRequest request) {
-        pubRepository.save(createPub(request));
+    fun register(request: PubRegisterRequest): RegisterResponse {
+        pubRepository.save(createPub(request))
 
-        return new RegisterResponse(true, "주점 등록 성공");
+        return RegisterResponse(true, "주점 등록 성공")
     }
 
-    public Pub createPub(PubRegisterRequest request) {
-        return Pub.create(request.pubName(),
-                request.oneLiner(),
-                request.instagramUrl(),
-                request.minutes(),
-                request.menuUrl(),
-                request.openStatus(),
-                request.waitingStatus(),
-                INITIAL_WAITING_COUNT);
+    fun createPub(request: PubRegisterRequest): Pub {
+        return Pub.create(
+            request.pubName,
+            request.oneLiner,
+            request.instagramUrl,
+            request.minutes,
+            request.menuUrl,
+            request.openStatus,
+            request.waitingStatus,
+            INITIAL_WAITING_COUNT
+        )
+    }
+
+    companion object {
+        private const val INITIAL_WAITING_COUNT = 0
     }
 }
