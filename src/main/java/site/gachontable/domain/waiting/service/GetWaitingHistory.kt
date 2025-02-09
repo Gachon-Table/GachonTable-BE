@@ -1,43 +1,39 @@
-package site.gachontable.domain.waiting.service;
+package site.gachontable.domain.waiting.service
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.infra.security.principal.AuthDetails;
-import site.gachontable.domain.seating.port.out.SeatingRepository;
-import site.gachontable.domain.seating.exception.SeatingNotFoundException;
-import site.gachontable.domain.waiting.domain.Waiting;
-import site.gachontable.domain.waiting.port.out.WaitingRepository;
-import site.gachontable.presentation.waiting.dto.response.WaitingHistoryResponse;
-import site.gachontable.domain.waiting.type.Status;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
+import lombok.RequiredArgsConstructor
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import site.gachontable.domain.seating.exception.SeatingNotFoundException
+import site.gachontable.domain.seating.port.out.SeatingRepository
+import site.gachontable.domain.waiting.domain.Waiting
+import site.gachontable.domain.waiting.port.out.WaitingRepository
+import site.gachontable.domain.waiting.type.Status
+import site.gachontable.infra.security.principal.AuthDetails
+import site.gachontable.presentation.waiting.dto.response.WaitingHistoryResponse
 
 @Service
 @RequiredArgsConstructor
-public class GetWaitingHistory {
-
-    private final WaitingRepository waitingRepository;
-    private final SeatingRepository seatingRepository;
-
+class GetWaitingHistory(
+    private val waitingRepository: WaitingRepository,
+    private val seatingRepository: SeatingRepository,
+) {
     @Transactional(readOnly = true)
-    public List<WaitingHistoryResponse> execute(AuthDetails authDetails) {
-        String tel = authDetails.getTel();
+    fun execute(authDetails: AuthDetails): MutableList<WaitingHistoryResponse> {
+        val tel: String = authDetails.tel
 
-        List<Waiting> waitings = waitingRepository.findAllByTelAndWaitingStatusInOrderByCreatedAtDesc(
-                tel, Arrays.asList(Status.ENTERED, Status.CANCELED));
+        val waitings: MutableList<Waiting> = waitingRepository
+            .findAllByTelAndWaitingStatusInOrderByCreatedAtDesc(
+                tel, mutableListOf(Status.ENTERED, Status.CANCELED)
+            )
 
         return waitings.stream()
-                .map(waiting -> {
-                    if (waiting.getWaitingStatus() == Status.ENTERED) {
-                        LocalDateTime exitTime = seatingRepository.findExitTimeByWaiting(waiting)
-                                .orElseThrow(SeatingNotFoundException::new);
-                        return WaitingHistoryResponse.of(waiting, exitTime);
-                    }
-                    return WaitingHistoryResponse.of(waiting, null);
-                })
-                .toList();
+            .map<WaitingHistoryResponse> { waiting: Waiting ->
+                if (waiting.waitingStatus == Status.ENTERED) {
+                    val exitTime = seatingRepository.findExitTimeByWaiting(waiting)
+                        .orElse(throw SeatingNotFoundException())
+                    return@map WaitingHistoryResponse.of(waiting, exitTime)
+                }
+                WaitingHistoryResponse.of(waiting, null)
+            }.toList()
     }
 }

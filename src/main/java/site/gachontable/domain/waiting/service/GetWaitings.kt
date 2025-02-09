@@ -1,42 +1,40 @@
-package site.gachontable.domain.waiting.service;
+package site.gachontable.domain.waiting.service
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.domain.admin.port.out.AdminRepository;
-import site.gachontable.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.presentation.admin.dto.response.WaitingInfosResponse;
-import site.gachontable.infra.security.principal.AuthDetails;
-import site.gachontable.domain.pub.domain.Pub;
-import site.gachontable.domain.waiting.domain.Waiting;
-import site.gachontable.domain.waiting.port.out.WaitingRepository;
-import site.gachontable.domain.waiting.type.Status;
-
-import java.util.Arrays;
-import java.util.List;
+import lombok.RequiredArgsConstructor
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import site.gachontable.domain.admin.exception.AdminNotFoundException
+import site.gachontable.domain.admin.port.out.AdminRepository
+import site.gachontable.domain.pub.domain.Pub
+import site.gachontable.domain.waiting.domain.Waiting
+import site.gachontable.domain.waiting.port.out.WaitingRepository
+import site.gachontable.domain.waiting.type.Status
+import site.gachontable.infra.security.principal.AuthDetails
+import site.gachontable.presentation.admin.dto.response.WaitingInfosResponse
+import site.gachontable.presentation.admin.dto.response.WaitingInfosResponse.WaitingInfo
 
 @Service
 @RequiredArgsConstructor
-public class GetWaitings {
-
-    private final WaitingRepository waitingRepository;
-    private final AdminRepository adminRepository;
-
+class GetWaitings(
+    private val waitingRepository: WaitingRepository,
+    private val adminRepository: AdminRepository,
+) {
     @Transactional(readOnly = true)
-    public WaitingInfosResponse execute(AuthDetails authDetails) {
-        Pub pub = adminRepository.findById(authDetails.getUuid())
-                .orElseThrow(AdminNotFoundException::new)
-                .getPub();
+    fun execute(authDetails: AuthDetails): WaitingInfosResponse {
+        val pub: Pub = adminRepository.findById(authDetails.uuid)
+            .orElse(throw AdminNotFoundException())
+            .pub
 
-        List<Waiting> waitings = waitingRepository
-                .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
-                        pub, Arrays.asList(Status.WAITING, Status.AVAILABLE));
+        val waitings: MutableList<Waiting> = waitingRepository
+            .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
+                pub, mutableListOf(Status.WAITING, Status.AVAILABLE)
+            )
 
-        return new WaitingInfosResponse(
-                waitings.size(),
-                waitings.stream()
-                        .map(Waiting::toWaitingInfo)
-                        .toList()
-                );
+        return WaitingInfosResponse(
+            waitings.size,
+            waitings.stream()
+                .map<WaitingInfo> { waiting: Waiting -> Waiting.toWaitingInfo(waiting) }
+                .toList()
+        )
     }
 }

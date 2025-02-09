@@ -1,46 +1,45 @@
-package site.gachontable.domain.waiting.service;
+package site.gachontable.domain.waiting.service
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.domain.waiting.port.in.GetStatus;
-import site.gachontable.infra.security.principal.AuthDetails;
-import site.gachontable.domain.waiting.domain.Waiting;
-import site.gachontable.domain.waiting.port.out.WaitingRepository;
-import site.gachontable.presentation.waiting.dto.response.StatusResponse;
-import site.gachontable.domain.waiting.type.Status;
-
-import java.util.Arrays;
-import java.util.List;
+import lombok.RequiredArgsConstructor
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import site.gachontable.domain.waiting.domain.Waiting
+import site.gachontable.domain.waiting.port.`in`.GetStatus
+import site.gachontable.domain.waiting.port.out.WaitingRepository
+import site.gachontable.domain.waiting.type.Status
+import site.gachontable.infra.security.principal.AuthDetails
+import site.gachontable.presentation.waiting.dto.response.StatusResponse
 
 @Service
 @RequiredArgsConstructor
-public class GetStatusImpl implements GetStatus {
-
-    private final WaitingRepository waitingRepository;
-
+class GetStatusImpl(
+    private val waitingRepository: WaitingRepository,
+) : GetStatus {
     @Transactional(readOnly = true)
-    @Override
-    public List<StatusResponse> execute(AuthDetails authDetails) {
-        String tel = authDetails.getTel();
+    override fun execute(authDetails: AuthDetails): MutableList<StatusResponse> {
+        val tel: String = authDetails.tel
 
-        List<Waiting> waitings = waitingRepository
-                .findAllByTelAndWaitingStatusInOrderByCreatedAtDesc(
-                        tel, Arrays.asList(Status.WAITING, Status.AVAILABLE));
+        val waitings: MutableList<Waiting> = waitingRepository
+            .findAllByTelAndWaitingStatusInOrderByCreatedAtDesc(
+                tel, mutableListOf(Status.WAITING, Status.AVAILABLE)
+            )
 
         return waitings.stream()
-                .map(waiting ->
-                        getStatusResponse(waiting, getWaitingsInPubFrom(waiting)))
-                .toList();
+            .map<StatusResponse> { waiting: Waiting ->
+                getStatusResponse(waiting, getWaitingsInPubFrom(waiting))
+            }.toList()
     }
 
-    private List<Waiting> getWaitingsInPubFrom(Waiting waiting) {
+    private fun getWaitingsInPubFrom(waiting: Waiting): MutableList<Waiting> {
         return waitingRepository
-                .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
-                        waiting.getPub(), Arrays.asList(Status.WAITING, Status.AVAILABLE));
+            .findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
+                waiting.pub, mutableListOf(Status.WAITING, Status.AVAILABLE)
+            )
     }
 
-    private StatusResponse getStatusResponse(Waiting waiting, List<Waiting> waitings) {
-        return StatusResponse.of(waiting, waiting.getPub(), waitings.indexOf(waiting) + 1);
+    private fun getStatusResponse(waiting: Waiting, waitings: MutableList<Waiting>): StatusResponse {
+        return StatusResponse.of(
+            waiting, waiting.pub, waitings.indexOf(waiting) + 1
+        )
     }
 }

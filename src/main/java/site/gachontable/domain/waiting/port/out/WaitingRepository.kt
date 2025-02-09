@@ -28,7 +28,7 @@ interface WaitingRepository : JpaRepository<Waiting, UUID> {
     ): MutableList<Waiting>
 
     fun findAllByTelAndWaitingStatusInOrderByCreatedAtDesc(
-        tel: String?, statuses: MutableList<Status>,
+        tel: String, statuses: MutableList<Status>,
     ): MutableList<Waiting>
 
     fun findTop3ByPubAndWaitingStatusInOrderByCreatedAtAsc(
