@@ -1,6 +1,7 @@
-package site.gachontable.presentation.shared.dto.request;
+package site.gachontable.presentation.shared.dto.request
 
-public record TestRegisterRequest(String username,
-                                  String password,
-                                  String tel) {
-}
+data class TestRegisterRequest(
+    val username: String,
+    val password: String,
+    val tel: String,
+)

@@ -1,11 +1,11 @@
-package site.gachontable.presentation.shared;
+package site.gachontable.presentation.shared
 
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
+import java.time.format.DateTimeFormatter
+import java.util.*
 
-public class DateTimeFormatters {
-
-    public static final DateTimeFormatter WITH_WEEKDAY = DateTimeFormatter.ofPattern(
-            "M월 d일 (E) HH:mm", Locale.KOREAN);
-
+object DateTimeFormatters {
+    val WITH_WEEKDAY: DateTimeFormatter = DateTimeFormatter
+        .ofPattern(
+            "M월 d일 (E) HH:mm", Locale.KOREAN
+        )
 }

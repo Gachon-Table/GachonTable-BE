@@ -1,4 +1,5 @@
-package site.gachontable.presentation.shared.dto.request;
+package site.gachontable.presentation.shared.dto.request
 
-public record RefreshRequest(String refreshToken) {
-}
+data class RefreshRequest(
+    val refreshToken: String,
+)

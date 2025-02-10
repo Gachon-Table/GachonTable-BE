@@ -1,5 +1,6 @@
-package site.gachontable.presentation.shared.dto.response;
+package site.gachontable.presentation.shared.dto.response
 
-public record RegisterResponse(Boolean status,
-                               String message) {
-}
+data class RegisterResponse(
+    val status: Boolean,
+    val message: String,
+)

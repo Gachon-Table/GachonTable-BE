@@ -1,13 +1,8 @@
-package site.gachontable.presentation.shared;
+package site.gachontable.presentation.shared
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-@AllArgsConstructor
-public enum Role {
+enum class Role(
+    val role: String,
+) {
     ROLE_USER("ROLE_USER"),
-    ROLE_ADMIN("ROLE_ADMIN");
-
-    private final String role;
+    ROLE_ADMIN("ROLE_ADMIN"),
 }
