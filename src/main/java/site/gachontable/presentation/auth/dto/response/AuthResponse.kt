@@ -1,6 +1,7 @@
-package site.gachontable.presentation.auth.dto.response;
+package site.gachontable.presentation.auth.dto.response
 
-public record AuthResponse(String accessToken,
-                           String refreshToken,
-                           String username) {
-}
+data class AuthResponse(
+    val accessToken: String,
+    val refreshToken: String,
+    val username: String,
+)
