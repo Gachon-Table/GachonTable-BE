@@ -1,115 +1,118 @@
-package site.gachontable.domain.auth.service;
+package site.gachontable.domain.auth.service
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import site.gachontable.domain.auth.domain.AccessToken;
-import site.gachontable.domain.auth.domain.KakaoProfile;
-import site.gachontable.presentation.auth.dto.response.AuthResponse;
-import site.gachontable.presentation.shared.Role;
-import site.gachontable.domain.member.domain.User;
-import site.gachontable.domain.member.port.out.UserRepository;
-import site.gachontable.infra.security.jwt.JwtProvider;
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.ResponseEntity
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import org.springframework.util.LinkedMultiValueMap
+import org.springframework.util.MultiValueMap
+import org.springframework.web.client.RestTemplate
+import site.gachontable.domain.auth.domain.AccessToken
+import site.gachontable.domain.auth.domain.KakaoProfile
+import site.gachontable.domain.member.domain.User
+import site.gachontable.domain.member.port.out.UserRepository
+import site.gachontable.infra.security.jwt.JwtProvider
+import site.gachontable.presentation.auth.dto.response.AuthResponse
+import site.gachontable.presentation.shared.Role
 
 @Service
-@RequiredArgsConstructor
-public class AuthService {
+class AuthService(
+    private val userRepository: UserRepository,
+    private val jwtProvider: JwtProvider,
 
-    private static final String USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
-    private static final String TOKEN_URI = "https://kauth.kakao.com/oauth/token";
+    @Value("\${spring.security.oauth2.client.registration.kakao.client-id}")
+    private val clientId: String,
 
-    private final UserRepository userRepository;
-    private final JwtProvider jwtProvider;
+    @Value("\${spring.security.oauth2.client.registration.kakao.client-secret}")
+    private val clientSecret: String,
 
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-    private String CLIENT_ID;
-
-    @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
-    private String CLIENT_SECRET;
-
-    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
-    private String REDIRECT_URI;
-
+    @Value("\${spring.security.oauth2.client.registration.kakao.redirect-uri}")
+    private val redirectUri: String,
+) {
     @Transactional
-    public AuthResponse getUserInfo(String code) {
-        String token = getToken(code);
-        return getUserInfoFromToken(token);
+    fun getUserInfo(code: String): AuthResponse {
+        val token = getToken(code)
+        return getUserInfoFromToken(token)
     }
 
-    private String getToken(String code) {
-        RestTemplate restTemplate = new RestTemplate();
+    private fun getToken(code: String): String {
+        val restTemplate = RestTemplate()
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        val headers = HttpHeaders()
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8")
 
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "authorization_code");
-        body.add("client_id", CLIENT_ID);
-        body.add("redirect_uri", REDIRECT_URI);
-        body.add("code", code);
-        body.add("client_secret", CLIENT_SECRET);
+        val body: MultiValueMap<String, String> = LinkedMultiValueMap<String, String>()
+        body.add("grant_type", "authorization_code")
+        body.add("client_id", clientId)
+        body.add("redirect_uri", redirectUri)
+        body.add("code", code)
+        body.add("client_secret", clientSecret)
 
-        HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(body, headers);
+        val tokenRequest = HttpEntity<MultiValueMap<String, String>>(body, headers)
 
-        ResponseEntity<String> response =
-                restTemplate.postForEntity(TOKEN_URI, tokenRequest, String.class);
+        val response: ResponseEntity<String> =
+            restTemplate.postForEntity<String>(TOKEN_URI, tokenRequest, String::class.java)
 
-        return AccessToken.from(response.getBody()).accessToken();
+        return AccessToken.from(response.getBody()!!).accessToken
     }
 
-    public AuthResponse getUserInfoFromToken(String token) {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
+    fun getUserInfoFromToken(token: String?): AuthResponse {
+        val restTemplate = RestTemplate()
+        val headers = HttpHeaders()
 
-        headers.add("Authorization", "Bearer " + token);
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        headers.add("Authorization", "Bearer " + token)
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8")
 
-        HttpEntity<MultiValueMap<String, String>> profileRequest = new HttpEntity<>(headers);
+        val profileRequest = HttpEntity<MultiValueMap<String?, String>>(headers)
 
-        ResponseEntity<String> response =
-                restTemplate.postForEntity(USER_INFO_URI, profileRequest, String.class);
+        val response: ResponseEntity<String> =
+            restTemplate.postForEntity<String>(USER_INFO_URI, profileRequest, String::class.java)
 
-        User user = getUser(KakaoProfile.from(response.getBody()));
+        val user = getUser(KakaoProfile.from(response.getBody()!!))
 
-        return createToken(user);
+        return createToken(user)
     }
 
-    private User getUser(KakaoProfile kakaoProfile) {
-        String kakaoTel = kakaoProfile.tel();
-        String tel = kakaoTel.replace("+82 ", "0");
-        String username = kakaoProfile.username();
+    private fun getUser(kakaoProfile: KakaoProfile): User {
+        val kakaoTel = kakaoProfile.tel
+        val tel = kakaoTel.replace("+82 ", "0")
+        val username = kakaoProfile.username
 
         return userRepository.findByUserTel(tel)
-                .orElseGet(() -> userRepository.save(User.create(username, tel)));
+            ?: userRepository.save(User.create(username, tel))
     }
 
-    private AuthResponse createToken(User user) {
-        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getUserTel(), Role.ROLE_USER);
-        String refreshToken = generateRefreshToken(user);
+    private fun createToken(user: User): AuthResponse {
+        val accessToken = jwtProvider.generateAccessToken(
+            user.userId, user.userTel, Role.ROLE_USER
+        )
+        val refreshToken = generateRefreshToken(user)
 
-        userRepository.save(user);
+        userRepository.save(user)
 
-        return new AuthResponse(accessToken, refreshToken, user.getUsername());
+        return AuthResponse(accessToken, refreshToken, user.username)
     }
 
-    private String generateRefreshToken(User user) {
-        String refreshToken = user.getRefreshToken();
+    private fun generateRefreshToken(user: User): String {
+        var refreshToken = user.refreshToken
         if (refreshToken == null || jwtProvider.isInvalidToken(refreshToken)) {
-            refreshToken = jwtProvider.generateRefreshToken(user.getUserId(), user.getUserTel(), Role.ROLE_USER);
-            updateRefreshToken(user, refreshToken);
+            refreshToken = jwtProvider.generateRefreshToken(
+                user.userId, user.userTel, Role.ROLE_USER
+            )
+            updateRefreshToken(user, refreshToken)
         }
-        return refreshToken;
+        return refreshToken
     }
 
-    private void updateRefreshToken(User user, String refreshToken) {
-        user.updateRefreshToken(refreshToken);
-        userRepository.save(user);
+    private fun updateRefreshToken(user: User, refreshToken: String?) {
+        user.updateRefreshToken(refreshToken)
+        userRepository.save(user)
+    }
+
+    companion object {
+        private const val USER_INFO_URI = "https://kapi.kakao.com/v2/user/me"
+        private const val TOKEN_URI = "https://kauth.kakao.com/oauth/token"
     }
 }

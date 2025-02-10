@@ -1,17 +1,20 @@
-package site.gachontable.domain.auth.domain;
+package site.gachontable.domain.auth.domain
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.JsonParser
 
-public record KakaoProfile(String username, String tel) {
+data class KakaoProfile(
+    val username: String,
+    val tel: String,
+) {
+    companion object {
+        fun from(jsonResponseBody: String): KakaoProfile {
+            val `object` = JsonParser.parseString(jsonResponseBody).getAsJsonObject()
 
-    public static KakaoProfile from(String jsonResponseBody) {
-        JsonObject object = JsonParser.parseString(jsonResponseBody).getAsJsonObject();
+            val kakaoAccount = `object`.getAsJsonObject("kakao_account")
+            val username = kakaoAccount.get("name").asString
+            val tel = kakaoAccount.get("phone_number").asString
 
-        JsonObject kakaoAccount = object.getAsJsonObject("kakao_account");
-        String username = kakaoAccount.get("name").getAsString();
-        String tel = kakaoAccount.get("phone_number").getAsString();
-
-        return new KakaoProfile(username, tel);
+            return KakaoProfile(username, tel)
+        }
     }
 }

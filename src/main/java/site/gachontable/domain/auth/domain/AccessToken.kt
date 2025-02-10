@@ -1,14 +1,16 @@
-package site.gachontable.domain.auth.domain;
+package site.gachontable.domain.auth.domain
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.JsonParser
 
-public record AccessToken(String accessToken) {
+data class AccessToken(
+    val accessToken: String,
+) {
+    companion object {
+        fun from(jsonResponseBody: String): AccessToken {
+            val response = JsonParser.parseString(jsonResponseBody).getAsJsonObject()
+            val accessToken = response.get("access_token").asString
 
-    public static AccessToken from(String jsonResponseBody) {
-        JsonObject response = JsonParser.parseString(jsonResponseBody).getAsJsonObject();
-        String accessToken = response.get("access_token").getAsString();
-
-        return new AccessToken(accessToken);
+            return AccessToken(accessToken)
+        }
     }
 }
