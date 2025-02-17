@@ -1,22 +1,20 @@
-package site.gachontable.independent.parser;
+package site.gachontable.independent.parser
 
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.expression.ExpressionParser
+import org.springframework.expression.spel.standard.SpelExpressionParser
+import org.springframework.expression.spel.support.StandardEvaluationContext
 
-public class CustomSpringELParser {
+object CustomSpringELParser {
+    fun getDynamicValue(
+        parameterNames: Array<String>, args: Array<Any>, key: String,
+    ): Any {
+        val parser: ExpressionParser = SpelExpressionParser()
+        val context = StandardEvaluationContext()
 
-    private CustomSpringELParser() {
-    }
-
-    public static Object getDynamicValue(String[] parameterNames, Object[] args, String key) {
-        ExpressionParser parser = new SpelExpressionParser();
-        StandardEvaluationContext context = new StandardEvaluationContext();
-
-        for (int i = 0; i < parameterNames.length; i++) {
-            context.setVariable(parameterNames[i], args[i]);
+        parameterNames.forEachIndexed { index, name ->
+            context.setVariable(name, args[index])
         }
 
-        return parser.parseExpression(key).getValue(context, Object.class);
+        return parser.parseExpression(key).getValue<Any>(context, Any::class.java)!!
     }
 }
