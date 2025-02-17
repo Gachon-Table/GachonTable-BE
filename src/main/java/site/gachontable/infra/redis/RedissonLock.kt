@@ -1,20 +1,12 @@
-package site.gachontable.infra.redis;
+package site.gachontable.infra.redis
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeUnit
 
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface RedissonLock {
-
-    String key();
-
-    TimeUnit timeUnit() default TimeUnit.SECONDS;
-
-    long waitTime() default 5L;
-
-    long leaseTime() default 3L;
-}
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class RedissonLock(
+    val key: String,
+    val timeUnit: TimeUnit = TimeUnit.SECONDS,
+    val waitTime: Long = 5L,
+    val leaseTime: Long = 3L,
+)

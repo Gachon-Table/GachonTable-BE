@@ -1,18 +1,21 @@
-package site.gachontable.infra.redis.aop;
+package site.gachontable.infra.redis.aop
 
-import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.aspectj.lang.ProceedingJoinPoint
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 
 @Component
-@Slf4j
-public class AopForTransaction {
-
+class AopForTransaction {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Object proceed(final ProceedingJoinPoint joinPoint, String key) throws Throwable {
-        log.info("Lock 수행 : {}", key);
-        return joinPoint.proceed();
+    @Throws(Throwable::class)
+    fun proceed(joinPoint: ProceedingJoinPoint, key: String): Any {
+        log.info("Lock 수행 : {}", key)
+        return joinPoint.proceed()
+    }
+
+    companion object {
+        private val log = LoggerFactory.getLogger(AopForTransaction::class.java)
     }
 }

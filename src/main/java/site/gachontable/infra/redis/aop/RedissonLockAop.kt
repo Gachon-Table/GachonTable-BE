@@ -1,55 +1,58 @@
-package site.gachontable.infra.redis.aop;
+package site.gachontable.infra.redis.aop
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
-import org.springframework.stereotype.Component;
-import site.gachontable.independent.parser.CustomSpringELParser;
-import site.gachontable.infra.redis.RedissonLock;
-
-import java.lang.reflect.Method;
+import org.aspectj.lang.ProceedingJoinPoint
+import org.aspectj.lang.annotation.Around
+import org.aspectj.lang.annotation.Aspect
+import org.aspectj.lang.reflect.MethodSignature
+import org.redisson.api.RedissonClient
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
+import site.gachontable.independent.parser.CustomSpringELParser.getDynamicValue
+import site.gachontable.infra.redis.RedissonLock
 
 @Aspect
 @Component
-@RequiredArgsConstructor
-@Slf4j
-public class RedissonLockAop {
-
-    private final RedissonClient redissonClient;
-    private final AopForTransaction aopForTransaction;
-
+class RedissonLockAop(
+    private val redissonClient: RedissonClient,
+    private val aopForTransaction: AopForTransaction,
+) {
     @Around("@annotation(site.gachontable.infra.redis.RedissonLock)")
-    public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = signature.getMethod();
-        RedissonLock redissonLock = method.getAnnotation(RedissonLock.class);
+    @Throws(Throwable::class)
+    fun lock(joinPoint: ProceedingJoinPoint): Any {
+        val signature = joinPoint.signature as MethodSignature
+        val method = signature.method
+        val redissonLock = method.getAnnotation<RedissonLock>(RedissonLock::class.java)
 
-        String key = (String) CustomSpringELParser
-                .getDynamicValue(signature.getParameterNames(), joinPoint.getArgs(), redissonLock.key());
-        RLock rLock = redissonClient.getLock(key);
+        val key = getDynamicValue(
+            signature.parameterNames, joinPoint.args, redissonLock.key
+        ) as String
+        val rLock = redissonClient.getLock(key)
 
         try {
-            boolean available = rLock.tryLock(redissonLock.waitTime(), redissonLock.leaseTime(), redissonLock.timeUnit());
+            val available = rLock.tryLock(
+                redissonLock.waitTime, redissonLock.leaseTime, redissonLock.timeUnit
+            )
             if (!available) {
-                log.info("Lock 획득 실패 : {}", key);
-                return false;
+                log.info("Lock 획득 실패 : {}", key)
+                return false
             }
 
-            return aopForTransaction.proceed(joinPoint, key);
-        } catch (InterruptedException e) {
-            throw new InterruptedException();
+            return aopForTransaction.proceed(joinPoint, key)
+        } catch (e: InterruptedException) {
+            throw InterruptedException()
         } finally {
             try {
-                log.info("Lock 해제 : {}", key);
-                rLock.unlock();
-            } catch (IllegalMonitorStateException e) {
-                log.info("이미 해제된 Lock : {} {}", method.getName(), key);
+                log.info("Lock 해제 : {}", key)
+                rLock.unlock()
+            } catch (e: IllegalMonitorStateException) {
+                log.info(
+                    "이미 해제된 Lock : {} {}", method.name, key
+                )
             }
         }
+    }
+
+    companion object {
+        private val log = LoggerFactory.getLogger(RedissonLockAop::class.java)
     }
 }
