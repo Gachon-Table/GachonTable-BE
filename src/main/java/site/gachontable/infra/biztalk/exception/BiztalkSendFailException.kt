@@ -1,10 +1,6 @@
-package site.gachontable.infra.biztalk.exception;
+package site.gachontable.infra.biztalk.exception
 
-import site.gachontable.independent.type.ErrorCode;
-import site.gachontable.independent.error.exception.ServiceException;
+import site.gachontable.independent.error.exception.ServiceException
+import site.gachontable.independent.type.ErrorCode
 
-public class BiztalkSendFailException extends ServiceException {
-    public BiztalkSendFailException() {
-        super(ErrorCode.BIZTALK_SEND_FAIL);
-    }
-}
+class BiztalkSendFailException : ServiceException(ErrorCode.BIZTALK_SEND_FAIL)
