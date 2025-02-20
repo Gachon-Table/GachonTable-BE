@@ -1,10 +1,6 @@
-package site.gachontable.infra.security.jwt.exception;
+package site.gachontable.infra.security.jwt.exception
 
-import site.gachontable.independent.type.ErrorCode;
-import site.gachontable.independent.error.exception.ServiceException;
+import site.gachontable.independent.error.exception.ServiceException
+import site.gachontable.independent.type.ErrorCode
 
-public class ExpiredTokenException extends ServiceException {
-    public ExpiredTokenException() {
-        super(ErrorCode.EXPIRED_TOKEN);
-    }
-}
+class ExpiredTokenException : ServiceException(ErrorCode.EXPIRED_TOKEN)

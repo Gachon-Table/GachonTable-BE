@@ -1,5 +1,6 @@
-package site.gachontable.infra.security.jwt.dto;
+package site.gachontable.infra.security.jwt.dto
 
-public record JwtResponse(String accessToken,
-                          String refreshToken) {
-}
+data class JwtResponse(
+    val accessToken: String,
+    val refreshToken: String?,
+)

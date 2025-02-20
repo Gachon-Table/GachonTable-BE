@@ -1,10 +1,6 @@
-package site.gachontable.infra.security.jwt.exception;
+package site.gachontable.infra.security.jwt.exception
 
-import site.gachontable.independent.type.ErrorCode;
-import site.gachontable.independent.error.exception.ServiceException;
+import site.gachontable.independent.error.exception.ServiceException
+import site.gachontable.independent.type.ErrorCode
 
-public class InvalidTokenException extends ServiceException {
-    public InvalidTokenException() {
-        super(ErrorCode.INVALID_TOKEN);
-    }
-}
+class InvalidTokenException : ServiceException(ErrorCode.INVALID_TOKEN)
