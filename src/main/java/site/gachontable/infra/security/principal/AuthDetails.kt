@@ -1,55 +1,20 @@
-package site.gachontable.infra.security.principal;
+package site.gachontable.infra.security.principal
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import site.gachontable.presentation.shared.Role;
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
+import site.gachontable.presentation.shared.Role
+import java.util.*
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.UUID;
+class AuthDetails(
+    private val uuid: UUID,
+    private val tel: String,
+    private val role: Role,
+) : UserDetails {
+    override fun getAuthorities(): Collection<GrantedAuthority> =
+        listOf(SimpleGrantedAuthority(role.role))
 
-@Getter
-@AllArgsConstructor
-public class AuthDetails implements UserDetails {
-    private final UUID uuid;
-    private final String tel;
-    private final Role role;
+    override fun getPassword(): String? = null
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(role.getRole()));
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return tel;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    override fun getUsername(): String = tel
 }

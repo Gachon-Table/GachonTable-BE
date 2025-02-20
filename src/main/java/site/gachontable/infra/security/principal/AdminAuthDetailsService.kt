@@ -1,24 +1,22 @@
-package site.gachontable.infra.security.principal;
+package site.gachontable.infra.security.principal
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import site.gachontable.domain.admin.domain.Admin;
-import site.gachontable.domain.admin.port.out.AdminRepository;
-import site.gachontable.domain.admin.exception.AdminNotFoundException;
-import site.gachontable.presentation.shared.Role;
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.stereotype.Service
+import site.gachontable.domain.admin.domain.Admin
+import site.gachontable.domain.admin.exception.AdminNotFoundException
+import site.gachontable.domain.admin.port.out.AdminRepository
+import site.gachontable.presentation.shared.Role
 
 @Service
-@RequiredArgsConstructor
-public class AdminAuthDetailsService implements UserDetailsService {
+class AdminAuthDetailsService(
+    private val adminRepository: AdminRepository,
+) : UserDetailsService {
+    override fun loadUserByUsername(username: String): AuthDetails {
+        val admin: Admin = adminRepository.findByUsername(username)
+            ?: throw AdminNotFoundException()
 
-    private final AdminRepository adminRepository;
-
-    @Override
-    public AuthDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin admin = adminRepository.findByUsername(username)
-                .orElseThrow(AdminNotFoundException::new);
-        return new AuthDetails(admin.getAdminId(), admin.getUsername(), Role.ROLE_ADMIN);
+        return AuthDetails(
+            admin.adminId, admin.username, Role.ROLE_ADMIN
+        )
     }
 }
