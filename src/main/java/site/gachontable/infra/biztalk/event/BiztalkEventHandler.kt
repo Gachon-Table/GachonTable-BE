@@ -1,20 +1,17 @@
-package site.gachontable.infra.biztalk.event;
+package site.gachontable.infra.biztalk.event
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionalEventListener;
-import site.gachontable.infra.biztalk.SendBiztalk;
+import org.springframework.scheduling.annotation.Async
+import org.springframework.stereotype.Component
+import org.springframework.transaction.event.TransactionalEventListener
+import site.gachontable.infra.biztalk.SendBiztalk
 
 @Component
-@RequiredArgsConstructor
-public class BiztalkEventHandler {
-
-    private final SendBiztalk sendBiztalk;
-
+class BiztalkEventHandler(
+    private val sendBiztalk: SendBiztalk
+) {
     @Async
     @TransactionalEventListener
-    public void execute(SentBiztalkEvent event) {
-        sendBiztalk.execute(event.getTemplateCode(), event.getUserTel(), event.getVariables());
+    fun execute(event: SentBiztalkEvent) {
+        sendBiztalk.execute(event.templateCode, event.userTel, event.variables)
     }
 }

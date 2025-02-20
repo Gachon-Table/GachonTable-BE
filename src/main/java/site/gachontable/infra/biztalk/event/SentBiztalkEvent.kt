@@ -1,24 +1,15 @@
-package site.gachontable.infra.biztalk.event;
+package site.gachontable.infra.biztalk.event
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import java.util.HashMap;
-
-@Getter
-@NoArgsConstructor
-public class SentBiztalkEvent {
-
-    private String templateCode;
-    private String userTel;
-    private HashMap<String, String> variables;
-
-    public SentBiztalkEvent(String templateCode, String userTel, HashMap<String, String> variables) {
-        this.templateCode = templateCode;
-        this.userTel = userTel;
-        this.variables = variables;
-    }
-
-    public static SentBiztalkEvent of(String templateCode, String userTel, HashMap<String, String> variables) {
-        return new SentBiztalkEvent(templateCode, userTel, variables);
+data class SentBiztalkEvent(
+    val templateCode: String,
+    val userTel: String,
+    val variables: HashMap<String, String>,
+) {
+    companion object {
+        fun of(
+            templateCode: String, userTel: String, variables: HashMap<String, String>,
+        ): SentBiztalkEvent {
+            return SentBiztalkEvent(templateCode, userTel, variables)
+        }
     }
 }
