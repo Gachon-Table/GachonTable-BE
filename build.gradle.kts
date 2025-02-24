@@ -16,12 +16,6 @@ java {
 	}
 }
 
-configurations {
-	compileOnly {
-		extendsFrom(configurations.annotationProcessor.get())
-	}
-}
-
 repositories {
 	mavenCentral()
 }
@@ -40,7 +34,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
 	implementation("io.jsonwebtoken:jjwt:0.12.5")
 	implementation("com.google.code.gson:gson:2.11.0")
 
@@ -52,8 +46,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 
 	implementation("net.nurigo:sdk:4.3.0")
-
-	compileOnly("org.projectlombok:lombok")
 
 	runtimeOnly("com.mysql:mysql-connector-j")
 	runtimeOnly("io.micrometer:micrometer-registry-prometheus")
