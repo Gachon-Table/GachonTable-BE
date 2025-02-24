@@ -7,6 +7,12 @@ plugins {
 	id("org.sonarqube") version "6.0.1.5171"
 }
 
+allOpen {
+	annotation("jakarta.persistence.Entity")
+	annotation("jakarta.persistence.MappedSuperclass")
+	annotation("javax.persistence.Embeddable")
+}
+
 group = "site.gachontable"
 version = "1.0.5-SNAPSHOT"
 
