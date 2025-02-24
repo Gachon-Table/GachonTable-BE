@@ -1,129 +1,136 @@
-package site.gachontable.infra.security.jwt;
+package site.gachontable.infra.security.jwt
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import site.gachontable.infra.security.principal.AuthDetails;
-import site.gachontable.infra.security.principal.AdminAuthDetailsService;
-import site.gachontable.infra.security.principal.UserAuthDetailsService;
-import site.gachontable.presentation.shared.Role;
-import site.gachontable.infra.security.jwt.dto.JwtResponse;
-import site.gachontable.infra.security.jwt.exception.ExpiredTokenException;
-import site.gachontable.infra.security.jwt.exception.InvalidTokenException;
-import site.gachontable.infra.security.jwt.exception.MalformedTokenException;
-import site.gachontable.infra.security.jwt.exception.UnsupportedTokenException;
-
-import javax.crypto.SecretKey;
-import java.time.Duration;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.UUID;
+import io.jsonwebtoken.*
+import io.jsonwebtoken.io.Decoders
+import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import site.gachontable.infra.security.jwt.dto.JwtResponse
+import site.gachontable.infra.security.jwt.exception.ExpiredTokenException
+import site.gachontable.infra.security.jwt.exception.InvalidTokenException
+import site.gachontable.infra.security.jwt.exception.MalformedTokenException
+import site.gachontable.infra.security.jwt.exception.UnsupportedTokenException
+import site.gachontable.infra.security.principal.AdminAuthDetailsService
+import site.gachontable.infra.security.principal.AuthDetails
+import site.gachontable.infra.security.principal.UserAuthDetailsService
+import site.gachontable.presentation.shared.Role
+import java.util.*
+import javax.crypto.SecretKey
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
 
 @Service
-public class JwtProvider {
+class JwtProvider(
+    private val userAuthDetailsService: UserAuthDetailsService,
+    private val adminAuthDetailsService: AdminAuthDetailsService,
 
-    public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14);
-    public static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(6);
-
-    private final SecretKey secretKey;
-    private final AdminAuthDetailsService adminAuthDetailsService;
-    private final UserAuthDetailsService userAuthDetailsService;
-
-    @Autowired
-    public JwtProvider(@Value("${jwt.secret_key}") String secretKey,
-                       UserAuthDetailsService userAuthDetailsService,
-                       AdminAuthDetailsService adminAuthDetailsService) {
-        this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
-        this.adminAuthDetailsService = adminAuthDetailsService;
-        this.userAuthDetailsService = userAuthDetailsService;
-    }
+    @Value("\${jwt.secret_key}")
+    secretKey: String,
+) {
+    private val secretKey: SecretKey =
+        Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey))
 
     @Transactional
-    public JwtResponse refreshAccessToken(String refreshToken) {
-        Claims claims = validateToken(refreshToken);
-        UUID uuid = UUID.fromString(claims.get("uid", String.class));
-        String role = claims.get("role", String.class);
+    fun refreshAccessToken(refreshToken: String): JwtResponse {
+        val claims = validateToken(refreshToken)
+        val uuid = UUID.fromString(claims.get<String>("uid", String::class.java))
+        val role = claims.get<String>("role", String::class.java)
+        val newAccessToken = generateAccessToken(
+            uuid, claims.subject, Role.valueOf(role)
+        )
 
-        String newAccessToken = generateAccessToken(uuid, claims.getSubject(), Role.valueOf(role));
-        return new JwtResponse(newAccessToken, null);
+        return JwtResponse(newAccessToken, null)
     }
 
-    public String generateAccessToken(UUID uuid, String tokenSubject, Role role) {
-        return generateToken(uuid, tokenSubject, ACCESS_TOKEN_DURATION, role);
+    fun generateAccessToken(
+        uuid: UUID, tokenSubject: String, role: Role,
+    ): String {
+        return generateToken(
+            uuid, tokenSubject, ACCESS_TOKEN_DURATION, role
+        )
     }
 
-    public String generateRefreshToken(UUID uuid, String tokenSubject, Role role) {
-        return generateToken(uuid, tokenSubject, REFRESH_TOKEN_DURATION, role);
+    fun generateRefreshToken(
+        uuid: UUID, tokenSubject: String, role: Role,
+    ): String {
+        return generateToken(
+            uuid, tokenSubject, REFRESH_TOKEN_DURATION, role
+        )
     }
 
-    private String generateToken(UUID uuid, String tokenSubject, Duration duration, Role role) {
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + duration.toMillis());
+    private fun generateToken(
+        uuid: UUID, tokenSubject: String, duration: Duration, role: Role,
+    ): String {
+        val now = Date()
+        val expiry = Date(now.time + duration.inWholeMilliseconds)
 
         return Jwts.builder()
-                .subject(tokenSubject)
-                .claim("uid", uuid)
-                .claim("role", role.getRole())
-                .expiration(expiry)
-                .signWith(secretKey)
-                .compact();
+            .subject(tokenSubject)
+            .claim("uid", uuid)
+            .claim("role", role.role)
+            .expiration(expiry)
+            .signWith(secretKey)
+            .compact()
     }
 
-    public Authentication getAuthentication(String token) {
-        Claims claims = validateToken(token);
-        Collection<? extends GrantedAuthority> authorities = Collections.singletonList(
-                new SimpleGrantedAuthority(claims.get("role").toString()));
+    fun getAuthentication(token: String): Authentication {
+        val claims = validateToken(token)
+        val authorities: MutableCollection<out GrantedAuthority> = mutableListOf<SimpleGrantedAuthority>(
+            SimpleGrantedAuthority(claims["role"].toString())
+        )
 
-        return new UsernamePasswordAuthenticationToken(getDetails(claims), "", authorities);
+        return UsernamePasswordAuthenticationToken(getDetails(claims), "", authorities)
     }
 
-    private AuthDetails getDetails(Claims claims) {
-        if (claims.get("role").equals(Role.ROLE_ADMIN.getRole())) {
-            return this.adminAuthDetailsService.loadUserByUsername(claims.getSubject());
+    private fun getDetails(claims: Claims): AuthDetails {
+        if (claims["role"] == Role.ROLE_ADMIN.role) {
+            return this.adminAuthDetailsService.loadUserByUsername(claims.subject)
         }
-        return this.userAuthDetailsService.loadUserByUsername(claims.getSubject());
+        return this.userAuthDetailsService.loadUserByUsername(claims.subject)
     }
 
-    private Claims parseClaims(String token) {
+    private fun parseClaims(token: String): Claims {
         return Jwts.parser()
-                .verifyWith(secretKey).build()
-                .parseSignedClaims(token)
-                .getPayload();
+            .verifyWith(secretKey).build()
+            .parseSignedClaims(token)
+            .getPayload()
     }
 
-    public Claims validateToken(String token) {
+    fun validateToken(token: String): Claims {
         try {
-            return parseClaims(token);
-        } catch (IllegalArgumentException e) {
-            throw new InvalidTokenException();
-        } catch (ExpiredJwtException e) {
-            throw new ExpiredTokenException();
-        } catch (MalformedJwtException e) {
-            throw new MalformedTokenException();
-        } catch (UnsupportedJwtException e) {
-            throw new UnsupportedTokenException();
+            return parseClaims(token)
+        } catch (e: IllegalArgumentException) {
+            throw InvalidTokenException()
+        } catch (e: ExpiredJwtException) {
+            throw ExpiredTokenException()
+        } catch (e: MalformedJwtException) {
+            throw MalformedTokenException()
+        } catch (e: UnsupportedJwtException) {
+            throw UnsupportedTokenException()
         }
     }
 
-    public boolean isInvalidToken(String token) {
-        try {
-            validateToken(token);
-            return false;
-        } catch (InvalidTokenException |
-                 ExpiredTokenException |
-                 MalformedTokenException |
-                 UnsupportedTokenException e) {
-            return true;
-        }
+    fun isValidToken(token: String): Boolean {
+        return runCatching { validateToken(token) }
+            .onFailure { e ->
+                if (e is InvalidTokenException ||
+                    e is ExpiredTokenException ||
+                    e is MalformedTokenException ||
+                    e is UnsupportedTokenException
+                ) {
+                    return false
+                }
+            }
+            .isSuccess
+    }
+
+    companion object {
+        private val ACCESS_TOKEN_DURATION: Duration = 7.days
+        private val REFRESH_TOKEN_DURATION: Duration = 14.days
     }
 }

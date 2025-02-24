@@ -37,7 +37,7 @@ class UserLoginImpl(
 
     private fun generateRefreshToken(user: User): String {
         var refreshToken = user.refreshToken
-        if (refreshToken == null || jwtProvider.isInvalidToken(refreshToken)) {
+        if (refreshToken == null || !jwtProvider.isValidToken(refreshToken)) {
             refreshToken = jwtProvider.generateRefreshToken(user.userId, user.username, Role.ROLE_USER)
             updateRefreshToken(user, refreshToken)
         }

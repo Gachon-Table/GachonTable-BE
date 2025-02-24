@@ -97,7 +97,7 @@ class AuthService(
 
     private fun generateRefreshToken(user: User): String {
         var refreshToken = user.refreshToken
-        if (refreshToken == null || jwtProvider.isInvalidToken(refreshToken)) {
+        if (refreshToken == null || !jwtProvider.isValidToken(refreshToken)) {
             refreshToken = jwtProvider.generateRefreshToken(
                 user.userId, user.userTel, Role.ROLE_USER
             )

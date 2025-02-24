@@ -39,7 +39,7 @@ class AdminLoginImpl(
 
     private fun generateRefreshToken(admin: Admin): String {
         var refreshToken = admin.refreshToken
-        if (refreshToken == null || jwtProvider.isInvalidToken(refreshToken)) {
+        if (refreshToken == null || !jwtProvider.isValidToken(refreshToken)) {
             refreshToken = jwtProvider.generateRefreshToken(admin.adminId, admin.username, Role.ROLE_ADMIN)
             updateAdminRefreshToken(admin, refreshToken)
         }
