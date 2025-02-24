@@ -1,126 +1,140 @@
-package site.gachontable.infra.security;
+package site.gachontable.infra.security
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import site.gachontable.presentation.shared.Role;
-import site.gachontable.infra.security.jwt.CustomAccessDeniedHandler;
-import site.gachontable.infra.security.jwt.filter.ExceptionHandleFilter;
-import site.gachontable.infra.security.jwt.filter.JwtAuthenticationEntryPoint;
-import site.gachontable.infra.security.jwt.JwtProvider;
-import site.gachontable.infra.security.jwt.filter.TokenAuthenticationFilter;
-
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.annotation.web.invoke
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import site.gachontable.infra.security.jwt.CustomAccessDeniedHandler
+import site.gachontable.infra.security.jwt.JwtProvider
+import site.gachontable.infra.security.jwt.filter.ExceptionHandleFilter
+import site.gachontable.infra.security.jwt.filter.JwtAuthenticationEntryPoint
+import site.gachontable.infra.security.jwt.filter.TokenAuthenticationFilter
+import site.gachontable.presentation.shared.Role
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
-public class SecurityConfig {
+class SecurityConfig(
+    private val tokenProvider: JwtProvider,
+    private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
+    private val customAccessDeniedHandler: CustomAccessDeniedHandler,
 
-    private final JwtProvider tokenProvider;
-    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
-    private final CustomAccessDeniedHandler accessDeniedHandler;
-
-    @Value("${management.endpoints.web.base-path}")
-    private String actuatorBasePath;
+    @Value("\${management.endpoints.web.base-path}")
+    private val actuatorBasePath: String,
+) {
+    @Bean
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        val whitePaths = arrayOf(
+            "/swagger-ui/**",
+            "/v3/**",
+            "/health-check",
+            "$actuatorBasePath/**",
+            "/",
+            "/login",
+            "/admin/test-register",
+            "/admin/login",
+            "/user/test-register",
+            "/user/test-login",
+            "/user/refresh",
+            "/admin/refresh",
+            "/pub/register",
+            "/pub/all",
+            "/pub/{pubId}",
+            "/waiting/cancel",
+            "/waiting/biztalk-status/{waitingId}"
+        )
+
+        val adminPaths = arrayOf(
+            "/admin/waitings",
+            "/admin/seatings",
+            "/admin/enter",
+            "/admin/call",
+            "/admin/exit",
+            "/admin/status",
+            "/admin/status-waiting",
+            "/admin/manage",
+        )
+
+        val waitingPaths = arrayOf(
+            "/waiting/remote",
+            "/waiting/status",
+            "/waiting/history",
+        )
+
+        http {
+            authorizeHttpRequests {
+                whitePaths.forEach { authorize(it, permitAll) }
+                adminPaths.forEach { authorize(it, hasRole(Role.ROLE_ADMIN.role)) }
+                waitingPaths.forEach { authorize(it, hasRole(Role.ROLE_USER.role)) }
+                authorize(anyRequest, authenticated)
+            }
+        }
+
+        http {
+            csrf { disable() }
+            formLogin { disable() }
+            httpBasic { disable() }
+            sessionManagement {
+                sessionCreationPolicy = SessionCreationPolicy.STATELESS
+            }
+            cors {
+                configurationSource = corsConfigurationSource()
+            }
+        }
+
+        http {
+            exceptionHandling {
+                accessDeniedHandler = customAccessDeniedHandler
+                authenticationEntryPoint = jwtAuthenticationEntryPoint
+            }
+        }
+
+        http {
+            oauth2Login { }
+        }
+
+        // Ensure ExceptionHandleFilter comes before TokenAuthenticationFilter,
+        // and then TokenAuthenticationFilter is placed before the UsernamePasswordAuthenticationFilter.
+        http {
+            addFilterBefore<TokenAuthenticationFilter>(
+                filter = ExceptionHandleFilter()
+            )
+            addFilterBefore<UsernamePasswordAuthenticationFilter>(
+                filter = TokenAuthenticationFilter(tokenProvider)
+            )
+        }
+        return http.build()
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .cors((cors) -> cors
-                        .configurationSource(corsConfigurationSource())
-                )
-                .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .sessionManagement((sessionManagement) ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
-
-        http
-                .authorizeHttpRequests((authorize) ->
-                        authorize
-                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll() // API 명세서
-
-                                .requestMatchers("health-check").permitAll() // 로드 밸런서 상태 확인
-                                .requestMatchers(actuatorBasePath + "/**").permitAll() // Actuator 경로
-
-                                .requestMatchers("/login").permitAll() // 카카오 로그인
-                                .requestMatchers("/admin/test-register", "/admin/login").permitAll() //관리자 로그인
-                                .requestMatchers("/user/test-register", "/user/test-login").permitAll() // 개발 테스트 로그인
-                                .requestMatchers("user/refresh", "admin/refresh").permitAll() // 토큰 재발급
-                                .requestMatchers("pub/register").permitAll() // 주점 등록
-
-                                .requestMatchers("/pub/all", "/pub/{pubId}").permitAll() //랜딩 페이지
-
-                                .requestMatchers("waiting/cancel").permitAll() // 예약 취소
-
-                                .requestMatchers("waiting/biztalk-status/{waitingId}").permitAll() // 알림톡 웨이팅 조회
-
-                                .requestMatchers("/admin/waitings", "/admin/seatings", "/admin/enter", "/admin/call", "/admin/exit").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 웨이팅 관리
-                                .requestMatchers("/admin/status", "admin/status-waiting").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 상태 변경
-                                .requestMatchers("/admin/manage").hasAuthority(Role.ROLE_ADMIN.getRole()) // 주점 관리(주점 상세정보 변경)
-
-                                .requestMatchers("waiting/remote").hasAuthority(Role.ROLE_USER.getRole()) // 원격 웨이팅
-                                .requestMatchers("waiting/status", "waiting/history").hasAuthority(Role.ROLE_USER.getRole()) // 마이페이지 웨이팅 현황 및 기록 조회
-
-                                .anyRequest().authenticated()
-                );
-
-        http
-                .exceptionHandling(exceptionHandlingCustomizer ->
-                        exceptionHandlingCustomizer
-                                .authenticationEntryPoint(authenticationEntryPoint)
-                                .accessDeniedHandler(accessDeniedHandler)
-                );
-
-        http
-                .oauth2Login(Customizer.withDefaults());
-
-        http
-                .addFilterBefore(new TokenAuthenticationFilter(tokenProvider),
-                        UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new ExceptionHandleFilter(),
-                        TokenAuthenticationFilter.class);
-
-        return http.build();
-    }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration().apply {
+            allowedOrigins = listOf(
                 "http://localhost:8080",
                 "http://localhost:3000",
                 "https://api.lupg.me",
                 "https://lupg.me",
                 "https://www.lupg.me",
-                "https://test.lupg.me"));
-        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(List.of("*"));
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+                "https://test.lupg.me"
+            )
+            allowedMethods = listOf("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
+            allowCredentials = true
+            allowedHeaders = listOf("*")
+        }
+        return UrlBasedCorsConfigurationSource().apply {
+            registerCorsConfiguration("/**", configuration)
+        }
     }
 }
