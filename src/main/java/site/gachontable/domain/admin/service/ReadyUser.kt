@@ -19,7 +19,7 @@ class ReadyUser(
 ) {
     fun execute(pub: Pub) {
         val waitings: MutableList<Waiting> = waitingRepository.findAllByPubAndWaitingStatusInOrderByCreatedAtAsc(
-            pub, listOf<Status>(Status.WAITING, Status.AVAILABLE)
+            pub, mutableListOf<Status>(Status.WAITING, Status.AVAILABLE)
         )
 
         if (waitings.size < 3) {
