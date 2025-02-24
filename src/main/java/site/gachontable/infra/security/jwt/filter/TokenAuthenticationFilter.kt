@@ -1,45 +1,40 @@
-package site.gachontable.infra.security.jwt.filter;
+package site.gachontable.infra.security.jwt.filter
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.StringUtils;
-import org.springframework.web.filter.OncePerRequestFilter;
-import site.gachontable.infra.security.jwt.JwtProvider;
+import jakarta.servlet.FilterChain
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.web.filter.OncePerRequestFilter
+import site.gachontable.infra.security.jwt.JwtProvider
 
-import java.io.IOException;
+class TokenAuthenticationFilter(
+    private val jwtProvider: JwtProvider,
+) : OncePerRequestFilter() {
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain,
+    ) {
+        val token: String? = resolveToken(request)
 
-@RequiredArgsConstructor
-public class TokenAuthenticationFilter extends OncePerRequestFilter {
-
-    private final static String HEADER_AUTHORIZATION = "Authorization";
-    private final static String TOKEN_PREFIX = "Bearer ";
-    private final JwtProvider jwtProvider;
-
-    @Override
-    protected void doFilterInternal(@NotNull HttpServletRequest request,
-                                    @NotNull HttpServletResponse response,
-                                    @NotNull FilterChain filterChain) throws ServletException, IOException {
-        String token = resolveToken(request);
-
-        if (token != null) {
-            Authentication authentication = this.jwtProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (token != null && jwtProvider.isValidToken(token)) {
+            val authentication = jwtProvider.getAuthentication(token)
+            SecurityContextHolder.getContext().authentication = authentication
         }
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response)
     }
 
-    private String resolveToken(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
-        if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith(TOKEN_PREFIX)) {
-            return authorizationHeader.substring(TOKEN_PREFIX.length());
+    private fun resolveToken(request: HttpServletRequest): String? {
+        val authorizationHeader: String? = request.getHeader(HEADER_AUTHORIZATION)
+        if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
+            return authorizationHeader.substringAfter(TOKEN_PREFIX)
         }
-        return null;
+        return null
+    }
+
+    companion object {
+        private const val HEADER_AUTHORIZATION = "Authorization"
+        private const val TOKEN_PREFIX = "Bearer "
     }
 }
